@@ -1,4 +1,4 @@
-package com.example.schoolmessage
+package com.nocountry.edunotify
 
 import org.junit.Test
 

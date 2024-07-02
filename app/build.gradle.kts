@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.schoolmessage"
+    namespace = "com.nocountry.edunotify"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.schoolmessage"
+        applicationId = "com.nocountry.edunotify"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
