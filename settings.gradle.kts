@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "SchoolMessage"
+rootProject.name = "EduNotify"
 include(":app")

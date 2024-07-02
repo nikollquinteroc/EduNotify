@@ -1,4 +1,4 @@
-package com.example.schoolmessage.ui.theme
+package com.nocountry.edunotify.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
