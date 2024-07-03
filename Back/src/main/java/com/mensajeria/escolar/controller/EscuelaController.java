@@ -25,6 +25,7 @@ public class EscuelaController {
 
     @GetMapping("/{id}")
     public EscuelaResponseDto verEscuela(@PathVariable Long id){
+        System.out.println("prueba");
         return new EscuelaResponseDto(escuelaService.verEscuela(id));
     }
 }
