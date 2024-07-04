@@ -1,5 +1,6 @@
 package com.mensajeria.escolar.entity;
 
+import com.mensajeria.escolar.security.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,4 +25,8 @@ public class Curso {
 
     @ManyToMany(mappedBy = "cursos")
     private List<Mensaje> mensajes;
+
+    @ManyToMany(mappedBy = "cursos")
+    private List<User> users;
+
 }

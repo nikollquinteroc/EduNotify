@@ -1,5 +1,6 @@
 package com.mensajeria.escolar.security.dto;
 
+import com.mensajeria.escolar.entity.Escuela;
 import com.mensajeria.escolar.security.entity.RoleName;
 import lombok.*;
 
@@ -14,6 +15,7 @@ public class UserResponseDto {
     private String lastName;
     private String email;
     private String phone;
-    private String address;
     private RoleName role;
+    private Long school;
+
 }

@@ -1,5 +1,6 @@
 package com.mensajeria.escolar.security.entity;
 
+import com.mensajeria.escolar.entity.Curso;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,11 +28,18 @@ public class User implements UserDetails {
     private String lastName;
     private String email;
     private String phone;
-    private String address;
     private String password;
+    private Long school_id;
 
     @Enumerated(EnumType.STRING)
     private RoleName role;
+
+    @ManyToMany(cascade= CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_course", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id")
+    )
+    private List<Curso> cursos;
 
     /**
      * Obtiene la colección de autoridades (roles) del usuario.

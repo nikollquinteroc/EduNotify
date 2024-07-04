@@ -1,5 +1,8 @@
 package com.mensajeria.escolar.security.service.Impl;
 
+import com.mensajeria.escolar.dto.EscuelaResponseDto;
+import com.mensajeria.escolar.repository.CursoRepository;
+import com.mensajeria.escolar.repository.EscuelaRepository;
 import com.mensajeria.escolar.security.config.JwtService;
 import com.mensajeria.escolar.security.dto.AuthResponseDto;
 import com.mensajeria.escolar.security.dto.LoginRequestDto;
@@ -11,6 +14,7 @@ import com.mensajeria.escolar.security.exception.ResourceNotFoundException;
 import com.mensajeria.escolar.security.exception.ValidationIntegrity;
 import com.mensajeria.escolar.security.repository.UserRepository;
 import com.mensajeria.escolar.security.service.IAuthService;
+import com.mensajeria.escolar.service.EscuelaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +30,7 @@ public class AuthService implements IAuthService {
     private final AuthenticationManager authManager;
     private final JwtService jwtService;
     private final PasswordEncoder encoder;
+    private final EscuelaService escuelaService;
 
     @Override
     public AuthResponseDto login(LoginRequestDto authRequest) {
@@ -51,7 +56,9 @@ public class AuthService implements IAuthService {
                         .name(user.getName())
                         .lastName(user.getLastName())
                         .email(user.getEmail())
+                        .phone(user.getPhone())
                         .role(user.getRole())
+                        .school(escuelaService.verEscuela(user.getSchool_id()).getId())
                         .build())
                 .build();
     }
@@ -67,8 +74,10 @@ public class AuthService implements IAuthService {
                 .name(newUserDto.getName())
                 .lastName(newUserDto.getLastName())
                 .email(newUserDto.getEmail())
+                .phone(newUserDto.getPhone())
                 .password(encoder.encode(newUserDto.getPassword()))
                 .role(RoleName.USUARIO)
+                .school_id(newUserDto.getSchool())
                 .build();
 
         userRepository.save(customer);
@@ -81,7 +90,9 @@ public class AuthService implements IAuthService {
                         .name(newUserDto.getName())
                         .lastName(newUserDto.getLastName())
                         .email(newUserDto.getEmail())
+                        .phone(newUserDto.getPhone())
                         .role(RoleName.USUARIO)
+                        .school(escuelaService.verEscuela(newUserDto.getSchool()).getId())
                         .build())
                 .build();
     }
