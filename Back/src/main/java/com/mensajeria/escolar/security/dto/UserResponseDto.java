@@ -4,6 +4,8 @@ import com.mensajeria.escolar.entity.Escuela;
 import com.mensajeria.escolar.security.entity.RoleName;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -17,5 +19,6 @@ public class UserResponseDto {
     private String phone;
     private RoleName role;
     private Long school;
+    private List<Long> courses;
 
 }

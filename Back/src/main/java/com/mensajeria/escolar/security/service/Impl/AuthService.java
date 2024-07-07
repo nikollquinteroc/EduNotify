@@ -1,6 +1,7 @@
 package com.mensajeria.escolar.security.service.Impl;
 
 import com.mensajeria.escolar.dto.EscuelaResponseDto;
+import com.mensajeria.escolar.entity.Curso;
 import com.mensajeria.escolar.repository.CursoRepository;
 import com.mensajeria.escolar.repository.EscuelaRepository;
 import com.mensajeria.escolar.security.config.JwtService;
@@ -21,6 +22,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -49,6 +52,10 @@ public class AuthService implements IAuthService {
 
         String token = jwtService.generateToken(user);
 
+        List<Long> cursoIds = user.getCursos().stream()
+                .map(Curso::getId) // Suponiendo que Course tiene un método getId()
+                .toList();
+
         return AuthResponseDto.builder()
                 .jwt(token)
                 .user(UserResponseDto.builder()
@@ -59,6 +66,7 @@ public class AuthService implements IAuthService {
                         .phone(user.getPhone())
                         .role(user.getRole())
                         .school(escuelaService.verEscuela(user.getSchool_id()).getId())
+                        .courses(cursoIds)
                         .build())
                 .build();
     }
@@ -70,7 +78,7 @@ public class AuthService implements IAuthService {
             throw new ResourceNotFoundException("El correo electrónico esta registrado");
         }
 
-        User customer = User.builder()
+        User usuario = User.builder()
                 .name(newUserDto.getName())
                 .lastName(newUserDto.getLastName())
                 .email(newUserDto.getEmail())
@@ -80,13 +88,14 @@ public class AuthService implements IAuthService {
                 .school_id(newUserDto.getSchool())
                 .build();
 
-        userRepository.save(customer);
+        userRepository.save(usuario);
 
-        String token = jwtService.generateToken(customer);
+        String token = jwtService.generateToken(usuario);
 
         return AuthResponseDto.builder()
                 .jwt(token)
                 .user(UserResponseDto.builder()
+                        .id(usuario.getId())
                         .name(newUserDto.getName())
                         .lastName(newUserDto.getLastName())
                         .email(newUserDto.getEmail())

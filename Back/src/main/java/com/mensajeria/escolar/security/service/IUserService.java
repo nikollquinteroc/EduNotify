@@ -11,4 +11,6 @@ public interface IUserService {
     Optional<UserResponseDto> getUser(Long idUser);
     UserResponseDto update(UserRequestDtoUpdate userDtoUpdate);
     boolean delete(Long idUser);
+    Optional<UserResponseDto> newCourse(Long idUser, Long idCourse);
+
 }
