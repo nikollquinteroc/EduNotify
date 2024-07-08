@@ -26,7 +26,7 @@ public class EscuelaServiceImpl implements EscuelaService {
     @Override
     public void newEscuela(EscuelaRequestDto schoolDto) {
         Escuela escuela= new Escuela();
-        escuela.setNombre(schoolDto.getNombre());
+        escuela.setNombre(schoolDto.getName());
         escuelaRepository.save(escuela);
 
         List<NivelEscolar> nivelEscolarList=schoolDto.getSchoolLevels().stream().map(nivelDto -> {

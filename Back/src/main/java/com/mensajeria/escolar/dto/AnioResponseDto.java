@@ -13,11 +13,11 @@ import java.util.List;
 @Builder
 public class AnioResponseDto implements Serializable {
 
-    public String anio;
-    public List<CursoResponseDto> cursos;
+    public String year;
+    public List<CursoResponseDto> courses;
 
-    public AnioResponseDto(Anio anio) {
-        this.anio = anio.getAnio();
-        this.cursos = anio.getCurso().stream().map(CursoResponseDto::new).toList();
+    public AnioResponseDto(Anio year) {
+        this.year = year.getAnio();
+        this.courses = year.getCurso().stream().map(CursoResponseDto::new).toList();
     }
 }

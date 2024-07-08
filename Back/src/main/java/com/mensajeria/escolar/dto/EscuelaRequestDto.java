@@ -15,7 +15,7 @@ import java.util.List;
 @ToString
 public class EscuelaRequestDto implements Serializable {
 
-    public String nombre;
+    public String name;
 
     public List<NivelEscolar> schoolLevels;
 }

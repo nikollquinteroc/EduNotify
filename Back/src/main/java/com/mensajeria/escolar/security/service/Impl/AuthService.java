@@ -1,9 +1,7 @@
 package com.mensajeria.escolar.security.service.Impl;
 
-import com.mensajeria.escolar.dto.EscuelaResponseDto;
+import com.mensajeria.escolar.dto.CursoResponseDto;
 import com.mensajeria.escolar.entity.Curso;
-import com.mensajeria.escolar.repository.CursoRepository;
-import com.mensajeria.escolar.repository.EscuelaRepository;
 import com.mensajeria.escolar.security.config.JwtService;
 import com.mensajeria.escolar.security.dto.AuthResponseDto;
 import com.mensajeria.escolar.security.dto.LoginRequestDto;
@@ -66,7 +64,7 @@ public class AuthService implements IAuthService {
                         .phone(user.getPhone())
                         .role(user.getRole())
                         .school(escuelaService.verEscuela(user.getSchool_id()).getId())
-                        .courses(cursoIds)
+                        .courses(user.getCursos().stream().map(CursoResponseDto::new).toList())
                         .build())
                 .build();
     }

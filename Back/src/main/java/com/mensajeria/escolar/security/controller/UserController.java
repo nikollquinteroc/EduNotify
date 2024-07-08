@@ -67,7 +67,11 @@ public class UserController {
         }catch (Exception e){
             return new ResponseEntity<>("Error al añadir curso", HttpStatus.BAD_REQUEST);
         }
+    }
 
+    @DeleteMapping("delete/course/{idUser}/{idCourse}")
+    public ResponseEntity<?> deleteCourse(@PathVariable Long idUser, @PathVariable Long idCourse){
+        return new ResponseEntity<>(this.userService.deleteCourse(idUser, idCourse) ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
 }
 

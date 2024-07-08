@@ -72,4 +72,19 @@ public class UserService implements IUserService {
 
         return Optional.of(userMapper.toUserDto(user)) ;
     }
-}
+
+    @Override
+    public boolean deleteCourse(Long idUser, Long idCourse) {
+        User user = userRepository.getUserById(idUser);
+        Curso course= cursoService.verCurso(idCourse);
+        if (!user.getCursos().contains(course)) {
+            return false;
+        }else{
+            user.getCursos().remove(course);
+            userRepository.save(user);
+        }
+        return true;
+
+        }
+    }
+

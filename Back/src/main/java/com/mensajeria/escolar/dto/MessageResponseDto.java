@@ -1,5 +1,6 @@
 package com.mensajeria.escolar.dto;
 
+import com.mensajeria.escolar.entity.Mensaje;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,8 +12,12 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @ToString
-public class MensajeRequestDto implements Serializable {
+public class MessageResponseDto implements Serializable {
     public String message;
     public Long expiration;
 
+    public MessageResponseDto(Mensaje message) {
+        this.message = message.getMensaje();
+        this.expiration = message.getExpiration();
+    }
 }

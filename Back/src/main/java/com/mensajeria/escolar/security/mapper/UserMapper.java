@@ -1,5 +1,6 @@
 package com.mensajeria.escolar.security.mapper;
 
+import com.mensajeria.escolar.dto.CursoResponseDto;
 import com.mensajeria.escolar.entity.Curso;
 import com.mensajeria.escolar.security.dto.UserResponseDto;
 import com.mensajeria.escolar.security.entity.User;
@@ -41,7 +42,7 @@ public class UserMapper {
                 .role(userEntity.getRole())
                 .email(userEntity.getEmail())
                 .school(escuelaService.verEscuela(userEntity.getSchool_id()).getId())
-                .courses(cursoIds)
+                .courses(userEntity.getCursos().stream().map(CursoResponseDto::new).toList())
                 .build();
 
     }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/message")
+@CrossOrigin
 public class MensajeController {
 
     private final MensajeService mensajeService;
@@ -22,12 +23,12 @@ public class MensajeController {
         mensajeService.newMensajeNivelEscolar(levelId, mensajeRequestDto);
     }
 
-    @PostMapping("/newMessageAnio/{anioId}")
+    @PostMapping("/newMessageYear/{anioId}")
     public void nuevoMensajeAnio(@PathVariable Long anioId, @RequestBody MensajeRequestDto mensajeRequestDto){
         mensajeService.newMensajeAnio(anioId, mensajeRequestDto);
     }
 
-    @PostMapping("/newMessageCurso/{cursoId}")
+    @PostMapping("/newMessageCourse/{cursoId}")
     public void nuevoMensajeCurso(@PathVariable Long cursoId, @RequestBody MensajeRequestDto mensajeRequestDto){
         mensajeService.newMensajeCurso(cursoId, mensajeRequestDto);
     }

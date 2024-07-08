@@ -1,18 +1,15 @@
 package com.mensajeria.escolar.controller;
 
 import com.mensajeria.escolar.dto.EscuelaRequestDto;
-import com.mensajeria.escolar.dto.EscuelaResponseDto;
+import com.mensajeria.escolar.dto.SchoolResponseDto;
 import com.mensajeria.escolar.service.EscuelaService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/school")
+@CrossOrigin
 public class EscuelaController {
 
     private final EscuelaService escuelaService;
@@ -24,8 +21,8 @@ public class EscuelaController {
     }
 
     @GetMapping("/{id}")
-    public EscuelaResponseDto verEscuela(@PathVariable Long id){
+    public SchoolResponseDto verEscuela(@PathVariable Long id){
         System.out.println("prueba");
-        return new EscuelaResponseDto(escuelaService.verEscuela(id));
+        return new SchoolResponseDto(escuelaService.verEscuela(id));
     }
 }

@@ -13,11 +13,11 @@ import java.util.List;
 @Builder
 public class NivelEscolarResponseDto implements Serializable {
 
-    public String nivelEscolar;
-    public List<AnioResponseDto> anios;
+    public String schoolLevel;
+    public List<AnioResponseDto> years;
 
-    public NivelEscolarResponseDto(NivelEscolar nivelEscolar) {
-        this.nivelEscolar = nivelEscolar.getNivel().toString();
-        this.anios = nivelEscolar.getAnios().stream().map(AnioResponseDto::new).toList();
+    public NivelEscolarResponseDto(NivelEscolar schoolLevel) {
+        this.schoolLevel = schoolLevel.getNivel().toString();
+        this.years = schoolLevel.getAnios().stream().map(AnioResponseDto::new).toList();
     }
 }
