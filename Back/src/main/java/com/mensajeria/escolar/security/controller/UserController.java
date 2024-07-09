@@ -1,8 +1,8 @@
 package com.mensajeria.escolar.security.controller;
 
-import com.mensajeria.escolar.security.dto.UserRequestDtoUpdate;
-import com.mensajeria.escolar.security.dto.UserResponseDto;
+import com.mensajeria.escolar.security.dto.*;
 import com.mensajeria.escolar.security.service.IUserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,6 +72,13 @@ public class UserController {
     @DeleteMapping("delete/course/{idUser}/{idCourse}")
     public ResponseEntity<?> deleteCourse(@PathVariable Long idUser, @PathVariable Long idCourse){
         return new ResponseEntity<>(this.userService.deleteCourse(idUser, idCourse) ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/new/collaborator")
+    public ResponseEntity<?> newCollaborator(@RequestBody @Valid CollaboratorRequestDto newCollaborator){
+
+        CollaboratorResponseDto response = userService.newCollaborator(newCollaborator);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
 

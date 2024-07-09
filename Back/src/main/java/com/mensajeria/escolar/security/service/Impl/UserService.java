@@ -1,16 +1,19 @@
 package com.mensajeria.escolar.security.service.Impl;
 
 import com.mensajeria.escolar.entity.Curso;
-import com.mensajeria.escolar.security.dto.UserRequestDtoUpdate;
-import com.mensajeria.escolar.security.dto.UserResponseDto;
+import com.mensajeria.escolar.security.config.JwtService;
+import com.mensajeria.escolar.security.dto.*;
+import com.mensajeria.escolar.security.entity.RoleName;
 import com.mensajeria.escolar.security.entity.User;
 import com.mensajeria.escolar.security.exception.ResourceNotFoundException;
 import com.mensajeria.escolar.security.mapper.UserMapper;
 import com.mensajeria.escolar.security.repository.UserRepository;
 import com.mensajeria.escolar.security.service.IUserService;
 import com.mensajeria.escolar.service.CursoService;
+import com.mensajeria.escolar.service.EscuelaService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +26,10 @@ public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final CursoService cursoService;
+    private final PasswordEncoder encoder;
+    private final JwtService jwtService;
+    EscuelaService escuelaService;
+
 
     @Override
     public List<UserResponseDto> getAll() {
@@ -86,5 +93,38 @@ public class UserService implements IUserService {
         return true;
 
         }
+
+    @Override
+    public CollaboratorResponseDto newCollaborator(CollaboratorRequestDto collaboratorRequestDto) {
+
+        if (userRepository.findByEmail(collaboratorRequestDto.getEmail()).isPresent()) {
+            throw new ResourceNotFoundException("El correo electrónico esta registrado");
+        }
+
+        User usuario = User.builder()
+                .name(collaboratorRequestDto.getName())
+                .lastName(collaboratorRequestDto.getLastName())
+                .email(collaboratorRequestDto.getEmail())
+                .phone(collaboratorRequestDto.getPhone())
+                .password(encoder.encode(collaboratorRequestDto.getPassword()))
+                .role(RoleName.COLABORADOR)
+                .charge(collaboratorRequestDto.getCharge())
+                .school_id(collaboratorRequestDto.getSchool())
+                .build();
+
+        userRepository.save(usuario);
+
+
+        return CollaboratorResponseDto.builder()
+
+                .name(collaboratorRequestDto.getName())
+                .lastName(collaboratorRequestDto.getLastName())
+                .email(collaboratorRequestDto.getEmail())
+                .phone(collaboratorRequestDto.getPhone())
+                .school(escuelaService.verEscuela(collaboratorRequestDto.getSchool()).getId())
+                .charge(collaboratorRequestDto.getCharge())
+                .build();
+
     }
+}
 

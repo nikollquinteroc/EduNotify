@@ -30,6 +30,7 @@ public class User implements UserDetails {
     private String phone;
     private String password;
     private Long school_id;
+    private String charge;
 
     @Enumerated(EnumType.STRING)
     private RoleName role;
