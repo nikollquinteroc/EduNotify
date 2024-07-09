@@ -16,7 +16,7 @@ public class Mensaje {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String mensaje;
+    private String message;
 
     private Long expiration;
 

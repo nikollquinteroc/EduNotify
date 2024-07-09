@@ -17,7 +17,7 @@ public class MessageResponseDto implements Serializable {
     public Long expiration;
 
     public MessageResponseDto(Mensaje message) {
-        this.message = message.getMensaje();
+        this.message = message.getMessage();
         this.expiration = message.getExpiration();
     }
 }
