@@ -1,6 +1,7 @@
 package com.mensajeria.escolar.service.Impl;
 
 import com.mensajeria.escolar.dto.EscuelaRequestDto;
+import com.mensajeria.escolar.dto.SchoolsResponseDto;
 import com.mensajeria.escolar.entity.Anio;
 import com.mensajeria.escolar.entity.Curso;
 import com.mensajeria.escolar.entity.Escuela;
@@ -67,5 +68,10 @@ public class EscuelaServiceImpl implements EscuelaService {
     @Override
     public Escuela verEscuela(Long id) {
         return escuelaRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<SchoolsResponseDto> schools() {
+        return escuelaRepository.findAll().stream().map(SchoolsResponseDto::new).toList();
     }
 }

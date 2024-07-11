@@ -2,9 +2,12 @@ package com.mensajeria.escolar.controller;
 
 import com.mensajeria.escolar.dto.EscuelaRequestDto;
 import com.mensajeria.escolar.dto.SchoolResponseDto;
+import com.mensajeria.escolar.dto.SchoolsResponseDto;
 import com.mensajeria.escolar.service.EscuelaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,5 +27,10 @@ public class EscuelaController {
     public SchoolResponseDto verEscuela(@PathVariable Long id){
         System.out.println("prueba");
         return new SchoolResponseDto(escuelaService.verEscuela(id));
+    }
+
+    @GetMapping("/all")
+    public List<SchoolsResponseDto> schoolls(){
+        return escuelaService.schools();
     }
 }
