@@ -22,9 +22,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nocountry.edunotify.R
-import com.nocountry.edunotify.ui.navigation.Destinations
 import com.nocountry.edunotify.ui.screens.login.LoginScreen
 import com.nocountry.edunotify.ui.screens.register.RegisterScreen
+import com.nocountry.edunotify.ui.screens.register.schools
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -99,7 +99,7 @@ fun TabsContent(
             }
 
             1 -> {
-                RegisterScreen(onRegisterClicked = { navController.navigate(Destinations.NOTIFICATIONS_ROUTE) })
+                RegisterScreen(schools)
             }
         }
     }
