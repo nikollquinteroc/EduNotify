@@ -22,9 +22,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nocountry.edunotify.R
+import com.nocountry.edunotify.ui.navigation.Destinations
 import com.nocountry.edunotify.ui.screens.login.LoginScreen
 import com.nocountry.edunotify.ui.screens.register.RegisterScreen
-import com.nocountry.edunotify.ui.screens.register.schools
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -94,12 +94,24 @@ fun TabsContent(
         when (page) {
             0 -> {
                 LoginScreen(
-                    onLoginClicked = { navController.navigate(Destinations.NOTIFICATIONS_ROUTE) },
+                    navigateToNotifications = { authDomain ->
+                        navController.navigate("${Destinations.NOTIFICATIONS_ROUTE}/${authDomain.user?.id}") {
+                            popUpTo(Destinations.LOGIN_ROUTE) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    },
                     onRegisterClicked = { coroutineScope.launch { pagerState.scrollToPage(1) } })
             }
 
             1 -> {
-                RegisterScreen(schools)
+                RegisterScreen(
+                    navigateToNotifications = { authDomain ->
+                        navController.navigate("${Destinations.NOTIFICATIONS_ROUTE}/${authDomain.user?.id}") {
+                            popUpTo(Destinations.REGISTER_ROUTE) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
+                )
             }
         }
     }

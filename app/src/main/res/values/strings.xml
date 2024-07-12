@@ -24,6 +24,22 @@
     <string name="school_tag">Elige una escuela</string>
     <string name="no_account">¿No tienes una cuenta? Crear cuenta</string>
 
+    <!--New Notification form-->
+    <string name="create_notification_top_bar">Nuevo anuncio</string>
+    <string name="author_create_notification_form">Autor</string>
+    <string name="title_create_notification_form">Título</string>
+    <string name="message_create_notification_form">Mensaje</string>
+    <string name="expiration_create_notification_form">Expiración</string>
+    <string name="title_label">Ingresa el título</string>
+    <string name="message_label">Ingresa el mensaje</string>
+    <string name="expiration_label">Ingresa la expiración en días</string>
+    <string name="select_school_or_course_create_notification_form">Mensaje a nivel de escuela o curso?</string>
+    <string name="school_or_course_tag">Escuela o curso</string>
+    <string name="select_course_create_notification_form">Mensaje a nivel de curso</string>
+    <string name="select_school_create_notification_form">Mensaje a nivel de escuela</string>
+    <string name="course_tag">Elige un curso</string>
+    <string name="create_notification_button">Crear anuncio</string>
+
     <!-- Profile-->
     <string name="profile_top_bar">Mi Perfil</string>
     <string name="profile_edit_button">Editar perfil</string>
@@ -33,8 +49,13 @@
     <string name="no_notifications_title">No tienes notificaciones!</string>
     <string name="no_notifications_message">Agrega un curso para empezar a recibir mensajes</string>
 
+    <!-- Courses-->
+    <string name="bottom_add_courses">Agregar curso</string>
+    <string name="courses">Cursos</string>
+
     <!--Bottom Bar -->
     <string name="bottom_notification_bar">Notificaciones</string>
+    <string name="bottom_new_notification">Crear anuncio</string>
     <string name="bottom_profile_bar">Perfil</string>
 
 </resources>

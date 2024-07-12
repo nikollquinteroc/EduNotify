@@ -35,10 +35,10 @@ fun <T> TextButtonComponent(
     textLabel: String,
     options: List<T>,
     getDescription: (T) -> String,
+    selectedOption: T?,
+    onOptionSelected: (T) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-    var selectOptionText by rememberSaveable { mutableStateOf("") }
     var expanded by rememberSaveable { mutableStateOf(false) }
 
     //In order to set the width DropDownMenuItem
@@ -59,7 +59,7 @@ fun <T> TextButtonComponent(
                 .fillMaxWidth()
                 .height(60.dp)
         ) {
-            TextLabelComponent(text = selectOptionText.ifEmpty { textLabel })
+            TextLabelComponent(text = selectedOption?.let { getDescription(it) } ?: textLabel)
             Spacer(modifier = Modifier.weight(1f))
             Icon(imageVector = Icons.Default.ExpandMore, contentDescription = null)
         }
@@ -75,7 +75,7 @@ fun <T> TextButtonComponent(
                 DropdownMenuItem(
                     text = { Text(text = text) },
                     onClick = {
-                        selectOptionText = text
+                        onOptionSelected(option)
                         expanded = false
                     }
                 )
@@ -92,6 +92,8 @@ fun TextButtonComponentPreview() {
         TextButtonComponent(
             textLabel = "Test",
             options = listOf("Hello", "Test"),
-            getDescription = { "Hello" })
+            getDescription = { "Hello" },
+            selectedOption = null,
+            onOptionSelected = { "" })
     }
 }

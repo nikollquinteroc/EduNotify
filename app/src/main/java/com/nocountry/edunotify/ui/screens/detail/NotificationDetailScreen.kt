@@ -18,22 +18,33 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nocountry.edunotify.R
+import com.nocountry.edunotify.domain.model.NotificationDomain
 import com.nocountry.edunotify.ui.components.CircleButtonComponent
 import com.nocountry.edunotify.ui.components.SpacerComponent
 import com.nocountry.edunotify.ui.components.TopAppBarComponent
-import com.nocountry.edunotify.ui.screens.notifications.Notification
-import com.nocountry.edunotify.ui.screens.notifications.notifications
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
+val fakeNotificationDomain = NotificationDomain(
+    messageId = 0,
+    messageDate = emptyList(),
+    author = "Fake author",
+    title = "Fake title",
+    message = "Fake message",
+    expiration = 0
+)
+
 @Composable
-fun NotificationDetailScreen(notification: Notification) {
+fun NotificationDetailScreen(
+    notificationDomain: NotificationDomain,
+    onBackClicked: () -> Unit,
+) {
     Scaffold(
         topBar = {
             TopAppBarComponent(
                 title = R.string.app_name,
                 navigationIcon = {
                     CircleButtonComponent(
-                        onClick = {},
+                        onClick = { onBackClicked() },
                         icon = R.drawable.arrow_back
                     )
                 },
@@ -57,7 +68,7 @@ fun NotificationDetailScreen(notification: Notification) {
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
-                        text = notification.title,
+                        text = notificationDomain.title,
                         style = MaterialTheme.typography.bodyLarge,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
@@ -65,7 +76,7 @@ fun NotificationDetailScreen(notification: Notification) {
                             .padding(start = 10.dp, top = 10.dp, bottom = 5.dp)
                     )
                     Text(
-                        text = notification.message,
+                        text = notificationDomain.message,
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Justify,
                         modifier = Modifier
@@ -74,7 +85,7 @@ fun NotificationDetailScreen(notification: Notification) {
                     )
                     SpacerComponent(height = 5.dp)
                     Text(
-                        text = "Expira en ${notification.expiration} semana",
+                        text = "Expira en ${notificationDomain.expiration} semana",
                         textAlign = TextAlign.End,
                         style = MaterialTheme.typography.labelLarge,
                         modifier = Modifier
@@ -87,11 +98,13 @@ fun NotificationDetailScreen(notification: Notification) {
     }
 }
 
-
 @Preview
 @Composable
 fun DetailScreenPreview() {
     EduNotifyTheme {
-        NotificationDetailScreen(onBackClicked = {}, notificationId = 1)
+        NotificationDetailScreen(
+            onBackClicked = {},
+            notificationDomain = fakeNotificationDomain
+        )
     }
 }
