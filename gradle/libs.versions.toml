@@ -14,7 +14,6 @@ foundation = "1.6.8"
 pager = "0.28.0"
 composeMaterial = "1.6.8"
 material3 = "1.2.1"
-foundation = "1.6.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -35,7 +34,6 @@ androidx-foundation = { group = "androidx.compose.foundation", name = "foundatio
 androidx-compose-material = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "composeMaterial" }
 androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
-androidx-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
 google-accompanist-pager = {group = "com.google.accompanist", name = "accompanist-pager", version.ref = "pager"}
 
 [plugins]

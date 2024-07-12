@@ -2,6 +2,7 @@ package com.nocountry.edunotify.ui.screens.notifications
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +33,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.nocountry.edunotify.R
 import com.nocountry.edunotify.ui.components.BottomNavigationBar
 import com.nocountry.edunotify.ui.components.CircleButtonComponent
@@ -42,6 +45,7 @@ import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
 //Mock data
 data class Notification(
+    val id: Int,
     val title: String,
     val message: String,
     val expiration: Int
@@ -49,34 +53,35 @@ data class Notification(
 
 val notifications = listOf(
     Notification(
+        id = 1,
         title = "Title 1",
         message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
         expiration = 1
     ),
-    Notification(title = "Title 2", message = "Message2", expiration = 1),
-    Notification(title = "Title 3", message = "Message3", expiration = 1),
-    Notification(title = "Title 4", message = "Message4", expiration = 1),
+    Notification(id = 2, title = "Title 2", message = "Message2", expiration = 1),
+    Notification(id = 3, title = "Title 3", message = "Message3", expiration = 1),
+    Notification(id = 4, title = "Title 4", message = "Message4", expiration = 1),
 )
 
 @Composable
-fun NotificationsScreen(notifications: List<Notification>) {
+fun NotificationsScreen(
+    onPlusClicked: () -> Unit,
+    onNotificationClicked: (Int) -> Unit,
+    notifications: List<Notification>,
+    navController: NavHostController
+) {
     val message by rememberSaveable { mutableStateOf(notifications[0].message) }
 
     Scaffold(
         topBar = {
             TopAppBarComponent(
                 title = R.string.app_name,
-                navigationIcon = { /*TODO*/ },
-                actions = {
-                    CircleButtonComponent(
-                        onClick = { /*TODO*/ },
-                        icon = R.drawable.log_out,
-                    )
-                },
+                navigationIcon = { },
+                actions = { },
             )
         },
-        bottomBar = { BottomNavigationBar() },
-        floatingActionButton = { AddNewCourse() }
+        bottomBar = { BottomNavigationBar(navController) },
+        floatingActionButton = { AddNewCourse(onPlusClicked = onPlusClicked) }
     ) {
         Box(
             modifier = Modifier
@@ -84,7 +89,10 @@ fun NotificationsScreen(notifications: List<Notification>) {
                 .fillMaxSize(),
         ) {
             if (message.isNotEmpty()) {
-                CoursesCardList(notifications = notifications)
+                CoursesCardList(
+                    notifications = notifications,
+                    onNotificationClicked = onNotificationClicked
+                )
             } else {
                 CourseEmptyList(
                     modifier = Modifier
@@ -96,24 +104,30 @@ fun NotificationsScreen(notifications: List<Notification>) {
 }
 
 @Composable
-fun CoursesCardList(notifications: List<Notification>) {
+fun CoursesCardList(notifications: List<Notification>, onNotificationClicked: (Int) -> Unit) {
     LazyColumn {
         items(notifications) { notification ->
             SpacerComponent(height = 5.dp)
             CourseCard(
                 notification = notification,
-                modifier = Modifier.padding(10.dp)
+                modifier = Modifier.padding(10.dp),
+                onNotificationClicked = onNotificationClicked
             )
         }
     }
 }
 
 @Composable
-fun CourseCard(notification: Notification, modifier: Modifier = Modifier) {
+fun CourseCard(
+    notification: Notification,
+    onNotificationClicked: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Card(
         modifier = modifier
             .fillMaxSize()
-            .shadow(4.dp, shape = RoundedCornerShape(8.dp)),
+            .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+            .clickable { onNotificationClicked(notification.id) },
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
         border = BorderStroke(3.dp, MaterialTheme.colorScheme.inversePrimary),
         shape = RoundedCornerShape(8.dp)
@@ -167,11 +181,11 @@ fun CourseEmptyList(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun AddNewCourse(modifier: Modifier = Modifier) {
+fun AddNewCourse(onPlusClicked: () -> Unit, modifier: Modifier = Modifier) {
     Row(modifier = modifier.padding(bottom = 25.dp)) {
         SpacerComponent(modifier = Modifier.weight(1f))
         CircleButtonComponent(
-            onClick = { /*TODO*/ },
+            onClick = { onPlusClicked() },
             icon = R.drawable.plus,
             size = 60.dp
         )
@@ -183,6 +197,11 @@ fun AddNewCourse(modifier: Modifier = Modifier) {
 @Composable
 fun HomeScreenPreview() {
     EduNotifyTheme {
-        NotificationsScreen(notifications)
+        NotificationsScreen(
+            onPlusClicked = {},
+            onNotificationClicked = {},
+            notifications,
+            navController = rememberNavController()
+        )
     }
 }

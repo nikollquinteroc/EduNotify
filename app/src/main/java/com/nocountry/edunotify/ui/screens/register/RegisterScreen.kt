@@ -52,7 +52,7 @@ val schools = listOf(
 )
 
 @Composable
-fun RegisterScreen(schools: List<School>) {
+fun RegisterScreen(schools: List<School>, onRegisterClicked: () -> Unit) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -61,13 +61,13 @@ fun RegisterScreen(schools: List<School>) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-            RegisterFields(schools)
+            RegisterFields(schools = schools, onRegisterClicked = onRegisterClicked)
         }
     }
 }
 
 @Composable
-fun RegisterFields(schools: List<School>) {
+fun RegisterFields(schools: List<School>, onRegisterClicked: () -> Unit) {
     var name by rememberSaveable { mutableStateOf("") }
     var lastName by rememberSaveable { mutableStateOf("") }
     var mail by rememberSaveable { mutableStateOf("") }
@@ -224,6 +224,8 @@ fun RegisterFields(schools: List<School>) {
                 isMailEmpty = false
                 isPhoneEmpty = false
                 isPasswordEmpty = false
+
+                onRegisterClicked()
             } else {
                 isNameEmpty = name.isEmpty()
                 isLastNameEmpty = lastName.isEmpty()
@@ -240,6 +242,6 @@ fun RegisterFields(schools: List<School>) {
 @Composable
 fun RegisterScreenPreview() {
     EduNotifyTheme {
-        RegisterScreen(schools)
+        RegisterScreen(schools = schools, onRegisterClicked = {})
     }
 }

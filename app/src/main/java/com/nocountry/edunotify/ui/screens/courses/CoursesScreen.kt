@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -56,7 +57,7 @@ val school2 = School(
 )
 
 @Composable
-fun CoursesScreen(school: School) {
+fun CoursesScreen(school: School, onAddCoursesClicked: () -> Unit) {
     Scaffold {
         Column(
             modifier = Modifier
@@ -66,6 +67,9 @@ fun CoursesScreen(school: School) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "Courses Screen")
+            Button(onClick = onAddCoursesClicked) {
+                Text(text = "add courses")
+            }
         }
     }
 }
@@ -92,7 +96,7 @@ fun CourseItem(course: Course) {
     ) {
         Checkbox(
             checked = checkedState,
-            onCheckedChange = null // null recommended for accessibility with screenreaders
+            onCheckedChange = null
         )
         Text(
             text = "Option selection",
@@ -100,12 +104,12 @@ fun CourseItem(course: Course) {
             modifier = Modifier.padding(start = 16.dp)
         )
     }
-
+}
 
 @Preview
 @Composable
 fun CoursesScreenPreview() {
     EduNotifyTheme {
-        CoursesScreen(onAddCoursesClicked = {})
+        CoursesScreen(school = school1, onAddCoursesClicked = {})
     }
 }

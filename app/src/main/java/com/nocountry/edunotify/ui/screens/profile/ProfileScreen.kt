@@ -17,6 +17,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.nocountry.edunotify.R
 import com.nocountry.edunotify.ui.components.BottomNavigationBar
 import com.nocountry.edunotify.ui.components.ButtonComponent
@@ -25,24 +27,25 @@ import com.nocountry.edunotify.ui.components.SpacerComponent
 import com.nocountry.edunotify.ui.components.TextFieldComponent
 import com.nocountry.edunotify.ui.components.TextFieldEmpty
 import com.nocountry.edunotify.ui.components.TopAppBarComponent
+import com.nocountry.edunotify.ui.navigation.Destinations
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(navController: NavHostController, onBackClicked: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBarComponent(
                 title = R.string.profile_top_bar,
                 navigationIcon = {
                     CircleButtonComponent(
-                        onClick = {},
+                        onClick = { onBackClicked() },
                         icon = R.drawable.arrow_back
                     )
                 },
                 actions = null
             )
         },
-        bottomBar = { BottomNavigationBar() }
+        bottomBar = { BottomNavigationBar(navController) }
     ) {
         LazyColumn(
             modifier = Modifier
@@ -52,14 +55,14 @@ fun ProfileScreen() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
-                ProfileFields()
+                ProfileFields(navController = navController)
             }
         }
     }
 }
 
 @Composable
-fun ProfileFields() {
+fun ProfileFields(navController: NavHostController) {
     var name by rememberSaveable { mutableStateOf("Nikoll Daiana") }
     var lastName by rememberSaveable { mutableStateOf("Quintero Chavez") }
     var phone by rememberSaveable { mutableStateOf("+57 3057678939") }
@@ -168,7 +171,7 @@ fun ProfileFields() {
     SpacerComponent(height = 20.dp)
     ButtonComponent(
         text = R.string.logout,
-        onClick = { },
+        onClick = { navController.navigate(Destinations.TAB_LOGIN_REGISTER) },
         isSelected = isSaveSelected
     )
 }
@@ -177,6 +180,6 @@ fun ProfileFields() {
 @Composable
 fun ProfileScreenPreview() {
     EduNotifyTheme {
-        ProfileScreen()
+        ProfileScreen(navController = rememberNavController(), onBackClicked = {})
     }
 }

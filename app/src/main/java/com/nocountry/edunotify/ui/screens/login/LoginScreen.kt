@@ -24,7 +24,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -51,7 +50,7 @@ import com.nocountry.edunotify.ui.components.TextFieldEmpty
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(onLoginClicked: () -> Unit, onRegisterClicked: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -59,12 +58,12 @@ fun LoginScreen() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LoginFields()
+        LoginFields(onLoginClicked = onLoginClicked, onRegisterClicked = onRegisterClicked)
     }
 }
 
 @Composable
-fun LoginFields() {
+fun LoginFields(onLoginClicked: () -> Unit, onRegisterClicked: () -> Unit) {
     var mail by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
@@ -133,13 +132,13 @@ fun LoginFields() {
         isError = isPasswordEmpty
     )
     SpacerComponent(height = 30.dp)
-     ButtonComponent(
+    ButtonComponent(
         text = R.string.login,
         onClick = {
             if (mail.isNotEmpty() && password.isNotEmpty()) {
                 isEmailEmpty = false
                 isPasswordEmpty = false
-
+                onLoginClicked()
                 //Access via ViewModel
             } else {
                 isEmailEmpty = mail.isEmpty()
@@ -153,7 +152,7 @@ fun LoginFields() {
         text = stringResource(id = R.string.no_account),
         style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
         textDecoration = TextDecoration.Underline,
-        modifier = Modifier.clickable { }
+        modifier = Modifier.clickable { onRegisterClicked() }
     )
     SpacerComponent(height = 50.dp)
     SocialMediaCards()

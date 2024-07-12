@@ -26,14 +26,14 @@ import com.nocountry.edunotify.ui.screens.notifications.notifications
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
 @Composable
-fun NotificationDetailScreen(notification: Notification) {
+fun NotificationDetailScreen(onBackClicked: () -> Unit, notification: Notification) {
     Scaffold(
         topBar = {
             TopAppBarComponent(
                 title = R.string.app_name,
                 navigationIcon = {
                     CircleButtonComponent(
-                        onClick = {},
+                        onClick = { onBackClicked() },
                         icon = R.drawable.arrow_back
                     )
                 },
@@ -92,6 +92,6 @@ fun NotificationDetailScreen(notification: Notification) {
 @Composable
 fun DetailScreenPreview() {
     EduNotifyTheme {
-        NotificationDetailScreen(onBackClicked = {}, notificationId = 1)
+        NotificationDetailScreen(onBackClicked = {}, notification = notifications[0])
     }
 }

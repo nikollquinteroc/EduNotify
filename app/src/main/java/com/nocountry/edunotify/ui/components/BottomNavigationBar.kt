@@ -23,11 +23,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.nocountry.edunotify.R
+import com.nocountry.edunotify.ui.navigation.Destinations
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
 @Composable
-fun BottomNavigationBar(modifier: Modifier = Modifier) {
+fun BottomNavigationBar(navController: NavHostController, modifier: Modifier = Modifier) {
     BottomAppBar(
         modifier = modifier,
         containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -40,7 +43,7 @@ fun BottomNavigationBar(modifier: Modifier = Modifier) {
             BottomNavigationBarItem(
                 icon = R.drawable.notifications_icon,
                 name = R.string.bottom_notification_bar,
-                onClick = { /*TODO*/ }
+                onClick = { navController.navigate(Destinations.NOTIFICATIONS_ROUTE) }
             )
             VerticalDivider(
                 color = MaterialTheme.colorScheme.primary,
@@ -50,7 +53,7 @@ fun BottomNavigationBar(modifier: Modifier = Modifier) {
             BottomNavigationBarItem(
                 icon = R.drawable.profile_icon,
                 name = R.string.bottom_profile_bar,
-                onClick = { /*TODO*/ })
+                onClick = { navController.navigate(Destinations.PROFILE_ROUTE) })
         }
     }
 }
@@ -97,6 +100,6 @@ fun BottomNavigationBarItem(
 @Composable
 fun BottomNavigationBarPreview() {
     EduNotifyTheme {
-        BottomNavigationBar()
+        BottomNavigationBar(navController = rememberNavController())
     }
 }

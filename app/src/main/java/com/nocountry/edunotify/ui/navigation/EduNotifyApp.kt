@@ -13,11 +13,14 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.nocountry.edunotify.ui.components.TabRowComponent
 import com.nocountry.edunotify.ui.screens.courses.CoursesScreen
+import com.nocountry.edunotify.ui.screens.courses.school1
 import com.nocountry.edunotify.ui.screens.detail.NotificationDetailScreen
 import com.nocountry.edunotify.ui.screens.login.LoginScreen
 import com.nocountry.edunotify.ui.screens.notifications.NotificationsScreen
+import com.nocountry.edunotify.ui.screens.notifications.notifications
 import com.nocountry.edunotify.ui.screens.profile.ProfileScreen
 import com.nocountry.edunotify.ui.screens.register.RegisterScreen
+import com.nocountry.edunotify.ui.screens.register.schools
 
 @Composable
 fun EduNotifyApp(navController: NavHostController = rememberNavController()) {
@@ -38,12 +41,16 @@ fun EduNotifyApp(navController: NavHostController = rememberNavController()) {
                     onRegisterClicked = { navController.navigate(Destinations.REGISTER_ROUTE) })
             }
             composable(route = Destinations.REGISTER_ROUTE) {
-                RegisterScreen(onRegisterClicked = { navController.navigate(Destinations.NOTIFICATIONS_ROUTE) })
+                RegisterScreen(
+                    schools = schools,
+                    onRegisterClicked = { navController.navigate(Destinations.NOTIFICATIONS_ROUTE) })
             }
             composable(route = Destinations.NOTIFICATIONS_ROUTE) {
                 NotificationsScreen(
+                    navController = navController,
                     onPlusClicked = { navController.navigate(Destinations.COURSES_ROUTE) },
-                    onNotificationClicked = { notificationId -> navController.navigate("${Destinations.NOTIFICATION_DETAIL_ROUTE}/$notificationId") }
+                    onNotificationClicked = { notificationId -> navController.navigate("${Destinations.NOTIFICATION_DETAIL_ROUTE}/$notificationId") },
+                    notifications = notifications
                 )
             }
             composable(
@@ -53,16 +60,22 @@ fun EduNotifyApp(navController: NavHostController = rememberNavController()) {
             ) { backStackEntry ->
                 val notificationId =
                     requireNotNull(backStackEntry.arguments?.getInt(Destinations.NOTIFICATION_ID))
+                val notification = notifications.firstOrNull { it.id == notificationId }
+                    ?: error("Notification not found")
                 NotificationDetailScreen(
                     onBackClicked = { navController.popBackStack() },
-                    notificationId = notificationId
+                    notification = notification
                 )
             }
             composable(route = Destinations.PROFILE_ROUTE) {
-                ProfileScreen(onBackClicked = { navController.popBackStack() })
+                ProfileScreen(
+                    navController = navController,
+                    onBackClicked = { navController.popBackStack() })
             }
             composable(route = Destinations.COURSES_ROUTE) {
-                CoursesScreen(onAddCoursesClicked = { navController.navigate(Destinations.NOTIFICATIONS_ROUTE) })
+                CoursesScreen(
+                    school = school1,
+                    onAddCoursesClicked = { navController.navigate(Destinations.NOTIFICATIONS_ROUTE) })
             }
         }
     }
