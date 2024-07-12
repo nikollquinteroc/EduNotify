@@ -1,10 +1,12 @@
-package com.nocountry.edunotify.ui.screens.profile
+package com.nocountry.edunotify.ui.screens.notifications
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
 @Composable
-fun ProfileScreen(onBackClicked: () -> Unit) {
+fun NotificationsScreen(onPlusClicked: () -> Unit, onNotificationClicked: (Int) -> Unit) {
     Scaffold {
         Column(
             modifier = Modifier
@@ -23,9 +25,12 @@ fun ProfileScreen(onBackClicked: () -> Unit) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Profile")
-            Button(onClick = onBackClicked) {
-                Text(text = "back")
+            Text(text = "Notifications")
+            Card(modifier = Modifier.clickable { onNotificationClicked(1) }) {
+                Text(text = "message1")
+            }
+            Button(onClick = onPlusClicked) {
+                Text(text = "plus")
             }
         }
     }
@@ -33,8 +38,8 @@ fun ProfileScreen(onBackClicked: () -> Unit) {
 
 @Preview(showBackground = true)
 @Composable
-fun ProfileScreenPreview() {
+fun NotificationsScreenPreview() {
     EduNotifyTheme {
-        ProfileScreen(onBackClicked = {})
+        NotificationsScreen(onPlusClicked = {}, onNotificationClicked = {})
     }
 }

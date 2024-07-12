@@ -1,4 +1,4 @@
-package com.nocountry.edunotify.ui.screens.profile
+package com.nocountry.edunotify.ui.screens.detail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
 @Composable
-fun ProfileScreen(onBackClicked: () -> Unit) {
+fun NotificationDetailScreen(onBackClicked: () -> Unit, notificationId: Int) {
     Scaffold {
         Column(
             modifier = Modifier
@@ -23,7 +23,7 @@ fun ProfileScreen(onBackClicked: () -> Unit) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Profile")
+            Text(text = "Detail id: $notificationId")
             Button(onClick = onBackClicked) {
                 Text(text = "back")
             }
@@ -31,10 +31,11 @@ fun ProfileScreen(onBackClicked: () -> Unit) {
     }
 }
 
-@Preview(showBackground = true)
+
+@Preview
 @Composable
-fun ProfileScreenPreview() {
+fun DetailScreenPreview() {
     EduNotifyTheme {
-        ProfileScreen(onBackClicked = {})
+        NotificationDetailScreen(onBackClicked = {}, notificationId = 1)
     }
 }
