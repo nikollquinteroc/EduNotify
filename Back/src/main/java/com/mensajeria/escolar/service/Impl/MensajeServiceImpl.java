@@ -31,6 +31,8 @@ public class MensajeServiceImpl implements MensajeService {
         }
         //System.out.println(cursos.stream().map(CursoResponseDto::new).toList());
         Mensaje mensaje1= new Mensaje();
+        mensaje1.setAuthor(mensaje.getAuthor());
+        mensaje1.setTitle(mensaje.getTitle());
         mensaje1.setMessage(mensaje.getMessage());
         mensaje1.setExpiration(mensaje.getExpiration());
         mensaje1.setCursos(cursos);
@@ -45,6 +47,8 @@ public class MensajeServiceImpl implements MensajeService {
             cursos.addAll(anio.getCurso());
         }
         Mensaje mensaje1= new Mensaje();
+        mensaje1.setAuthor(mensaje.getAuthor());
+        mensaje1.setTitle(mensaje.getTitle());
         mensaje1.setMessage(mensaje.getMessage());
         mensaje1.setExpiration(mensaje.getExpiration());
         mensaje1.setCursos(cursos);
@@ -56,6 +60,8 @@ public class MensajeServiceImpl implements MensajeService {
         Anio anio= anioService.verAnio(id);
         List<Curso> cursos = new ArrayList<>(anio.getCurso());
         Mensaje mensaje1= new Mensaje();
+        mensaje1.setAuthor(mensaje.getAuthor());
+        mensaje1.setTitle(mensaje.getTitle());
         mensaje1.setMessage(mensaje.getMessage());
         mensaje1.setExpiration(mensaje.getExpiration());
         mensaje1.setCursos(cursos);
@@ -67,6 +73,8 @@ public class MensajeServiceImpl implements MensajeService {
         List<Curso> cursos = new ArrayList<>();
         cursos.add(cursoService.verCurso(id));
         Mensaje mensaje1= new Mensaje();
+        mensaje1.setAuthor(mensaje.getAuthor());
+        mensaje1.setTitle(mensaje.getTitle());
         mensaje1.setMessage(mensaje.getMessage());
         mensaje1.setExpiration(mensaje.getExpiration());
         mensaje1.setCursos(cursos);

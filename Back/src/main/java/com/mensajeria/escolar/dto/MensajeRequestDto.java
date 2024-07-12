@@ -12,6 +12,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @ToString
 public class MensajeRequestDto implements Serializable {
+    public String author;
+    public String title;
     public String message;
     public Long expiration;
 

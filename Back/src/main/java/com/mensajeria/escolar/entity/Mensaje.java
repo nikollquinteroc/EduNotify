@@ -3,6 +3,7 @@ package com.mensajeria.escolar.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -15,6 +16,13 @@ public class Mensaje {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime messageDate;
+
+    private String author;
+
+    private String title;
 
     private String message;
 
