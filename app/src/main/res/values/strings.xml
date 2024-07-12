@@ -1,10 +1,40 @@
 <resources>
     <string name="app_name">EduNotify</string>
 
-    <!--Login-->
+    <!--Log in-->
     <string name="login">Iniciar sesión</string>
-    <string name="register">Crear cuenta</string>
+    <string name="mail">Mail</string>
+    <string name="mail_label">Ingresa tu email</string>
+    <string name="password">Contraseña</string>
+    <string name="password_label">Ingresa tu contraseña</string>
+    <string name="error_label">Este campo no puede estar vacío</string>
 
-    <string name="username_label">username or email</string>
-    <string name="password_label">password</string>
+    <!--Log out-->
+    <string name="logout">Cerrar sesión</string>
+
+    <!--Register-->
+    <string name="register">Crear cuenta</string>
+    <string name="name">Nombre</string>
+    <string name="name_label">Ingresa tu nombre</string>
+    <string name="last_name">Apellido</string>
+    <string name="last_name_label">Ingresa tu apellido</string>
+    <string name="phone">Teléfono</string>
+    <string name="phone_label">Ingresa tu número celular</string>
+    <string name="school">Escuela</string>
+    <string name="school_tag">Elige una escuela</string>
+    <string name="no_account">¿No tienes una cuenta? Crear cuenta</string>
+
+    <!-- Profile-->
+    <string name="profile_top_bar">Mi Perfil</string>
+    <string name="profile_edit_button">Editar perfil</string>
+    <string name="profile_save_button">Guardar</string>
+
+    <!-- Notifications-->
+    <string name="no_notifications_title">No tienes notificaciones!</string>
+    <string name="no_notifications_message">Agrega un curso para empezar a recibir mensajes</string>
+
+    <!--Bottom Bar -->
+    <string name="bottom_notification_bar">Notificaciones</string>
+    <string name="bottom_profile_bar">Perfil</string>
+
 </resources>

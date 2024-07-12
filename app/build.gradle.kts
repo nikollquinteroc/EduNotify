@@ -60,6 +60,10 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    //Extended icons
+    implementation(libs.androidx.compose.material)
+
+
     //Navigation
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
@@ -67,6 +71,7 @@ dependencies {
     //VerticalScrollBar
     implementation(libs.androidx.foundation)
 
+    //implementation(libs.google.accompanist.pager)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
