@@ -23,41 +23,41 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
-data class School(
+data class SchoolTest(
     val id: Int,
-    val courses: List<Course>
+    val cours: List<CourseTest>
 )
 
-data class Course(
+data class CourseTest(
     val id: Int,
     val name: String
 )
 
-val school1 = School(
+val schoolTest1 = SchoolTest(
     id = 1,
-    courses = listOf(
-        Course(1, "A"),
-        Course(2, "B"),
-        Course(3, "C"),
-        Course(4, "D"),
-        Course(5, "E"),
-        Course(6, "F"),
+    cours = listOf(
+        CourseTest(1, "A"),
+        CourseTest(2, "B"),
+        CourseTest(3, "C"),
+        CourseTest(4, "D"),
+        CourseTest(5, "E"),
+        CourseTest(6, "F"),
     )
 )
-val school2 = School(
+val schoolTest2 = SchoolTest(
     id = 1,
-    courses = listOf(
-        Course(1, "G"),
-        Course(2, "H"),
-        Course(3, "I"),
-        Course(4, "J"),
-        Course(5, "K"),
-        Course(6, "L"),
+    cours = listOf(
+        CourseTest(1, "G"),
+        CourseTest(2, "H"),
+        CourseTest(3, "I"),
+        CourseTest(4, "J"),
+        CourseTest(5, "K"),
+        CourseTest(6, "L"),
     )
 )
 
 @Composable
-fun CoursesScreen(school: School, onAddCoursesClicked: () -> Unit) {
+fun CoursesScreen(schoolTest: SchoolTest, onAddCoursesClicked: () -> Unit) {
     Scaffold {
         Column(
             modifier = Modifier
@@ -75,12 +75,12 @@ fun CoursesScreen(school: School, onAddCoursesClicked: () -> Unit) {
 }
 
 @Composable
-fun CoursesList(school: School) {
+fun CoursesList(schoolTest: SchoolTest) {
 
 }
 
 @Composable
-fun CourseItem(course: Course) {
+fun CourseItem(courseTest: CourseTest) {
     val (checkedState, onStateChange) = rememberSaveable { mutableStateOf(true) }
     Row(
         Modifier
@@ -110,6 +110,6 @@ fun CourseItem(course: Course) {
 @Composable
 fun CoursesScreenPreview() {
     EduNotifyTheme {
-        CoursesScreen(school = school1, onAddCoursesClicked = {})
+        CoursesScreen(schoolTest = schoolTest1, onAddCoursesClicked = {})
     }
 }

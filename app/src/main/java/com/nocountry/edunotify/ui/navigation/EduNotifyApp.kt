@@ -13,11 +13,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.nocountry.edunotify.ui.components.TabRowComponent
 import com.nocountry.edunotify.ui.screens.courses.CoursesScreen
-import com.nocountry.edunotify.ui.screens.courses.school1
+import com.nocountry.edunotify.ui.screens.courses.schoolTest1
 import com.nocountry.edunotify.ui.screens.detail.NotificationDetailScreen
 import com.nocountry.edunotify.ui.screens.login.LoginScreen
 import com.nocountry.edunotify.ui.screens.notifications.NotificationsScreen
-import com.nocountry.edunotify.ui.screens.notifications.notifications
+import com.nocountry.edunotify.ui.screens.notifications.notificationMocks
 import com.nocountry.edunotify.ui.screens.profile.ProfileScreen
 import com.nocountry.edunotify.ui.screens.register.RegisterScreen
 import com.nocountry.edunotify.ui.screens.register.schools
@@ -50,7 +50,7 @@ fun EduNotifyApp(navController: NavHostController = rememberNavController()) {
                     navController = navController,
                     onPlusClicked = { navController.navigate(Destinations.COURSES_ROUTE) },
                     onNotificationClicked = { notificationId -> navController.navigate("${Destinations.NOTIFICATION_DETAIL_ROUTE}/$notificationId") },
-                    notifications = notifications
+                    notificationMocks = notificationMocks
                 )
             }
             composable(
@@ -60,11 +60,11 @@ fun EduNotifyApp(navController: NavHostController = rememberNavController()) {
             ) { backStackEntry ->
                 val notificationId =
                     requireNotNull(backStackEntry.arguments?.getInt(Destinations.NOTIFICATION_ID))
-                val notification = notifications.firstOrNull { it.id == notificationId }
+                val notification = notificationMocks.firstOrNull { it.id == notificationId }
                     ?: error("Notification not found")
                 NotificationDetailScreen(
                     onBackClicked = { navController.popBackStack() },
-                    notification = notification
+                    notificationMock = notification
                 )
             }
             composable(route = Destinations.PROFILE_ROUTE) {
@@ -74,7 +74,7 @@ fun EduNotifyApp(navController: NavHostController = rememberNavController()) {
             }
             composable(route = Destinations.COURSES_ROUTE) {
                 CoursesScreen(
-                    school = school1,
+                    schoolTest = schoolTest1,
                     onAddCoursesClicked = { navController.navigate(Destinations.NOTIFICATIONS_ROUTE) })
             }
         }

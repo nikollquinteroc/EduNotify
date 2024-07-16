@@ -44,33 +44,33 @@ import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
 
 //Mock data
-data class Notification(
+data class NotificationMock(
     val id: Int,
     val title: String,
     val message: String,
     val expiration: Int
 )
 
-val notifications = listOf(
-    Notification(
+val notificationMocks = listOf(
+    NotificationMock(
         id = 1,
         title = "Title 1",
         message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
         expiration = 1
     ),
-    Notification(id = 2, title = "Title 2", message = "Message2", expiration = 1),
-    Notification(id = 3, title = "Title 3", message = "Message3", expiration = 1),
-    Notification(id = 4, title = "Title 4", message = "Message4", expiration = 1),
+    NotificationMock(id = 2, title = "Title 2", message = "Message2", expiration = 1),
+    NotificationMock(id = 3, title = "Title 3", message = "Message3", expiration = 1),
+    NotificationMock(id = 4, title = "Title 4", message = "Message4", expiration = 1),
 )
 
 @Composable
 fun NotificationsScreen(
     onPlusClicked: () -> Unit,
     onNotificationClicked: (Int) -> Unit,
-    notifications: List<Notification>,
+    notificationMocks: List<NotificationMock>,
     navController: NavHostController
 ) {
-    val message by rememberSaveable { mutableStateOf(notifications[0].message) }
+    val message by rememberSaveable { mutableStateOf(notificationMocks[0].message) }
 
     Scaffold(
         topBar = {
@@ -90,7 +90,7 @@ fun NotificationsScreen(
         ) {
             if (message.isNotEmpty()) {
                 CoursesCardList(
-                    notifications = notifications,
+                    notificationMocks = notificationMocks,
                     onNotificationClicked = onNotificationClicked
                 )
             } else {
@@ -104,12 +104,12 @@ fun NotificationsScreen(
 }
 
 @Composable
-fun CoursesCardList(notifications: List<Notification>, onNotificationClicked: (Int) -> Unit) {
+fun CoursesCardList(notificationMocks: List<NotificationMock>, onNotificationClicked: (Int) -> Unit) {
     LazyColumn {
-        items(notifications) { notification ->
+        items(notificationMocks) { notification ->
             SpacerComponent(height = 5.dp)
             CourseCard(
-                notification = notification,
+                notificationMock = notification,
                 modifier = Modifier.padding(10.dp),
                 onNotificationClicked = onNotificationClicked
             )
@@ -119,7 +119,7 @@ fun CoursesCardList(notifications: List<Notification>, onNotificationClicked: (I
 
 @Composable
 fun CourseCard(
-    notification: Notification,
+    notificationMock: NotificationMock,
     onNotificationClicked: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -127,13 +127,13 @@ fun CourseCard(
         modifier = modifier
             .fillMaxSize()
             .shadow(4.dp, shape = RoundedCornerShape(8.dp))
-            .clickable { onNotificationClicked(notification.id) },
+            .clickable { onNotificationClicked(notificationMock.id) },
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
         border = BorderStroke(3.dp, MaterialTheme.colorScheme.inversePrimary),
         shape = RoundedCornerShape(8.dp)
     ) {
         Text(
-            text = notification.title,
+            text = notificationMock.title,
             style = MaterialTheme.typography.bodyLarge,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -142,7 +142,7 @@ fun CourseCard(
                 .padding(start = 10.dp, top = 10.dp, bottom = 5.dp)
         )
         Text(
-            text = "Expira en ${notification.expiration} semana",
+            text = "Expira en ${notificationMock.expiration} semana",
             textAlign = TextAlign.End,
             style = MaterialTheme.typography.labelLarge,
             modifier = Modifier
@@ -200,7 +200,7 @@ fun HomeScreenPreview() {
         NotificationsScreen(
             onPlusClicked = {},
             onNotificationClicked = {},
-            notifications,
+            notificationMocks,
             navController = rememberNavController()
         )
     }

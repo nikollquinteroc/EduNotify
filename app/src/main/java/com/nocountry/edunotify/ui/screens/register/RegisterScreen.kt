@@ -17,6 +17,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -30,7 +31,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.nocountry.edunotify.R
+import com.nocountry.edunotify.data.model.register.RegisterResponse
 import com.nocountry.edunotify.ui.components.ButtonComponent
 import com.nocountry.edunotify.ui.components.SpacerComponent
 import com.nocountry.edunotify.ui.components.TextButtonComponent
@@ -40,8 +43,7 @@ import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
 //Mock data
 data class School(
-    val id: Int,
-    val name: String
+    val id: Int, val name: String
 )
 
 val schools = listOf(
@@ -52,7 +54,13 @@ val schools = listOf(
 )
 
 @Composable
-fun RegisterScreen(schools: List<School>, onRegisterClicked: () -> Unit) {
+fun RegisterScreen(
+    schools: List<School>,
+    onRegisterClicked: (RegisterResponse) -> Unit,
+    registerViewModel: RegisterViewModel = viewModel(factory = RegisterViewModel.provideFactory())
+) {
+    val registerUiState by registerViewModel.uiState.collectAsState()
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -60,8 +68,29 @@ fun RegisterScreen(schools: List<School>, onRegisterClicked: () -> Unit) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        item {
-            RegisterFields(schools = schools, onRegisterClicked = onRegisterClicked)
+        when {
+
+            registerUiState.isLoading -> {
+
+            }
+
+            registerUiState.registerResponse.jwt.isNotEmpty() &&
+                    registerUiState.registerResponse.user.name.isNotEmpty() &&
+                    registerUiState.registerResponse.user.lastName.isNotEmpty() &&
+                    registerUiState.registerResponse.user.phone.isNotEmpty() &&
+                    registerUiState.registerResponse.user.email.isNotEmpty() &&
+                    registerUiState.registerResponse.user.role.isNotEmpty() -> {
+                item {
+                    RegisterFields(
+                        schools = schools,
+                        onRegisterClicked = { onRegisterClicked(registerUiState.registerResponse) }
+                    )
+                }
+            }
+
+            else -> {
+
+            }
         }
     }
 }
@@ -130,15 +159,12 @@ fun RegisterFields(schools: List<School>, onRegisterClicked: () -> Unit) {
     SpacerComponent(height = 5.dp)
     Column {
         Text(
-            text = stringResource(id = R.string.school),
-            style = MaterialTheme.typography.bodySmall
+            text = stringResource(id = R.string.school), style = MaterialTheme.typography.bodySmall
         )
         SpacerComponent(height = 10.dp)
-        TextButtonComponent(
-            textLabel = stringResource(id = R.string.school_tag),
+        TextButtonComponent(textLabel = stringResource(id = R.string.school_tag),
             options = schools,
-            getDescription = { it.name }
-        )
+            getDescription = { it.name })
     }
     SpacerComponent(height = 10.dp)
     TextFieldComponent(
@@ -202,8 +228,7 @@ fun RegisterFields(schools: List<School>, onRegisterClicked: () -> Unit) {
             }
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        visualTransformation =
-        if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         supportingText = {
             if (isPasswordEmpty) {
                 TextFieldEmpty()
@@ -213,12 +238,8 @@ fun RegisterFields(schools: List<School>, onRegisterClicked: () -> Unit) {
     )
     SpacerComponent(height = 15.dp)
     ButtonComponent(
-        text = R.string.register,
-        onClick = {
-            if (name.isNotEmpty() && lastName.isNotEmpty()
-                && mail.isNotEmpty() && phone.isNotEmpty()
-                && password.isNotEmpty()
-            ) {
+        text = R.string.register, onClick = {
+            if (name.isNotEmpty() && lastName.isNotEmpty() && mail.isNotEmpty() && phone.isNotEmpty() && password.isNotEmpty()) {
                 isNameEmpty = false
                 isLastNameEmpty = false
                 isMailEmpty = false
@@ -233,8 +254,7 @@ fun RegisterFields(schools: List<School>, onRegisterClicked: () -> Unit) {
                 isPhoneEmpty = phone.isEmpty()
                 isPasswordEmpty = password.isEmpty()
             }
-        },
-        isSelected = false
+        }, isSelected = false
     )
 }
 

@@ -21,12 +21,12 @@ import com.nocountry.edunotify.R
 import com.nocountry.edunotify.ui.components.CircleButtonComponent
 import com.nocountry.edunotify.ui.components.SpacerComponent
 import com.nocountry.edunotify.ui.components.TopAppBarComponent
-import com.nocountry.edunotify.ui.screens.notifications.Notification
-import com.nocountry.edunotify.ui.screens.notifications.notifications
+import com.nocountry.edunotify.ui.screens.notifications.NotificationMock
+import com.nocountry.edunotify.ui.screens.notifications.notificationMocks
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
 @Composable
-fun NotificationDetailScreen(onBackClicked: () -> Unit, notification: Notification) {
+fun NotificationDetailScreen(onBackClicked: () -> Unit, notificationMock: NotificationMock) {
     Scaffold(
         topBar = {
             TopAppBarComponent(
@@ -57,7 +57,7 @@ fun NotificationDetailScreen(onBackClicked: () -> Unit, notification: Notificati
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
-                        text = notification.title,
+                        text = notificationMock.title,
                         style = MaterialTheme.typography.bodyLarge,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
@@ -65,7 +65,7 @@ fun NotificationDetailScreen(onBackClicked: () -> Unit, notification: Notificati
                             .padding(start = 10.dp, top = 10.dp, bottom = 5.dp)
                     )
                     Text(
-                        text = notification.message,
+                        text = notificationMock.message,
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Justify,
                         modifier = Modifier
@@ -74,7 +74,7 @@ fun NotificationDetailScreen(onBackClicked: () -> Unit, notification: Notificati
                     )
                     SpacerComponent(height = 5.dp)
                     Text(
-                        text = "Expira en ${notification.expiration} semana",
+                        text = "Expira en ${notificationMock.expiration} semana",
                         textAlign = TextAlign.End,
                         style = MaterialTheme.typography.labelLarge,
                         modifier = Modifier
@@ -92,6 +92,6 @@ fun NotificationDetailScreen(onBackClicked: () -> Unit, notification: Notificati
 @Composable
 fun DetailScreenPreview() {
     EduNotifyTheme {
-        NotificationDetailScreen(onBackClicked = {}, notification = notifications[0])
+        NotificationDetailScreen(onBackClicked = {}, notificationMock = notificationMocks[0])
     }
 }
