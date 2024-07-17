@@ -33,5 +33,10 @@ public class MensajeController {
         mensajeService.newMensajeCurso(cursoId, mensajeRequestDto);
     }
 
+    @GetMapping("/test")
+    public String test(){
+        return "Este es un texto de prueba";
+    }
+
 
 }
