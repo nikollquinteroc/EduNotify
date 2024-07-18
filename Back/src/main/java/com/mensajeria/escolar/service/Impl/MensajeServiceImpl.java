@@ -29,14 +29,7 @@ public class MensajeServiceImpl implements MensajeService {
                 cursos.addAll(anio.getCurso());
             }
         }
-        //System.out.println(cursos.stream().map(CursoResponseDto::new).toList());
-        Mensaje mensaje1= new Mensaje();
-        mensaje1.setAuthor(mensaje.getAuthor());
-        mensaje1.setTitle(mensaje.getTitle());
-        mensaje1.setMessage(mensaje.getMessage());
-        mensaje1.setExpiration(mensaje.getExpiration());
-        mensaje1.setCursos(cursos);
-        mensajeRepository.save(mensaje1);
+        newMessage(cursos, mensaje);
     }
 
     @Override
@@ -46,32 +39,24 @@ public class MensajeServiceImpl implements MensajeService {
         for(Anio anio: nivelEscolar.getAnios()){
             cursos.addAll(anio.getCurso());
         }
-        Mensaje mensaje1= new Mensaje();
-        mensaje1.setAuthor(mensaje.getAuthor());
-        mensaje1.setTitle(mensaje.getTitle());
-        mensaje1.setMessage(mensaje.getMessage());
-        mensaje1.setExpiration(mensaje.getExpiration());
-        mensaje1.setCursos(cursos);
-        mensajeRepository.save(mensaje1);
+        newMessage(cursos, mensaje);
     }
 
     @Override
     public void newMensajeAnio(Long id, MensajeRequestDto mensaje) {
         Anio anio= anioService.verAnio(id);
         List<Curso> cursos = new ArrayList<>(anio.getCurso());
-        Mensaje mensaje1= new Mensaje();
-        mensaje1.setAuthor(mensaje.getAuthor());
-        mensaje1.setTitle(mensaje.getTitle());
-        mensaje1.setMessage(mensaje.getMessage());
-        mensaje1.setExpiration(mensaje.getExpiration());
-        mensaje1.setCursos(cursos);
-        mensajeRepository.save(mensaje1);
+        newMessage(cursos, mensaje);
     }
 
     @Override
     public void newMensajeCurso(Long id, MensajeRequestDto mensaje) {
         List<Curso> cursos = new ArrayList<>();
         cursos.add(cursoService.verCurso(id));
+        newMessage(cursos, mensaje);
+    }
+
+    public void newMessage(List<Curso> cursos, MensajeRequestDto mensaje){
         Mensaje mensaje1= new Mensaje();
         mensaje1.setAuthor(mensaje.getAuthor());
         mensaje1.setTitle(mensaje.getTitle());

@@ -5,6 +5,9 @@ import com.mensajeria.escolar.service.MensajeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/message")
@@ -34,8 +37,10 @@ public class MensajeController {
     }
 
     @GetMapping("/test")
-    public String test(){
-        return "Este es un texto de prueba";
+    public Map<String, String> test(){
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Hello Nikoll from Spring Boot!");
+        return response;
     }
 
 

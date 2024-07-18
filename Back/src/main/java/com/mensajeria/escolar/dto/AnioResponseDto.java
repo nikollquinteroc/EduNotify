@@ -14,10 +14,10 @@ import java.util.List;
 public class AnioResponseDto implements Serializable {
 
     public String year;
-    public List<CursoResponseDto> courses;
+    public List<CourseResponseDto> courses;
 
     public AnioResponseDto(Anio year) {
         this.year = year.getAnio();
-        this.courses = year.getCurso().stream().map(CursoResponseDto::new).toList();
+        this.courses = year.getCurso().stream().map(CourseResponseDto::new).toList();
     }
 }

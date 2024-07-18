@@ -15,10 +15,10 @@ import java.util.List;
 public class CursoResponseDto implements Serializable {
     public String course;
     public Long courseId;
-
+    public List<MessageResponseDto> messages;
     public CursoResponseDto(Curso course) {
-
         this.course = course.getCurso();
         this.courseId = course.getId();
+        this.messages = course.getMensajes().stream().map(MessageResponseDto::new).toList();
     }
 }
