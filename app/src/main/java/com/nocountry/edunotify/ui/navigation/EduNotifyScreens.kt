@@ -5,6 +5,7 @@ object Destinations {
     const val LOGIN_ROUTE = "login"
     const val REGISTER_ROUTE = "register"
     const val NOTIFICATIONS_ROUTE = "notifications"
+    const val NOTIFICATIONS_AUTH_DOMAIN = "authDomain"
     const val NOTIFICATION_DETAIL_ROUTE = "detail"
     const val NOTIFICATION_ID = "notificationId"
     const val PROFILE_ROUTE = "profile"

@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -29,11 +30,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.nocountry.edunotify.R
-import com.nocountry.edunotify.data.model.register.RegisterResponse
+import com.nocountry.edunotify.domain.model.AuthDomain
+import com.nocountry.edunotify.domain.model.SchoolDomain
 import com.nocountry.edunotify.ui.components.ButtonComponent
 import com.nocountry.edunotify.ui.components.SpacerComponent
 import com.nocountry.edunotify.ui.components.TextButtonComponent
@@ -41,67 +44,65 @@ import com.nocountry.edunotify.ui.components.TextFieldComponent
 import com.nocountry.edunotify.ui.components.TextFieldEmpty
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
-//Mock data
-data class School(
-    val id: Int, val name: String
-)
-
-val schools = listOf(
-    School(1, "School1"),
-    School(2, "School2"),
-    School(3, "School3"),
-    School(4, "School4"),
-)
-
 @Composable
 fun RegisterScreen(
-    schools: List<School>,
-    onRegisterClicked: (RegisterResponse) -> Unit,
+    navigateToNotifications: (AuthDomain) -> Unit,
     registerViewModel: RegisterViewModel = viewModel(factory = RegisterViewModel.provideFactory())
 ) {
     val registerUiState by registerViewModel.uiState.collectAsState()
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(15.dp),
+    Column(
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        val authDomain = registerUiState.registerUI.authDomain
+        val schoolList = registerUiState.registerUI.schoolList
+
         when {
-
             registerUiState.isLoading -> {
-
+                CircularProgressIndicator()
             }
 
-            registerUiState.registerResponse.jwt.isNotEmpty() &&
-                    registerUiState.registerResponse.user.name.isNotEmpty() &&
-                    registerUiState.registerResponse.user.lastName.isNotEmpty() &&
-                    registerUiState.registerResponse.user.phone.isNotEmpty() &&
-                    registerUiState.registerResponse.user.email.isNotEmpty() &&
-                    registerUiState.registerResponse.user.role.isNotEmpty() -> {
-                item {
-                    RegisterFields(
-                        schools = schools,
-                        onRegisterClicked = { onRegisterClicked(registerUiState.registerResponse) }
-                    )
-                }
+            authDomain != null -> {
+                navigateToNotifications(authDomain)
             }
 
             else -> {
-
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(15.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    item {
+                        RegisterFields(
+                            registerViewModel = registerViewModel,
+                            schools = schoolList ?: emptyList(),
+                            errorMessageFromServer = registerUiState.error
+                        )
+                    }
+                }
             }
         }
     }
 }
 
 @Composable
-fun RegisterFields(schools: List<School>, onRegisterClicked: () -> Unit) {
+fun RegisterFields(
+    registerViewModel: RegisterViewModel,
+    errorMessageFromServer: String,
+    schools: List<SchoolDomain>
+) {
     var name by rememberSaveable { mutableStateOf("") }
     var lastName by rememberSaveable { mutableStateOf("") }
     var mail by rememberSaveable { mutableStateOf("") }
     var phone by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
+
+    var errorMessage by rememberSaveable { mutableStateOf(errorMessageFromServer) }
 
     var isNameEmpty by rememberSaveable { mutableStateOf(false) }
     var isLastNameEmpty by rememberSaveable { mutableStateOf(false) }
@@ -239,6 +240,8 @@ fun RegisterFields(schools: List<School>, onRegisterClicked: () -> Unit) {
     SpacerComponent(height = 15.dp)
     ButtonComponent(
         text = R.string.register, onClick = {
+            errorMessage = ""
+
             if (name.isNotEmpty() && lastName.isNotEmpty() && mail.isNotEmpty() && phone.isNotEmpty() && password.isNotEmpty()) {
                 isNameEmpty = false
                 isLastNameEmpty = false
@@ -246,7 +249,14 @@ fun RegisterFields(schools: List<School>, onRegisterClicked: () -> Unit) {
                 isPhoneEmpty = false
                 isPasswordEmpty = false
 
-                onRegisterClicked()
+                registerViewModel.register(
+                    name = name,
+                    lastName = lastName,
+                    email = mail,
+                    password = password,
+                    phone = phone,
+                    school = 0
+                )
             } else {
                 isNameEmpty = name.isEmpty()
                 isLastNameEmpty = lastName.isEmpty()
@@ -254,7 +264,15 @@ fun RegisterFields(schools: List<School>, onRegisterClicked: () -> Unit) {
                 isPhoneEmpty = phone.isEmpty()
                 isPasswordEmpty = password.isEmpty()
             }
-        }, isSelected = false
+        },
+        isSelected = false
+    )
+    SpacerComponent(height = 16.dp)
+    Text(
+        text = errorMessage.ifEmpty { "" },
+        textAlign = TextAlign.Center,
+        color = MaterialTheme.colorScheme.error,
+        modifier = Modifier.padding(16.dp)
     )
 }
 
@@ -262,6 +280,6 @@ fun RegisterFields(schools: List<School>, onRegisterClicked: () -> Unit) {
 @Composable
 fun RegisterScreenPreview() {
     EduNotifyTheme {
-        RegisterScreen(schools = schools, onRegisterClicked = {})
+        //RegisterScreen(schools = schools, navigateToHome = {})
     }
 }

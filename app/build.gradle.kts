@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("kotlin-android")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -68,6 +70,7 @@ dependencies {
 
     //Gson
     implementation(libs.converter.gson)
+    implementation(libs.gson)
 
     //Navigation
     implementation(libs.androidx.navigation.runtime.ktx)
@@ -76,7 +79,11 @@ dependencies {
     //VerticalScrollBar
     implementation(libs.androidx.foundation)
 
-    //implementation(libs.google.accompanist.pager)
+    //Room Database
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

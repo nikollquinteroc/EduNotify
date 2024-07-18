@@ -1,5 +1,6 @@
 package com.nocountry.edunotify.ui.components
 
+import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,11 +22,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.google.gson.Gson
 import com.nocountry.edunotify.R
 import com.nocountry.edunotify.ui.navigation.Destinations
 import com.nocountry.edunotify.ui.screens.login.LoginScreen
 import com.nocountry.edunotify.ui.screens.register.RegisterScreen
-import com.nocountry.edunotify.ui.screens.register.schools
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -95,15 +96,18 @@ fun TabsContent(
         when (page) {
             0 -> {
                 LoginScreen(
-                    onLoginClicked = { navController.navigate(Destinations.NOTIFICATIONS_ROUTE) },
+                    navigateToNotifications = { authDomain ->
+                        val json = Uri.encode(Gson().toJson(authDomain))
+                        navController.navigate("${Destinations.NOTIFICATIONS_ROUTE}/$json")
+                    },
                     onRegisterClicked = { coroutineScope.launch { pagerState.scrollToPage(1) } })
             }
 
             1 -> {
                 RegisterScreen(
-                    schools = schools,
-                    onRegisterClicked = {
-                        navController.navigate(Destinations.NOTIFICATIONS_ROUTE)
+                    navigateToNotifications = { authDomain ->
+                        val json = Uri.encode(Gson().toJson(authDomain))
+                        navController.navigate("${Destinations.NOTIFICATIONS_ROUTE}/$json")
                     }
                 )
             }

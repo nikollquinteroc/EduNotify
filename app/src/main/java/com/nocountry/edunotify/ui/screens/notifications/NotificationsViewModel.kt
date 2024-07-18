@@ -1,4 +1,6 @@
 package com.nocountry.edunotify.ui.screens.notifications
 
-class NotificationsViewModel {
+import com.nocountry.edunotify.domain.repositories.NotificationRepository
+
+class NotificationsViewModel(val notificationRepository: NotificationRepository) {
 }

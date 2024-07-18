@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -36,6 +37,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nocountry.edunotify.R
+import com.nocountry.edunotify.domain.model.AuthDomain
+import com.nocountry.edunotify.domain.model.CourseDomain
+import com.nocountry.edunotify.domain.model.NotificationDomain
 import com.nocountry.edunotify.ui.components.BottomNavigationBar
 import com.nocountry.edunotify.ui.components.CircleButtonComponent
 import com.nocountry.edunotify.ui.components.SpacerComponent
@@ -51,26 +55,14 @@ data class NotificationMock(
     val expiration: Int
 )
 
-val notificationMocks = listOf(
-    NotificationMock(
-        id = 1,
-        title = "Title 1",
-        message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        expiration = 1
-    ),
-    NotificationMock(id = 2, title = "Title 2", message = "Message2", expiration = 1),
-    NotificationMock(id = 3, title = "Title 3", message = "Message3", expiration = 1),
-    NotificationMock(id = 4, title = "Title 4", message = "Message4", expiration = 1),
-)
-
 @Composable
 fun NotificationsScreen(
     onPlusClicked: () -> Unit,
     onNotificationClicked: (Int) -> Unit,
-    notificationMocks: List<NotificationMock>,
+    authDomain: AuthDomain,
     navController: NavHostController
 ) {
-    val message by rememberSaveable { mutableStateOf(notificationMocks[0].message) }
+    val courses by rememberSaveable { mutableStateOf(authDomain.user?.courses) }
 
     Scaffold(
         topBar = {
@@ -88,11 +80,13 @@ fun NotificationsScreen(
                 .padding(it)
                 .fillMaxSize(),
         ) {
-            if (message.isNotEmpty()) {
-                CoursesCardList(
-                    notificationMocks = notificationMocks,
-                    onNotificationClicked = onNotificationClicked
-                )
+            if (courses.isNullOrEmpty().not()) {
+                courses!!.forEach { courseDomain ->
+                    CourseSection(
+                        courseDomain = courseDomain,
+                        onNotificationClicked = onNotificationClicked
+                    )
+                }
             } else {
                 CourseEmptyList(
                     modifier = Modifier
@@ -104,12 +98,25 @@ fun NotificationsScreen(
 }
 
 @Composable
-fun CoursesCardList(notificationMocks: List<NotificationMock>, onNotificationClicked: (Int) -> Unit) {
-    LazyColumn {
-        items(notificationMocks) { notification ->
+fun CourseSection(courseDomain: CourseDomain, onNotificationClicked: (Int) -> Unit) {
+    Column {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Top,
+        ) {
+            Text(text = courseDomain.course)
+            CoursesCardList(notifications = courseDomain.notifications, onNotificationClicked)
+        }
+    }
+}
+
+@Composable
+fun CoursesCardList(notifications: List<NotificationDomain>, onNotificationClicked: (Int) -> Unit) {
+    LazyRow {
+        items(notifications) { notification ->
             SpacerComponent(height = 5.dp)
             CourseCard(
-                notificationMock = notification,
+                notification = notification,
                 modifier = Modifier.padding(10.dp),
                 onNotificationClicked = onNotificationClicked
             )
@@ -119,7 +126,7 @@ fun CoursesCardList(notificationMocks: List<NotificationMock>, onNotificationCli
 
 @Composable
 fun CourseCard(
-    notificationMock: NotificationMock,
+    notification: NotificationDomain,
     onNotificationClicked: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -127,13 +134,13 @@ fun CourseCard(
         modifier = modifier
             .fillMaxSize()
             .shadow(4.dp, shape = RoundedCornerShape(8.dp))
-            .clickable { onNotificationClicked(notificationMock.id) },
+            .clickable { onNotificationClicked(notification.messageId) },
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
         border = BorderStroke(3.dp, MaterialTheme.colorScheme.inversePrimary),
         shape = RoundedCornerShape(8.dp)
     ) {
         Text(
-            text = notificationMock.title,
+            text = notification.title,
             style = MaterialTheme.typography.bodyLarge,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -142,7 +149,7 @@ fun CourseCard(
                 .padding(start = 10.dp, top = 10.dp, bottom = 5.dp)
         )
         Text(
-            text = "Expira en ${notificationMock.expiration} semana",
+            text = "Expira en ${notification.expiration} semana",
             textAlign = TextAlign.End,
             style = MaterialTheme.typography.labelLarge,
             modifier = Modifier
@@ -200,8 +207,8 @@ fun HomeScreenPreview() {
         NotificationsScreen(
             onPlusClicked = {},
             onNotificationClicked = {},
-            notificationMocks,
-            navController = rememberNavController()
+            navController = rememberNavController(),
+            authDomain = AuthDomain(jwt = "fsdg", user = null)
         )
     }
 }
