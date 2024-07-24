@@ -31,7 +31,7 @@ class CourseRepositoryImpl(
                 notifications = listOf(
                     NotificationDomain(
                         messageId = 1,
-                        messageDate = "12 de Julio 2024",
+                        messageDate = emptyList(),
                         author = "Carlos Morales",
                         title = "Anuncio importante",
                         message = "Mañana no hay clases",
@@ -49,7 +49,7 @@ class CourseRepositoryImpl(
             notifications = listOf(
                 NotificationDomain(
                     messageId = 1,
-                    messageDate = "12 de Julio 2024",
+                    messageDate = emptyList(),
                     author = "Carlos Morales",
                     title = "Anuncio importante",
                     message = "Mañana no hay clases",
@@ -64,10 +64,10 @@ class CourseRepositoryImpl(
     }
 
     override suspend fun assignCourseToUser(courseId: Int, userId: Int): Flow<UserDomain> {
-        //val remoteResultAssignCourseToUser = service.assignCourseToUser(idCourse = courseId, idUser = userId)
-        //val userDomain = userMapper.mapUserResponseToUserDomain(remoteResultAssignCourseToUser)
-        //return flowOf(userDomain)
-        return flowOf(fakeUserResponse)
+        val remoteResultAssignCourseToUser = service.assignCourseToUser(idCourse = courseId, idUser = userId)
+        val userDomain = userMapper.mapUserResponseToUserDomain(remoteResultAssignCourseToUser)
+        return flowOf(userDomain)
+        //return flowOf(fakeUserResponse)
     }
 
 }

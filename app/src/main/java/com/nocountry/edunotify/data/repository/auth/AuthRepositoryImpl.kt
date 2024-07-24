@@ -1,9 +1,12 @@
 package com.nocountry.edunotify.data.repository.auth
 
+import android.content.Context
 import android.util.Log
 import com.nocountry.edunotify.data.api.RetrofitService
 import com.nocountry.edunotify.data.api.body.LoginBody
 import com.nocountry.edunotify.data.api.body.RegisterBody
+import com.nocountry.edunotify.data.database.EduNotifyRoomDatabase
+import com.nocountry.edunotify.data.database.mappers.AuthMapperDb
 import com.nocountry.edunotify.domain.mappers.AuthMapper
 import com.nocountry.edunotify.domain.model.AuthDomain
 import com.nocountry.edunotify.domain.model.CourseDomain
@@ -18,7 +21,8 @@ import retrofit2.HttpException
 
 class AuthRepositoryImpl(
     private val service: RetrofitService,
-    private val authMapper: AuthMapper
+    private val authMapper: AuthMapper,
+    private val authMapperDb: AuthMapperDb,
 ) : AuthRepository {
 
     private val fakeResponse = AuthDomain(
@@ -38,7 +42,7 @@ class AuthRepositoryImpl(
                     notifications = listOf(
                         NotificationDomain(
                             messageId = 1,
-                            messageDate = "12 de Julio 2024",
+                            messageDate = emptyList(),
                             author = "Carlos Morales",
                             title = "Anuncio importante",
                             message = "Mañana no hay clases",
@@ -52,7 +56,7 @@ class AuthRepositoryImpl(
                     notifications = listOf(
                         NotificationDomain(
                             messageId = 2,
-                            messageDate = "06 de Agosto 2024",
+                            messageDate = emptyList(),
                             author = "Carlos Morales",
                             title = "Jean Day",
                             message = "La próxima semana deben venir vestidos como BadBunny",
@@ -66,7 +70,7 @@ class AuthRepositoryImpl(
                     notifications = listOf(
                         NotificationDomain(
                             messageId = 3,
-                            messageDate = "30 de Abril 2024",
+                            messageDate = emptyList(),
                             author = "Carlos Morales",
                             title = "Icfes",
                             message = "en Agosto es el icfes, ponganse vergas",
@@ -109,8 +113,10 @@ class AuthRepositoryImpl(
     }
 
     override suspend fun saveAuthResponseInDatabase(authDomain: AuthDomain): Flow<AuthDomain> {
+
         return flow {
-            val authEntity = authMapper
+            val authEntity = authMapperDb.mapAuthDomainToAuthEntity(authDomain)
+            //val result = EduNotifyRoomDatabase.getDatabase().getAuthDao().insert(authEntity)
         }
         // crear un mapper que converta de authDomain a authEntity
         //val result = database.insert()

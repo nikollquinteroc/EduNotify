@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.nocountry.edunotify.data.api.RetrofitServiceFactory
+import com.nocountry.edunotify.data.database.mappers.AuthMapperDb
 import com.nocountry.edunotify.data.repository.auth.AuthRepositoryImpl
 import com.nocountry.edunotify.domain.mappers.AuthMapper
 import com.nocountry.edunotify.domain.mappers.CourseMapper
@@ -59,7 +60,8 @@ class LoginViewModel(private val repository: AuthRepository) : ViewModel() {
                 return LoginViewModel(
                     AuthRepositoryImpl(
                         service = RetrofitServiceFactory.makeRetrofitService(),
-                        authMapper = AuthMapper(UserMapper(CourseMapper(NotificationMapper())))
+                        authMapper = AuthMapper(UserMapper(CourseMapper(NotificationMapper()))),
+                        authMapperDb = AuthMapperDb()
                     )
                 ) as T
             }

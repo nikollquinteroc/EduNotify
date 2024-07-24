@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 @Parcelize
 data class NotificationDomain(
     val messageId: Int,
-    val messageDate: String,
+    val messageDate: List<Int>,
     val author: String,
     val title: String,
     val message: String,

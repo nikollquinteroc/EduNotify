@@ -9,7 +9,7 @@ import com.nocountry.edunotify.domain.model.CourseDomain
 import com.nocountry.edunotify.domain.model.NotificationDomain
 import com.nocountry.edunotify.domain.model.UserDomain
 
-class AuthMapper {
+class AuthMapperDb {
     fun mapAuthDomainToAuthEntity(authDomain: AuthDomain): AuthEntity {
         return AuthEntity(
             id = 0,

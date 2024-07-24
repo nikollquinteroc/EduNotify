@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.nocountry.edunotify.data.api.RetrofitServiceFactory
+import com.nocountry.edunotify.data.database.mappers.AuthMapperDb
 import com.nocountry.edunotify.data.repository.auth.AuthRepositoryImpl
 import com.nocountry.edunotify.data.repository.school.SchoolRepositoryImpl
 import com.nocountry.edunotify.domain.mappers.AuthMapper
@@ -104,7 +105,8 @@ class RegisterViewModel(
                 return RegisterViewModel(
                     AuthRepositoryImpl(
                         service = service,
-                        authMapper = AuthMapper(UserMapper(CourseMapper(NotificationMapper())))
+                        authMapper = AuthMapper(UserMapper(CourseMapper(NotificationMapper()))),
+                        authMapperDb = AuthMapperDb()
                     ),
                     SchoolRepositoryImpl(
                         service = service,

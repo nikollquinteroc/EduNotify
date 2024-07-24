@@ -1,6 +1,5 @@
 package com.nocountry.edunotify.ui.screens.notifications
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,14 +8,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -40,6 +41,7 @@ import com.nocountry.edunotify.R
 import com.nocountry.edunotify.domain.model.AuthDomain
 import com.nocountry.edunotify.domain.model.CourseDomain
 import com.nocountry.edunotify.domain.model.NotificationDomain
+import com.nocountry.edunotify.domain.model.UserDomain
 import com.nocountry.edunotify.ui.components.BottomNavigationBar
 import com.nocountry.edunotify.ui.components.CircleButtonComponent
 import com.nocountry.edunotify.ui.components.SpacerComponent
@@ -81,12 +83,10 @@ fun NotificationsScreen(
                 .fillMaxSize(),
         ) {
             if (courses.isNullOrEmpty().not()) {
-                courses!!.forEach { courseDomain ->
-                    CourseSection(
-                        courseDomain = courseDomain,
-                        onNotificationClicked = onNotificationClicked
-                    )
-                }
+                CoursesSectionList(
+                    courses = courses,
+                    onNotificationClicked = onNotificationClicked
+                )
             } else {
                 CourseEmptyList(
                     modifier = Modifier
@@ -98,15 +98,28 @@ fun NotificationsScreen(
 }
 
 @Composable
+fun CoursesSectionList(
+    courses: List<CourseDomain>?,
+    onNotificationClicked: (Int) -> Unit
+) {
+    LazyColumn {
+        items(courses!!) { courseDomain ->
+            CourseSection(
+                courseDomain = courseDomain,
+                onNotificationClicked = onNotificationClicked
+            )
+        }
+    }
+}
+
+@Composable
 fun CourseSection(courseDomain: CourseDomain, onNotificationClicked: (Int) -> Unit) {
     Column {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Top,
-        ) {
-            Text(text = courseDomain.course)
-            CoursesCardList(notifications = courseDomain.notifications, onNotificationClicked)
-        }
+        Text(
+            text = courseDomain.course,
+            modifier = Modifier.padding(start = 15.dp, top = 10.dp)
+        )
+        CoursesCardList(notifications = courseDomain.notifications, onNotificationClicked)
     }
 }
 
@@ -114,7 +127,6 @@ fun CourseSection(courseDomain: CourseDomain, onNotificationClicked: (Int) -> Un
 fun CoursesCardList(notifications: List<NotificationDomain>, onNotificationClicked: (Int) -> Unit) {
     LazyRow {
         items(notifications) { notification ->
-            SpacerComponent(height = 5.dp)
             CourseCard(
                 notification = notification,
                 modifier = Modifier.padding(10.dp),
@@ -130,32 +142,44 @@ fun CourseCard(
     onNotificationClicked: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    ElevatedCard(
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         modifier = modifier
-            .fillMaxSize()
             .shadow(4.dp, shape = RoundedCornerShape(8.dp))
-            .clickable { onNotificationClicked(notification.messageId) },
+            .clickable { onNotificationClicked(notification.messageId) }
+            .width(200.dp)
+            .height(200.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-        border = BorderStroke(3.dp, MaterialTheme.colorScheme.inversePrimary),
         shape = RoundedCornerShape(8.dp)
     ) {
-        Text(
-            text = notification.title,
-            style = MaterialTheme.typography.bodyLarge,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 10.dp, top = 10.dp, bottom = 5.dp)
-        )
-        Text(
-            text = "Expira en ${notification.expiration} semana",
-            textAlign = TextAlign.End,
-            style = MaterialTheme.typography.labelLarge,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 10.dp, bottom = 10.dp)
-        )
+        Column {
+            Box(modifier = Modifier.weight(1f)) {
+                Image(
+                    painter = painterResource(id = R.drawable.note_image),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop
+                )
+            }
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = notification.title,
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+                Text(
+                    text = "Expira en ${notification.expiration} semanas",
+                    textAlign = TextAlign.End,
+                    style = MaterialTheme.typography.labelLarge,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 20.dp, bottom = 10.dp)
+                )
+            }
+        }
     }
 }
 
@@ -208,7 +232,71 @@ fun HomeScreenPreview() {
             onPlusClicked = {},
             onNotificationClicked = {},
             navController = rememberNavController(),
-            authDomain = AuthDomain(jwt = "fsdg", user = null)
+            authDomain = AuthDomain(
+                jwt = "fsdg", user = UserDomain(
+                    id = 1,
+                    name = "Nikoll",
+                    lastName = "Quintero",
+                    email = "nikoll@gmail.com",
+                    phone = "32456433",
+                    role = "USUARIO",
+                    school = 1,
+                    courses = listOf(
+                        CourseDomain(
+                            course = "Sala Roja",
+                            courseId = 1,
+                            notifications = listOf(
+                                NotificationDomain(
+                                    messageId = 1,
+                                    messageDate = emptyList(),
+                                    author = "Carlos Morales",
+                                    title = "Anuncio importante",
+                                    message = "Mañana no hay clases",
+                                    expiration = 2
+                                ),
+                                NotificationDomain(
+                                    messageId = 1,
+                                    messageDate = emptyList(),
+                                    author = "Carlos Morales",
+                                    title = "Anuncio importante",
+                                    message = "Mañana no hay clases",
+                                    expiration = 2
+                                ),
+                                NotificationDomain(
+                                    messageId = 1,
+                                    messageDate = emptyList(),
+                                    author = "Carlos Morales",
+                                    title = "Anuncio importante",
+                                    message = "Mañana no hay clases",
+                                    expiration = 2
+                                ),
+                                NotificationDomain(
+                                    messageId = 1,
+                                    messageDate = emptyList(),
+                                    author = "Carlos Morales",
+                                    title = "Anuncio importante",
+                                    message = "Mañana no hay clases",
+                                    expiration = 2
+                                )
+                            )
+                        ),
+                        CourseDomain(
+                            course = "Sala Verde",
+                            courseId = 1,
+                            notifications = listOf(
+                                NotificationDomain(
+                                    messageId = 1,
+                                    messageDate = emptyList(),
+                                    author = "Carlos Morales",
+                                    title = "Anuncio importante",
+                                    message = "Mañana no hay clases",
+                                    expiration = 2
+                                )
+                            )
+                        )
+                    )
+                )
+            )
         )
     }
 }
