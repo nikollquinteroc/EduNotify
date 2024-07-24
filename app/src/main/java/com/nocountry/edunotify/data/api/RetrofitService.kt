@@ -1,16 +1,33 @@
 package com.nocountry.edunotify.data.api
 
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.nocountry.edunotify.data.api.model.auth.AuthResponse
+import com.nocountry.edunotify.data.api.body.LoginBody
+import com.nocountry.edunotify.data.api.body.RegisterBody
 import com.nocountry.edunotify.data.api.model.schools.SchoolResponse
 import com.nocountry.edunotify.data.api.model.user.UserResponse
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-const val BASE_URL = "http://192.168.1.4:8080/"
+const val BASE_URL = "https://back-edunotify-production.up.railway.app/"
+
+private val loggingInterceptor = HttpLoggingInterceptor().apply {
+    level = HttpLoggingInterceptor.Level.BODY
+}
+
+private val stethoInterceptor = StethoInterceptor()
+
+private val okHttpClient = OkHttpClient.Builder()
+    .addInterceptor(loggingInterceptor)
+    .addNetworkInterceptor(stethoInterceptor)
+    .build()
 
 interface RetrofitService {
 
@@ -19,18 +36,12 @@ interface RetrofitService {
 
     @POST("auth/register")
     suspend fun createAuthRegister(
-        @Query("name") name: String,
-        @Query("lastName") lastName: String,
-        @Query("email") email: String,
-        @Query("password") password: String,
-        @Query("phone") phone: String,
-        @Query("school") school: Int
+        @Body registerBody: RegisterBody
     ): AuthResponse
 
     @POST("auth/login")
     suspend fun createAuthLogin(
-        @Query("email") email: String,
-        @Query("password") password: String,
+        @Body loginBody: LoginBody
     ): AuthResponse
 
     @POST("message/newMessageCourse/{cursoId}")
@@ -58,7 +69,9 @@ object RetrofitServiceFactory {
     fun makeRetrofitService(): RetrofitService {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create()).build()
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
             .create(RetrofitService::class.java)
     }
 }

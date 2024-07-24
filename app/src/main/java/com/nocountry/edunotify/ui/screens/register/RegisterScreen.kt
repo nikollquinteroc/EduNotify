@@ -98,6 +98,7 @@ fun RegisterFields(
 ) {
     var name by rememberSaveable { mutableStateOf("") }
     var lastName by rememberSaveable { mutableStateOf("") }
+    var selectedSchool by rememberSaveable { mutableStateOf<SchoolDomain?>(null) }
     var mail by rememberSaveable { mutableStateOf("") }
     var phone by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
@@ -163,9 +164,13 @@ fun RegisterFields(
             text = stringResource(id = R.string.school), style = MaterialTheme.typography.bodySmall
         )
         SpacerComponent(height = 10.dp)
-        TextButtonComponent(textLabel = stringResource(id = R.string.school_tag),
+        TextButtonComponent(
+            textLabel = stringResource(id = R.string.school_tag),
             options = schools,
-            getDescription = { it.name })
+            getDescription = { it.name },
+            selectedOption = selectedSchool,
+            onOptionSelected = { selectedSchool = it }
+        )
     }
     SpacerComponent(height = 10.dp)
     TextFieldComponent(
@@ -249,13 +254,15 @@ fun RegisterFields(
                 isPhoneEmpty = false
                 isPasswordEmpty = false
 
+                val schoolId = selectedSchool?.id ?: 0
+
                 registerViewModel.register(
                     name = name,
                     lastName = lastName,
                     email = mail,
                     password = password,
                     phone = phone,
-                    school = 0
+                    school = schoolId
                 )
             } else {
                 isNameEmpty = name.isEmpty()

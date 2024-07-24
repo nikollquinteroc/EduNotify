@@ -20,12 +20,12 @@ class SchoolRepositoryImpl(
     )
 
     override suspend fun getAllSchools(): Flow<List<SchoolDomain>> {
-        /*val schoolListResponse = service.getAllSchools()
+        val schoolListResponse = service.getAllSchools()
         val schoolListDomain = schoolListResponse.map { schoolResponse ->
             schoolMapper.mapSchoolResponseToSchoolDomain(schoolResponse)
         }
-        return flowOf(schoolListDomain)*/
+        return flowOf(schoolListDomain)
 
-        return flowOf(fakeSchoolListResponse)
+        //return flowOf(fakeSchoolListResponse)
     }
 }

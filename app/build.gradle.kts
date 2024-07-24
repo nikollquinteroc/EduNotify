@@ -84,6 +84,15 @@ dependencies {
     annotationProcessor(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
+    //Debugging
+    implementation(libs.facebook.stetho)
+    implementation(libs.facebook.stetho.okhttp3)
+
+    //OkHttp Interceptor
+    implementation(libs.squareup.okhttp)
+    implementation(libs.squareup.logging.interceptor)
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

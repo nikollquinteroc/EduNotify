@@ -52,6 +52,7 @@ import com.nocountry.edunotify.ui.components.ButtonComponent
 import com.nocountry.edunotify.ui.components.SpacerComponent
 import com.nocountry.edunotify.ui.components.TextFieldComponent
 import com.nocountry.edunotify.ui.components.TextFieldEmpty
+import com.nocountry.edunotify.ui.screens.notifications.CourseSection
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
 @Composable

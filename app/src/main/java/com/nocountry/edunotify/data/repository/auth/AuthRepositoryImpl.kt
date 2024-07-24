@@ -1,7 +1,9 @@
 package com.nocountry.edunotify.data.repository.auth
 
+import android.util.Log
 import com.nocountry.edunotify.data.api.RetrofitService
-import com.nocountry.edunotify.data.database.dao.AuthDao
+import com.nocountry.edunotify.data.api.body.LoginBody
+import com.nocountry.edunotify.data.api.body.RegisterBody
 import com.nocountry.edunotify.domain.mappers.AuthMapper
 import com.nocountry.edunotify.domain.model.AuthDomain
 import com.nocountry.edunotify.domain.model.CourseDomain
@@ -9,7 +11,10 @@ import com.nocountry.edunotify.domain.model.NotificationDomain
 import com.nocountry.edunotify.domain.model.UserDomain
 import com.nocountry.edunotify.domain.repositories.AuthRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import okio.IOException
+import retrofit2.HttpException
 
 class AuthRepositoryImpl(
     private val service: RetrofitService,
@@ -74,13 +79,14 @@ class AuthRepositoryImpl(
     )
 
     override suspend fun login(email: String, password: String): Flow<AuthDomain> {
-        //val remoteResultLogin = service.createAuthLogin(email = email, password = password)
-        //val authDomain = authMapper.mapAuthResponseToAuthDomain(remoteResultLogin)
-        //saveAuthResponseInDatabase(authDomain)
-        //return flowOf(authDomain)
+        val loginBody = LoginBody(email, password)
+        val remoteResultLogin = service.createAuthLogin(loginBody)
+        val authDomain = authMapper.mapAuthResponseToAuthDomain(remoteResultLogin)
+        saveAuthResponseInDatabase(authDomain)
+        return flowOf(authDomain)
 
-        saveAuthResponseInDatabase(fakeResponse)
-        return flowOf(fakeResponse)
+        /*saveAuthResponseInDatabase(fakeResponse)
+        return flowOf(fakeResponse)*/
     }
 
     override suspend fun register(
@@ -91,26 +97,48 @@ class AuthRepositoryImpl(
         phone: String,
         school: Int
     ): Flow<AuthDomain> {
-        /*val remoteResultRegister = service.createAuthRegister(
-            name = name,
-            lastName = lastName,
-            email = email,
-            password = password,
-            phone = phone,
-            school = school
-        )
-        //val authDomain = authMapper.mapAuthResponseToAuthDomain(remoteResultRegister)
-        //saveAuthResponseInDatabase(authDomain)
-        return flowOf(authDomain)
-        */
 
-        saveAuthResponseInDatabase(fakeResponse)
-        return flowOf(fakeResponse)
+        return flow {
+            try {
+                val registerBody = RegisterBody(name, lastName, email, password, phone, school)
+                Log.d("Register", "Sending request with body: $registerBody")
+                 val remoteResultRegister = service.createAuthRegister(registerBody)
+                Log.d("Register", "Received response: $remoteResultRegister")
+                val authDomain = authMapper.mapAuthResponseToAuthDomain(remoteResultRegister)
+                Log.d("Register", "Mapped AuthDomain: $authDomain")
+                saveAuthResponseInDatabase(authDomain).collect {
+                    Log.d("Register", "Saved to database: $authDomain")
+                    emit(authDomain)
+                }
+            } catch (e: HttpException) {
+                Log.e("Register", "HTTP error: ${e.message()}", e)
+                throw Exception("HTTP error registering the user: ${e.message()}", e)
+            } catch (e: IOException) {
+                Log.e("Register", "Network error: ${e.message}", e)
+                throw Exception("Network error registering the user: ${e.message}", e)
+            } catch (e: Exception) {
+                Log.e("Register", "Unknown error: ${e.message}", e)
+                throw Exception("Error registering the user information: ${e.message}", e)
+            }
+        }
+
+        /*
+        val registerBody = RegisterBody(name, lastName, email, password, phone, school)
+        val remoteResultRegister = service.createAuthRegister(registerBody)
+        val authDomain = authMapper.mapAuthResponseToAuthDomain(remoteResultRegister)
+        saveAuthResponseInDatabase(authDomain)
+        return flowOf(authDomain)*/
+
+        /*saveAuthResponseInDatabase(fakeResponse)
+        return flowOf(fakeResponse)*/
     }
 
     override suspend fun saveAuthResponseInDatabase(authDomain: AuthDomain): Flow<AuthDomain> {
+        return flow {
+            val authEntity = authMapper
+        }
         // crear un mapper que converta de authDomain a authEntity
         //val result = database.insert()
-        return flowOf(fakeResponse)
+        //return flowOf(fakeResponse)
     }
 }
