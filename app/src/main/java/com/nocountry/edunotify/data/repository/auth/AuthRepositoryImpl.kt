@@ -98,36 +98,11 @@ class AuthRepositoryImpl(
         school: Int
     ): Flow<AuthDomain> {
 
-        return flow {
-            try {
-                val registerBody = RegisterBody(name, lastName, email, password, phone, school)
-                Log.d("Register", "Sending request with body: $registerBody")
-                 val remoteResultRegister = service.createAuthRegister(registerBody)
-                Log.d("Register", "Received response: $remoteResultRegister")
-                val authDomain = authMapper.mapAuthResponseToAuthDomain(remoteResultRegister)
-                Log.d("Register", "Mapped AuthDomain: $authDomain")
-                saveAuthResponseInDatabase(authDomain).collect {
-                    Log.d("Register", "Saved to database: $authDomain")
-                    emit(authDomain)
-                }
-            } catch (e: HttpException) {
-                Log.e("Register", "HTTP error: ${e.message()}", e)
-                throw Exception("HTTP error registering the user: ${e.message()}", e)
-            } catch (e: IOException) {
-                Log.e("Register", "Network error: ${e.message}", e)
-                throw Exception("Network error registering the user: ${e.message}", e)
-            } catch (e: Exception) {
-                Log.e("Register", "Unknown error: ${e.message}", e)
-                throw Exception("Error registering the user information: ${e.message}", e)
-            }
-        }
-
-        /*
         val registerBody = RegisterBody(name, lastName, email, password, phone, school)
         val remoteResultRegister = service.createAuthRegister(registerBody)
         val authDomain = authMapper.mapAuthResponseToAuthDomain(remoteResultRegister)
         saveAuthResponseInDatabase(authDomain)
-        return flowOf(authDomain)*/
+        return flowOf(authDomain)
 
         /*saveAuthResponseInDatabase(fakeResponse)
         return flowOf(fakeResponse)*/
