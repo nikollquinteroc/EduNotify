@@ -98,7 +98,10 @@ fun TabsContent(
                 LoginScreen(
                     navigateToNotifications = { authDomain ->
                         val json = Uri.encode(Gson().toJson(authDomain))
-                        navController.navigate("${Destinations.NOTIFICATIONS_ROUTE}/$json")
+                        navController.navigate("${Destinations.NOTIFICATIONS_ROUTE}/$json") {
+                            popUpTo(Destinations.LOGIN_ROUTE) { inclusive = true }
+                            launchSingleTop = true
+                        }
                     },
                     onRegisterClicked = { coroutineScope.launch { pagerState.scrollToPage(1) } })
             }
@@ -107,7 +110,10 @@ fun TabsContent(
                 RegisterScreen(
                     navigateToNotifications = { authDomain ->
                         val json = Uri.encode(Gson().toJson(authDomain))
-                        navController.navigate("${Destinations.NOTIFICATIONS_ROUTE}/$json")
+                        navController.navigate("${Destinations.NOTIFICATIONS_ROUTE}/$json") {
+                            popUpTo(Destinations.REGISTER_ROUTE) { inclusive = true }
+                            launchSingleTop = true
+                        }
                     }
                 )
             }

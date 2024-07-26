@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
@@ -66,7 +68,7 @@ fun CoursesScreen(schoolTest: SchoolTest, onAddCoursesClicked: () -> Unit) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Courses Screen")
+            CoursesList(courses = schoolTest.cours)
             Button(onClick = onAddCoursesClicked) {
                 Text(text = "add courses")
             }
@@ -75,7 +77,12 @@ fun CoursesScreen(schoolTest: SchoolTest, onAddCoursesClicked: () -> Unit) {
 }
 
 @Composable
-fun CoursesList(schoolTest: SchoolTest) {
+fun CoursesList(courses: List<CourseTest>) {
+    LazyColumn {
+        items(courses) {courseTest ->
+            CourseItem(courseTest = courseTest)
+        }
+    }
 
 }
 
@@ -99,7 +106,7 @@ fun CourseItem(courseTest: CourseTest) {
             onCheckedChange = null
         )
         Text(
-            text = "Option selection",
+            text = courseTest.name,
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(start = 16.dp)
         )
@@ -111,5 +118,6 @@ fun CourseItem(courseTest: CourseTest) {
 fun CoursesScreenPreview() {
     EduNotifyTheme {
         CoursesScreen(schoolTest = schoolTest1, onAddCoursesClicked = {})
+        //CourseItem(courseTest = schoolTest1.cours[0])
     }
 }

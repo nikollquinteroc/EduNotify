@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nocountry.edunotify.R
+import com.nocountry.edunotify.domain.model.AuthDomain
 import com.nocountry.edunotify.ui.components.BottomNavigationBar
 import com.nocountry.edunotify.ui.components.ButtonComponent
 import com.nocountry.edunotify.ui.components.CircleButtonComponent
@@ -171,7 +172,12 @@ fun ProfileFields(navController: NavHostController) {
     SpacerComponent(height = 20.dp)
     ButtonComponent(
         text = R.string.logout,
-        onClick = { navController.navigate(Destinations.TAB_LOGIN_REGISTER) },
+        onClick = {
+            navController.navigate(Destinations.TAB_LOGIN_REGISTER) {
+                popUpTo(Destinations.TAB_LOGIN_REGISTER) { inclusive = true }
+                launchSingleTop = true
+            }
+        },
         isSelected = isSaveSelected
     )
 }

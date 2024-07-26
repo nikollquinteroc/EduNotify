@@ -47,15 +47,25 @@ fun EduNotifyApp(navController: NavHostController = rememberNavController()) {
                 LoginScreen(
                     navigateToNotifications = { authDomain ->
                         val json = Uri.encode(Gson().toJson(authDomain))
-                        navController.navigate("${NOTIFICATIONS_ROUTE}/$json")
+                        navController.navigate("${NOTIFICATIONS_ROUTE}/$json") {
+                            popUpTo(LOGIN_ROUTE) { inclusive = true }
+                            launchSingleTop = true
+                        }
                     },
-                    onRegisterClicked = { navController.navigate(REGISTER_ROUTE) })
+                    onRegisterClicked = {
+                        navController.navigate(REGISTER_ROUTE) {
+                            launchSingleTop = true
+                        }
+                    })
             }
             composable(route = REGISTER_ROUTE) {
                 RegisterScreen(
                     navigateToNotifications = { authDomain ->
                         val json = Uri.encode(Gson().toJson(authDomain))
-                        navController.navigate("${NOTIFICATIONS_ROUTE}/$json")
+                        navController.navigate("${NOTIFICATIONS_ROUTE}/$json") {
+                            popUpTo(REGISTER_ROUTE) { inclusive = true }
+                            launchSingleTop = true
+                        }
                     })
             }
             composable(
@@ -66,13 +76,18 @@ fun EduNotifyApp(navController: NavHostController = rememberNavController()) {
                     }
                 )
             ) { backStackEntry ->
-                val json = requireNotNull(backStackEntry.arguments?.getString(NOTIFICATIONS_AUTH_DOMAIN))
+                val json =
+                    requireNotNull(backStackEntry.arguments?.getString(NOTIFICATIONS_AUTH_DOMAIN))
                 val authDomain = Gson().fromJson(json, AuthDomain::class.java)
 
                 NotificationsScreen(
                     navController = navController,
                     onPlusClicked = { navController.navigate(Destinations.COURSES_ROUTE) },
-                    onNotificationClicked = { notificationId -> navController.navigate("$NOTIFICATION_DETAIL_ROUTE/$notificationId") },
+                    onNotificationClicked = { notificationId ->
+                        navController.navigate("$NOTIFICATION_DETAIL_ROUTE/$notificationId") {
+                            popUpTo("$NOTIFICATIONS_ROUTE/{${NOTIFICATIONS_AUTH_DOMAIN}}")
+                        }
+                    },
                     authDomain = authDomain
                 )
             }
@@ -85,15 +100,33 @@ fun EduNotifyApp(navController: NavHostController = rememberNavController()) {
                 val notificationId =
                     requireNotNull(backStackEntry.arguments?.getInt(NOTIFICATION_ID))
 
+               val authDomainJson = navController.previousBackStackEntry?.arguments?.getString(
+                    NOTIFICATIONS_AUTH_DOMAIN
+                )
+
+                val authDomain = if (authDomainJson != null) {
+                    Gson().fromJson(authDomainJson, AuthDomain::class.java)
+                } else {
+                    null
+                }
+
+                if (authDomain == null) {
+                    // Maneja el caso cuando authDomain es nulo. Podrías mostrar un mensaje de error o navegar hacia atrás.
+                    navController.navigateUp()
+                    return@composable
+                }
+
                 NotificationDetailScreen(
-                    onBackClicked = { navController.popBackStack() },
-                    notificationMock = null
+                    notificationId = notificationId,
+                    authDomain = authDomain,
+                    onNotificationSelected = { id -> navController.navigate("$NOTIFICATION_DETAIL_ROUTE/$id") },
+                    onBackClicked = { navController.navigateUp() },
                 )
             }
             composable(route = Destinations.PROFILE_ROUTE) {
                 ProfileScreen(
                     navController = navController,
-                    onBackClicked = { navController.popBackStack() })
+                    onBackClicked = { navController.navigateUp() })
             }
             composable(route = Destinations.COURSES_ROUTE) {
                 CoursesScreen(

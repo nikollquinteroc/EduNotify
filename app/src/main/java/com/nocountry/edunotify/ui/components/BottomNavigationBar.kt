@@ -25,12 +25,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.gson.Gson
 import com.nocountry.edunotify.R
+import com.nocountry.edunotify.domain.model.AuthDomain
 import com.nocountry.edunotify.ui.navigation.Destinations
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
 @Composable
-fun BottomNavigationBar(navController: NavHostController, modifier: Modifier = Modifier) {
+fun BottomNavigationBar(
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+) {
+
+
     BottomAppBar(
         modifier = modifier,
         containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -43,7 +50,12 @@ fun BottomNavigationBar(navController: NavHostController, modifier: Modifier = M
             BottomNavigationBarItem(
                 icon = R.drawable.notifications_icon,
                 name = R.string.bottom_notification_bar,
-                onClick = { navController.navigate(Destinations.NOTIFICATIONS_ROUTE) }
+                onClick = {
+                    navController.navigate(Destinations.NOTIFICATIONS_ROUTE) {
+                        // Aquí podrías ajustar cómo manejas el stack para notificaciones
+                        popUpTo(Destinations.NOTIFICATIONS_ROUTE) { inclusive = true }
+                    }
+                }
             )
             VerticalDivider(
                 color = MaterialTheme.colorScheme.primary,
@@ -53,7 +65,12 @@ fun BottomNavigationBar(navController: NavHostController, modifier: Modifier = M
             BottomNavigationBarItem(
                 icon = R.drawable.profile_icon,
                 name = R.string.bottom_profile_bar,
-                onClick = { navController.navigate(Destinations.PROFILE_ROUTE) })
+                onClick = {
+                    navController.navigate(Destinations.PROFILE_ROUTE) {
+                        popUpTo(Destinations.PROFILE_ROUTE) { inclusive = true }
+                    }
+                }
+            )
         }
     }
 }
@@ -100,6 +117,8 @@ fun BottomNavigationBarItem(
 @Composable
 fun BottomNavigationBarPreview() {
     EduNotifyTheme {
-        BottomNavigationBar(navController = rememberNavController())
+        BottomNavigationBar(
+            navController = rememberNavController(),
+        )
     }
 }
