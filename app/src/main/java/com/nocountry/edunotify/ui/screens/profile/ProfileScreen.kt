@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nocountry.edunotify.R
-import com.nocountry.edunotify.domain.model.AuthDomain
 import com.nocountry.edunotify.ui.components.BottomNavigationBar
 import com.nocountry.edunotify.ui.components.ButtonComponent
 import com.nocountry.edunotify.ui.components.CircleButtonComponent

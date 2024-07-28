@@ -8,10 +8,14 @@ import com.nocountry.edunotify.data.database.mappers.AuthMapperDb
 import com.nocountry.edunotify.data.repository.auth.AuthRepositoryImpl
 import com.nocountry.edunotify.data.repository.school.SchoolRepositoryImpl
 import com.nocountry.edunotify.domain.mappers.AuthMapper
+import com.nocountry.edunotify.domain.mappers.CourseInfoMapper
 import com.nocountry.edunotify.domain.mappers.CourseMapper
+import com.nocountry.edunotify.domain.mappers.LevelMapper
 import com.nocountry.edunotify.domain.mappers.NotificationMapper
+import com.nocountry.edunotify.domain.mappers.SchoolInfoMapper
 import com.nocountry.edunotify.domain.mappers.SchoolMapper
 import com.nocountry.edunotify.domain.mappers.UserMapper
+import com.nocountry.edunotify.domain.mappers.YearMapper
 import com.nocountry.edunotify.domain.repositories.AuthRepository
 import com.nocountry.edunotify.domain.repositories.SchoolRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -110,7 +114,8 @@ class RegisterViewModel(
                     ),
                     SchoolRepositoryImpl(
                         service = service,
-                        schoolMapper = SchoolMapper()
+                        schoolMapper = SchoolMapper(),
+                        schoolInfoMapper = SchoolInfoMapper(LevelMapper(YearMapper(CourseInfoMapper())))
                     )
                 ) as T
             }

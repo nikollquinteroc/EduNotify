@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import com.nocountry.edunotify.domain.model.AuthDomain
 import com.nocountry.edunotify.ui.components.TabRowComponent
 import com.nocountry.edunotify.ui.navigation.Destinations.LOGIN_ROUTE
@@ -21,9 +22,9 @@ import com.nocountry.edunotify.ui.navigation.Destinations.NOTIFICATIONS_ROUTE
 import com.nocountry.edunotify.ui.navigation.Destinations.NOTIFICATION_DETAIL_ROUTE
 import com.nocountry.edunotify.ui.navigation.Destinations.NOTIFICATION_ID
 import com.nocountry.edunotify.ui.navigation.Destinations.REGISTER_ROUTE
+import com.nocountry.edunotify.ui.navigation.Destinations.SCHOOL_ID
 import com.nocountry.edunotify.ui.navigation.Destinations.TAB_LOGIN_REGISTER
 import com.nocountry.edunotify.ui.screens.courses.CoursesScreen
-import com.nocountry.edunotify.ui.screens.courses.schoolTest1
 import com.nocountry.edunotify.ui.screens.detail.NotificationDetailScreen
 import com.nocountry.edunotify.ui.screens.login.LoginScreen
 import com.nocountry.edunotify.ui.screens.notifications.NotificationsScreen
@@ -82,7 +83,7 @@ fun EduNotifyApp(navController: NavHostController = rememberNavController()) {
 
                 NotificationsScreen(
                     navController = navController,
-                    onPlusClicked = { navController.navigate(Destinations.COURSES_ROUTE) },
+                    onPlusClicked = { schooldId -> navController.navigate("${Destinations.COURSES_ROUTE}/$schooldId") },
                     onNotificationClicked = { notificationId ->
                         navController.navigate("$NOTIFICATION_DETAIL_ROUTE/$notificationId") {
                             popUpTo("$NOTIFICATIONS_ROUTE/{${NOTIFICATIONS_AUTH_DOMAIN}}")
@@ -100,7 +101,7 @@ fun EduNotifyApp(navController: NavHostController = rememberNavController()) {
                 val notificationId =
                     requireNotNull(backStackEntry.arguments?.getInt(NOTIFICATION_ID))
 
-               val authDomainJson = navController.previousBackStackEntry?.arguments?.getString(
+                val authDomainJson = navController.previousBackStackEntry?.arguments?.getString(
                     NOTIFICATIONS_AUTH_DOMAIN
                 )
 
@@ -128,10 +129,34 @@ fun EduNotifyApp(navController: NavHostController = rememberNavController()) {
                     navController = navController,
                     onBackClicked = { navController.navigateUp() })
             }
-            composable(route = Destinations.COURSES_ROUTE) {
+            composable(
+                route = "${Destinations.COURSES_ROUTE}/{${SCHOOL_ID}}",
+                arguments = listOf(navArgument(SCHOOL_ID) { type = NavType.IntType })
+            ) { backStackEntry ->
+                val schoolId = requireNotNull(backStackEntry.arguments?.getInt(SCHOOL_ID))
+
+                val authDomainJson = navController.previousBackStackEntry?.arguments?.getString(
+                    NOTIFICATIONS_AUTH_DOMAIN
+                )
+                val authDomain = try {
+                    if (authDomainJson.isNullOrEmpty()) null else Gson().fromJson(
+                        authDomainJson,
+                        AuthDomain::class.java
+                    )
+                } catch (e: JsonSyntaxException) {
+                    null
+                }
+
+                if (authDomain == null) {
+                    // Maneja el caso cuando authDomain es nulo o no válido
+                    navController.navigateUp()
+                    return@composable
+                }
                 CoursesScreen(
-                    schoolTest = schoolTest1,
-                    onAddCoursesClicked = { navController.navigate(NOTIFICATIONS_ROUTE) })
+                    onBackClicked = { navController.navigateUp() },
+                    schoolId = schoolId,
+                    userId = authDomain.user?.id ?: 0,
+                    onAddCoursesClicked = { navController.navigate("$NOTIFICATIONS_ROUTE/{${NOTIFICATIONS_AUTH_DOMAIN}}") })
             }
         }
     }

@@ -9,9 +9,9 @@ class NotificationMapper {
         return NotificationDomain(
             messageId = notificationResponse.message_id,
             messageDate = notificationResponse.messageDate,
-            author = notificationResponse.author,
-            message = notificationResponse.message,
-            title = notificationResponse.title,
+            author = notificationResponse.author ?: "",
+            message = notificationResponse.message ?: "",
+            title = notificationResponse.title ?: "",
             expiration = notificationResponse.expiration
         )
     }

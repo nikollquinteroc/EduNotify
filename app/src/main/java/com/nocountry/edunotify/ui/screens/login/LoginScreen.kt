@@ -52,7 +52,6 @@ import com.nocountry.edunotify.ui.components.ButtonComponent
 import com.nocountry.edunotify.ui.components.SpacerComponent
 import com.nocountry.edunotify.ui.components.TextFieldComponent
 import com.nocountry.edunotify.ui.components.TextFieldEmpty
-import com.nocountry.edunotify.ui.screens.notifications.CourseSection
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
 @Composable
@@ -71,16 +70,13 @@ fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         when {
-            loginUiState.isLoginUiState -> {
+            loginUiState.isLoading -> {
                 CircularProgressIndicator()
             }
 
             loginUiState.loginResponse.jwt.isNotEmpty() &&
                     loginUiState.loginResponse.user != null -> {
                 navigateToNotifications(loginUiState.loginResponse)
-                /*loginUiState.loginResponse.user.courses.forEach {
-                    CourseSection(it.notifications)
-                }*/
             }
 
             else -> {
@@ -100,8 +96,8 @@ fun LoginForm(
     errorMessageFromServer: String,
     onRegisterClicked: () -> Unit
 ) {
-    var mail by rememberSaveable { mutableStateOf("nico1@gmail.com") }
-    var password by rememberSaveable { mutableStateOf("123456") }
+    var mail by rememberSaveable { mutableStateOf("nikoll@gmail.com") }
+    var password by rememberSaveable { mutableStateOf("1234") }
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
     var errorMessage by rememberSaveable { mutableStateOf(errorMessageFromServer) }
 

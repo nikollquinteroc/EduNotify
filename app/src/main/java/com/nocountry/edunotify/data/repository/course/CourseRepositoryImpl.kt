@@ -16,58 +16,9 @@ class CourseRepositoryImpl(
     private val userMapper: UserMapper
 ) : CourseRepository {
 
-    private val fakeUserResponse = UserDomain(
-        id = 1,
-        name = "Nikoll",
-        lastName = "Quintero",
-        email = "nikollquinteroc@gmail.com",
-        phone = "3057878326",
-        role = "parent",
-        school = 1,
-        courses = listOf(
-            CourseDomain(
-                course = "Primero de primaria",
-                courseId = 1,
-                notifications = listOf(
-                    NotificationDomain(
-                        messageId = 1,
-                        messageDate = emptyList(),
-                        author = "Carlos Morales",
-                        title = "Anuncio importante",
-                        message = "Mañana no hay clases",
-                        expiration = 2
-                    )
-                )
-            )
-        )
-    )
-
-    private val fakeCoursesResponse = listOf(
-        CourseDomain(
-            course = "Sala Roja",
-            courseId = 1,
-            notifications = listOf(
-                NotificationDomain(
-                    messageId = 1,
-                    messageDate = emptyList(),
-                    author = "Carlos Morales",
-                    title = "Anuncio importante",
-                    message = "Mañana no hay clases",
-                    expiration = 2
-                )
-            )
-        )
-    )
-
-    override suspend fun getCoursesBySchool(schoolId: Int): Flow<List<CourseDomain>> {
-        return flowOf(fakeCoursesResponse)
-    }
-
     override suspend fun assignCourseToUser(courseId: Int, userId: Int): Flow<UserDomain> {
         val remoteResultAssignCourseToUser = service.assignCourseToUser(idCourse = courseId, idUser = userId)
         val userDomain = userMapper.mapUserResponseToUserDomain(remoteResultAssignCourseToUser)
         return flowOf(userDomain)
-        //return flowOf(fakeUserResponse)
     }
-
 }

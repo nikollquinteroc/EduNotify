@@ -33,6 +33,10 @@
     <string name="no_notifications_title">No tienes notificaciones!</string>
     <string name="no_notifications_message">Agrega un curso para empezar a recibir mensajes</string>
 
+    <!-- Courses-->
+    <string name="bottom_add_courses">Agregar curs</string>
+    <string name="courses">Cursos</string>
+
     <!--Bottom Bar -->
     <string name="bottom_notification_bar">Notificaciones</string>
     <string name="bottom_profile_bar">Perfil</string>

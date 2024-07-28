@@ -8,6 +8,9 @@ object Destinations {
     const val NOTIFICATIONS_AUTH_DOMAIN = "authDomain"
     const val NOTIFICATION_DETAIL_ROUTE = "detail"
     const val NOTIFICATION_ID = "notificationId"
+    const val SCHOOL_ID = "schoolId"
+    const val USER_ID = "idUser"
+    const val COURSE_ID = "idCourse"
     const val PROFILE_ROUTE = "profile"
     const val COURSES_ROUTE = "courses"
 }

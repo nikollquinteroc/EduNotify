@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class LoginUiState(
-    val isLoginUiState: Boolean = false,
+    val isLoading: Boolean = false,
     val loginResponse: AuthDomain = AuthDomain(jwt = "", user = null),
     val error: String = ""
 )
@@ -30,14 +30,14 @@ class LoginViewModel(private val repository: AuthRepository) : ViewModel() {
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
     fun login(email: String, password: String) {
-        _uiState.update { it.copy(isLoginUiState = true) }
+        _uiState.update { it.copy(isLoading = true) }
 
         viewModelScope.launch {
             try {
                 repository.login(email, password).collect { loginResponse ->
                     _uiState.update {
                         it.copy(
-                            isLoginUiState = false,
+                            isLoading = false,
                             loginResponse = loginResponse
                         )
                     }
@@ -45,7 +45,7 @@ class LoginViewModel(private val repository: AuthRepository) : ViewModel() {
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(
-                        isLoginUiState = false,
+                        isLoading = false,
                         error = "Network request failed, try again. \n${e.message}"
                     )
                 }

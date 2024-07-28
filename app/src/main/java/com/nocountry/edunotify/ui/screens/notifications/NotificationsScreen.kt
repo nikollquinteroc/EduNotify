@@ -48,18 +48,9 @@ import com.nocountry.edunotify.ui.components.SpacerComponent
 import com.nocountry.edunotify.ui.components.TopAppBarComponent
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
-
-//Mock data
-data class NotificationMock(
-    val id: Int,
-    val title: String,
-    val message: String,
-    val expiration: Int
-)
-
 @Composable
 fun NotificationsScreen(
-    onPlusClicked: () -> Unit,
+    onPlusClicked: (Int) -> Unit,
     onNotificationClicked: (Int) -> Unit,
     authDomain: AuthDomain,
     navController: NavHostController
@@ -75,7 +66,9 @@ fun NotificationsScreen(
             )
         },
         bottomBar = { BottomNavigationBar(navController) },
-        floatingActionButton = { AddNewCourse(onPlusClicked = onPlusClicked) }
+        floatingActionButton = {
+            AddNewCourse(schoolId = authDomain.user?.school ?: 0, onPlusClicked = onPlusClicked)
+        }
     ) {
         Box(
             modifier = Modifier
@@ -212,11 +205,11 @@ fun CourseEmptyList(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun AddNewCourse(onPlusClicked: () -> Unit, modifier: Modifier = Modifier) {
+fun AddNewCourse(onPlusClicked: (Int) -> Unit, modifier: Modifier = Modifier, schoolId: Int) {
     Row(modifier = modifier.padding(bottom = 25.dp)) {
         SpacerComponent(modifier = Modifier.weight(1f))
         CircleButtonComponent(
-            onClick = { onPlusClicked() },
+            onClick = { onPlusClicked(schoolId) },
             icon = R.drawable.plus,
             size = 60.dp
         )

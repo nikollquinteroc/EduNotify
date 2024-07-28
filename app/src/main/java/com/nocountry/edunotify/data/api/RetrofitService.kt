@@ -4,6 +4,7 @@ import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.nocountry.edunotify.data.api.model.auth.AuthResponse
 import com.nocountry.edunotify.data.api.body.LoginBody
 import com.nocountry.edunotify.data.api.body.RegisterBody
+import com.nocountry.edunotify.data.api.model.schools.SchoolInfoResponse
 import com.nocountry.edunotify.data.api.model.schools.SchoolResponse
 import com.nocountry.edunotify.data.api.model.user.UserResponse
 import okhttp3.OkHttpClient
@@ -34,6 +35,11 @@ interface RetrofitService {
     @GET("school/all")
     suspend fun getAllSchools(): List<SchoolResponse>
 
+    @GET("school/{schoolId}")
+    suspend fun getSchoolInfo(
+        @Path("schoolId") schoolId: Int
+    ) : SchoolInfoResponse
+
     @POST("auth/register")
     suspend fun createAuthRegister(
         @Body registerBody: RegisterBody
@@ -59,10 +65,6 @@ interface RetrofitService {
         @Path("idCourse") idCourse: Int
     ): UserResponse
 
-    @GET("courses/{schoolId}")
-    suspend fun getCoursesBySchool(
-        @Path("schoolId") schoolId: Int
-    )
 }
 
 object RetrofitServiceFactory {
