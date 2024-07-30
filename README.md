@@ -33,13 +33,8 @@ Características Principales
   <img style="width:700px;" src="https://i.imgur.com/cWSC8sF.jpeg">
   
   <br>
-  <img style="width:700px;" src="https://i.imgur.com/fAdRSrH.jpeg">
+  <img style="width:700px;" src="https://i.imgur.com/FqoOY3n.jpeg">
   
-  
-
-  <h3 align="center"><b>Puedes visitar nuestra página web aquí:</b></h3>
-  <h3 align="center"><a href="https://precious-transformation-production.up.railway.app/" target="_blank" rel="noopener noreferrer"> 🌟 EduNotify </a></h3>
-  <p  align="center"></p>
  </div>
 <br><br>
   
@@ -69,7 +64,7 @@ Características Principales
 ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
 ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
 
-#### 👉🏻 Desarrollador 👨🏻‍💻
+#### 👉🏻 Backend Developer 👨🏻‍💻
 
 | <img src="https://media.licdn.com/dms/image/D4E03AQGDPPdxenCxoA/profile-displayphoto-shrink_800_800/0/1689110457919?e=1723680000&v=beta&t=yOIMiVx8zvUPuS0EXY8MJ7F68bC53E-mJ1HwlKOLrmg" width=100>| 
 |:-:|
@@ -94,9 +89,14 @@ Características Principales
 
 #### 👉🏻 Construido con 🛠️
 
-![Figma](https://img.shields.io/badge/kotlin-%23F24E1E.svg?style=for-the-badge&logo=kotlin&logoColor=white)
-![Adobe Photoshop](https://img.shields.io/badge/android%20studio-%2331A8FF.svg?style=for-the-badge&logo=android%20studio&logoColor=white)
-![Canva](https://img.shields.io/badge/Android-%2300C4CC.svg?style=for-the-badge&logo=Android&logoColor=white)
+![Android Studio](https://img.shields.io/badge/android%20studio-%4CAF50.svg?style=for-the-badge&logo=android%20studio&logoColor=white)
+![Android](https://img.shields.io/badge/Android-%2300C4CC.svg?style=for-the-badge&logo=Android&logoColor=white)
+![Kotlin](https://img.shields.io/badge/Kotlin-FC8D45?style=for-the-badge&logo=kotlin&logoColor=white)
+![Jetpack Compose](https://img.shields.io/badge/Jetpack_Compose-007ACC?style=for-the-badge&logo=android&logoColor=white)
+![Coroutines](https://img.shields.io/badge/Coroutines-0095D5?style=for-the-badge&logo=kotlin&logoColor=white)
+![Retrofit](https://img.shields.io/badge/Retrofit-4CAF50?style=for-the-badge&logo=android&logoColor=white)
+![Kotlin](https://img.shields.io/badge/Database-FF4081?style=for-the-badge&logo=android&logoColor=white)
+![Kotlin](https://img.shields.io/badge/Room-4CAF50?style=for-the-badge&logo=android&logoColor=white)
 
 #### 👉🏻 Android Developer 👨🏻‍💻
 
