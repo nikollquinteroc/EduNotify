@@ -2,27 +2,26 @@
 <br>
 <img align="center" src="https://i.imgur.com/e8A9vnU.png">
   <br>
-<h2>EduNotify, la aplicación que nació para mejorar la comunicación en las instituciones educativas.</h2>
+<h2>EduNotify: La Aplicación que Revoluciona la Comunicación en Instituciones Educativas</h2>
   
-### El objetivo principal de este proyecto es proporcionar una plataforma en donde, tanto los directivos de instituciones escolares, y padres de alumnos puedan fortalecer algo tan importante como la comunicación.
+### El objetivo principal de EduNotify es proporcionar una plataforma que fortalezca la comunicación entre directivos escolares y padres de alumnos. Esta herramienta está diseñada para modernizar y optimizar los métodos de comunicación en el ámbito educativo.
   
 </div>
 
 <p>
-Este proyecto está dirigido a:
+Dirigida a:
 
-<li>Instituciones escolares que quieran digitalizar la manera en que se comunican con los padres/tutores de los alumnos que asisten al establecimiento, fortaleciendo, optimizando y actualizando los metodos de comunicación.</li>
-<li>Padres/tutores que envían a sus hijos a las escuelas y esperan tener otro grado de comunicación con la institución escolar.</li>
+<li>Instituciones escolares: Que buscan digitalizar y mejorar la comunicación con padres y tutores, asegurando una interacción más eficaz y actualizada.</li>
+<li>Padres y tutores: Que desean una comunicación más directa y efectiva con la institución educativa de sus hijos.</li>
 <br><br>
 Características Principales
 
-<li>Diseñada para que la puedan descargar y utilizar sin problemas, tanto personal de la institución, como padres.</li>
-<li>Moderno diseño y seguridad robusta</li>
-<li>Intuitiva para las personas que no son muy amigas de la tecnología</li>
-<li>Gestión de Usuarios: Registro y autenticación de usuarios con roles de administrador, colaborador y usuario.</li>
-<li>Gestión de mensajes: Mensajes personalizados, pudiendo elegir los cursos a donde va destinado el mensaje</li>
-<li>Interfaz Amigable: Diseño intuitivo y responsive para una experiencia de usuario óptima en su dispositivo.</li>
-</p
+<li>Accesibilidad: Diseñada para ser descargada y utilizada fácilmente por personal de la institución y padres.</li>
+<li>Diseño Moderno y Seguridad Robusta: Garantizando una experiencia visual agradable y la protección de la información.</li>
+<li>Intuitiva: Pensada para usuarios con diferentes niveles de habilidades tecnológicas.</li>
+<li>Gestión de Usuarios: Registro y autenticación con roles de administrador, director, colaborador y usuario.</li>
+<li>Gestión de Mensajes: Permite enviar mensajes personalizados, dirigidos a cursos específicos, o a toda la institución.</li>
+</p>
 <br>
 </div>
 
