@@ -33,7 +33,7 @@ Características Principales
   <img style="width:700px;" src="https://i.imgur.com/cWSC8sF.jpeg">
   
   <br>
-  <img style="width:700px;" src="https://i.imgur.com/FqoOY3n.jpeg">
+  <img style="width:700px;" src="https://i.imgur.com/fAdRSrH.jpg">
   
  </div>
 <br><br>
