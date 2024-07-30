@@ -32,7 +32,7 @@ Características Principales
   <img style="width:700px;" src="https://i.imgur.com/LerC8qj.jpeg">
   <br>
   
-  <img style="width:700px;" src="https://i.imgur.com/cWSC8sF.jpeg">
+  <img style="width:700px;" src="https://i.imgur.com/FqoOY3n.jpg">
   
   <br>
   <img style="width:700px;" src="https://i.imgur.com/fAdRSrH.jpg">
