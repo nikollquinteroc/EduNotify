@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nocountry.edunotify.R
+import com.nocountry.edunotify.domain.model.AuthDomain
 import com.nocountry.edunotify.ui.components.BottomNavigationBar
 import com.nocountry.edunotify.ui.components.ButtonComponent
 import com.nocountry.edunotify.ui.components.CircleButtonComponent
@@ -31,7 +32,11 @@ import com.nocountry.edunotify.ui.navigation.Destinations
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
 @Composable
-fun ProfileScreen(navController: NavHostController, onBackClicked: () -> Unit) {
+fun ProfileScreen(
+    navController: NavHostController,
+    onBackClicked: () -> Unit,
+    authDomain: AuthDomain
+) {
     Scaffold(
         topBar = {
             TopAppBarComponent(
@@ -45,7 +50,7 @@ fun ProfileScreen(navController: NavHostController, onBackClicked: () -> Unit) {
                 actions = null
             )
         },
-        bottomBar = { BottomNavigationBar(navController) }
+        bottomBar = { BottomNavigationBar(navController, authDomain) }
     ) {
         LazyColumn(
             modifier = Modifier
@@ -55,17 +60,17 @@ fun ProfileScreen(navController: NavHostController, onBackClicked: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
-                ProfileFields(navController = navController)
+                ProfileFields(navController = navController, authDomain = authDomain)
             }
         }
     }
 }
 
 @Composable
-fun ProfileFields(navController: NavHostController) {
-    var name by rememberSaveable { mutableStateOf("Nikoll Daiana") }
-    var lastName by rememberSaveable { mutableStateOf("Quintero Chavez") }
-    var phone by rememberSaveable { mutableStateOf("+57 3057678939") }
+fun ProfileFields(navController: NavHostController, authDomain: AuthDomain) {
+    var name by rememberSaveable { mutableStateOf(authDomain.user?.name ?: "") }
+    var lastName by rememberSaveable { mutableStateOf(authDomain.user?.lastName ?: "") }
+    var phone by rememberSaveable { mutableStateOf(authDomain.user?.phone ?: "") }
 
     var isNameEmpty by rememberSaveable { mutableStateOf(false) }
     var isLastNameEmpty by rememberSaveable { mutableStateOf(false) }
@@ -185,6 +190,10 @@ fun ProfileFields(navController: NavHostController) {
 @Composable
 fun ProfileScreenPreview() {
     EduNotifyTheme {
-        ProfileScreen(navController = rememberNavController(), onBackClicked = {})
+        ProfileScreen(
+            navController = rememberNavController(),
+            onBackClicked = {},
+            authDomain = AuthDomain(jwt = "", user = null)
+        )
     }
 }

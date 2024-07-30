@@ -160,7 +160,7 @@ fun CoursesList(
                 ) {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
-                            text = "Year: ${yearDomain.year}",
+                            text = "Año: ${yearDomain.year}",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(start = 16.dp, top = 10.dp),

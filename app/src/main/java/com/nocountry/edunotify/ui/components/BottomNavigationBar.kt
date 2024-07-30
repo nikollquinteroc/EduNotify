@@ -34,6 +34,7 @@ import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 @Composable
 fun BottomNavigationBar(
     navController: NavHostController,
+    authDomain: AuthDomain,
     modifier: Modifier = Modifier
 ) {
 
@@ -66,7 +67,8 @@ fun BottomNavigationBar(
                 icon = R.drawable.profile_icon,
                 name = R.string.bottom_profile_bar,
                 onClick = {
-                    navController.navigate(Destinations.PROFILE_ROUTE) {
+                    val authDomainJson = Gson().toJson(authDomain)
+                    navController.navigate("${Destinations.PROFILE_ROUTE}/$authDomainJson") {
                         popUpTo(Destinations.PROFILE_ROUTE) { inclusive = true }
                     }
                 }
@@ -118,7 +120,7 @@ fun BottomNavigationBarItem(
 fun BottomNavigationBarPreview() {
     EduNotifyTheme {
         BottomNavigationBar(
-            navController = rememberNavController(),
+            navController = rememberNavController(), authDomain = AuthDomain(jwt = "", user = null)
         )
     }
 }

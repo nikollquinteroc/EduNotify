@@ -34,7 +34,7 @@
     <string name="no_notifications_message">Agrega un curso para empezar a recibir mensajes</string>
 
     <!-- Courses-->
-    <string name="bottom_add_courses">Agregar curs</string>
+    <string name="bottom_add_courses">Agregar curso</string>
     <string name="courses">Cursos</string>
 
     <!--Bottom Bar -->

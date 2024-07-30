@@ -21,6 +21,7 @@ import com.nocountry.edunotify.ui.navigation.Destinations.NOTIFICATIONS_AUTH_DOM
 import com.nocountry.edunotify.ui.navigation.Destinations.NOTIFICATIONS_ROUTE
 import com.nocountry.edunotify.ui.navigation.Destinations.NOTIFICATION_DETAIL_ROUTE
 import com.nocountry.edunotify.ui.navigation.Destinations.NOTIFICATION_ID
+import com.nocountry.edunotify.ui.navigation.Destinations.PROFILE_ROUTE
 import com.nocountry.edunotify.ui.navigation.Destinations.REGISTER_ROUTE
 import com.nocountry.edunotify.ui.navigation.Destinations.SCHOOL_ID
 import com.nocountry.edunotify.ui.navigation.Destinations.TAB_LOGIN_REGISTER
@@ -124,10 +125,23 @@ fun EduNotifyApp(navController: NavHostController = rememberNavController()) {
                     onBackClicked = { navController.navigateUp() },
                 )
             }
-            composable(route = Destinations.PROFILE_ROUTE) {
+            composable(
+                route = "${PROFILE_ROUTE}/{${NOTIFICATIONS_AUTH_DOMAIN}}",
+                arguments = listOf(navArgument(NOTIFICATIONS_AUTH_DOMAIN) { type = NavType.StringType } )
+            ) {backStackEntry ->
+
+                val authDomainJson = backStackEntry.arguments?.getString(Destinations.NOTIFICATIONS_AUTH_DOMAIN)
+                val authDomain = if (authDomainJson != null) {
+                    Gson().fromJson(authDomainJson, AuthDomain::class.java)
+                } else {
+                    AuthDomain(jwt = "", user = null)
+                }
+
                 ProfileScreen(
                     navController = navController,
-                    onBackClicked = { navController.navigateUp() })
+                    onBackClicked = { navController.navigateUp() },
+                    authDomain = authDomain
+                )
             }
             composable(
                 route = "${Destinations.COURSES_ROUTE}/{${SCHOOL_ID}}",

@@ -65,7 +65,7 @@ fun NotificationsScreen(
                 actions = { },
             )
         },
-        bottomBar = { BottomNavigationBar(navController) },
+        bottomBar = { BottomNavigationBar(navController, authDomain) },
         floatingActionButton = {
             AddNewCourse(schoolId = authDomain.user?.school ?: 0, onPlusClicked = onPlusClicked)
         }
