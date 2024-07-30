@@ -1,7 +1,7 @@
 <div align="center">
 <br>
-<img align="center" src="https://i.imgur.com/LerC8qj.jpeg">
-<br>
+<img align="center" src="https://i.imgur.com/e8A9vnU.png">
+  <br>
 <h2>EduNotify, la aplicación que nació para mejorar la comunicación en las instituciones educativas.</h2>
   
 ### El objetivo principal de este proyecto es proporcionar una plataforma en donde, tanto los directivos de instituciones escolares, y padres de alumnos puedan fortalecer algo tan importante como la comunicación.
@@ -27,7 +27,9 @@ Características Principales
 </div>
 
 <div align="center">
+   <br>
   
+  <img style="width:700px;" src="https://i.imgur.com/LerC8qj.jpeg">
   <br>
   
   <img style="width:700px;" src="https://i.imgur.com/cWSC8sF.jpeg">
