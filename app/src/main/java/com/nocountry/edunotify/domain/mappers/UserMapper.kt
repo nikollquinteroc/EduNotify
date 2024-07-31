@@ -13,7 +13,7 @@ class UserMapper(private val courseMapper: CourseMapper) {
             email = userResponse.email,
             phone = userResponse.phone,
             role = userResponse.role,
-            school = userResponse.school,
+            schoolId = userResponse.school,
             courses = userResponse.courses?.map { courseResponse ->
                 courseMapper.mapCourseResponseToCourseDomain(
                     courseResponse

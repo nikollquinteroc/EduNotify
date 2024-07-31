@@ -1,6 +1,5 @@
 package com.nocountry.edunotify.ui.components
 
-import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.google.gson.Gson
 import com.nocountry.edunotify.R
 import com.nocountry.edunotify.ui.navigation.Destinations
 import com.nocountry.edunotify.ui.screens.login.LoginScreen
@@ -97,8 +95,7 @@ fun TabsContent(
             0 -> {
                 LoginScreen(
                     navigateToNotifications = { authDomain ->
-                        val json = Uri.encode(Gson().toJson(authDomain))
-                        navController.navigate("${Destinations.NOTIFICATIONS_ROUTE}/$json") {
+                        navController.navigate("${Destinations.NOTIFICATIONS_ROUTE}/${authDomain.user?.id}") {
                             popUpTo(Destinations.LOGIN_ROUTE) { inclusive = true }
                             launchSingleTop = true
                         }
@@ -109,8 +106,7 @@ fun TabsContent(
             1 -> {
                 RegisterScreen(
                     navigateToNotifications = { authDomain ->
-                        val json = Uri.encode(Gson().toJson(authDomain))
-                        navController.navigate("${Destinations.NOTIFICATIONS_ROUTE}/$json") {
+                        navController.navigate("${Destinations.NOTIFICATIONS_ROUTE}/${authDomain.user?.id}") {
                             popUpTo(Destinations.REGISTER_ROUTE) { inclusive = true }
                             launchSingleTop = true
                         }

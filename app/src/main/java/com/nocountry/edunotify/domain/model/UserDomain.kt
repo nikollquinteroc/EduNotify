@@ -11,6 +11,6 @@ data class UserDomain(
     val email: String,
     val phone: String,
     val role: String,
-    val school: Int,
+    val schoolId: Int,
     val courses: List<CourseDomain>?
 ): Parcelable

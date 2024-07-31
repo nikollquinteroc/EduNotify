@@ -27,18 +27,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.gson.Gson
 import com.nocountry.edunotify.R
-import com.nocountry.edunotify.domain.model.AuthDomain
+import com.nocountry.edunotify.domain.model.UserDomain
 import com.nocountry.edunotify.ui.navigation.Destinations
+import com.nocountry.edunotify.ui.screens.notifications.fakeUserDomain
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
 @Composable
 fun BottomNavigationBar(
     navController: NavHostController,
-    authDomain: AuthDomain,
+    userDomain: UserDomain,
     modifier: Modifier = Modifier
 ) {
-
-
     BottomAppBar(
         modifier = modifier,
         containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -52,9 +51,9 @@ fun BottomNavigationBar(
                 icon = R.drawable.notifications_icon,
                 name = R.string.bottom_notification_bar,
                 onClick = {
-                    navController.navigate(Destinations.NOTIFICATIONS_ROUTE) {
+                    navController.navigate("${Destinations.NOTIFICATIONS_ROUTE}/${userDomain.id}") {
                         // Aquí podrías ajustar cómo manejas el stack para notificaciones
-                        popUpTo(Destinations.NOTIFICATIONS_ROUTE) { inclusive = true }
+                        //popUpTo(Destinations.NOTIFICATIONS_ROUTE) { inclusive = true }
                     }
                 }
             )
@@ -67,8 +66,8 @@ fun BottomNavigationBar(
                 icon = R.drawable.profile_icon,
                 name = R.string.bottom_profile_bar,
                 onClick = {
-                    val authDomainJson = Gson().toJson(authDomain)
-                    navController.navigate("${Destinations.PROFILE_ROUTE}/$authDomainJson") {
+                    val userDomainJson = Gson().toJson(userDomain)
+                    navController.navigate("${Destinations.PROFILE_ROUTE}/$userDomainJson") {
                         popUpTo(Destinations.PROFILE_ROUTE) { inclusive = true }
                     }
                 }
@@ -120,7 +119,8 @@ fun BottomNavigationBarItem(
 fun BottomNavigationBarPreview() {
     EduNotifyTheme {
         BottomNavigationBar(
-            navController = rememberNavController(), authDomain = AuthDomain(jwt = "", user = null)
+            navController = rememberNavController(),
+            userDomain = fakeUserDomain
         )
     }
 }

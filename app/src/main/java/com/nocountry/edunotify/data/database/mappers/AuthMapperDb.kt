@@ -27,6 +27,43 @@ class AuthMapperDb {
         )
     }
 
+    fun mapUserEntityToUserDomain(userEntity: UserEntity): UserDomain {
+        return UserDomain(
+            id = userEntity.id,
+            name = userEntity.name,
+            lastName = userEntity.lastName,
+            email = userEntity.email,
+            phone = userEntity.phone,
+            role = userEntity.role,
+            schoolId = userEntity.school,
+            courses = userEntity.courses.map { courseEntity ->
+                mapCourseEntityToCourseDomain(courseEntity)
+            }
+        )
+    }
+
+    private fun mapCourseEntityToCourseDomain(courseEntity: CourseEntity): CourseDomain {
+        return CourseDomain(
+            course = courseEntity.course,
+            courseId = courseEntity.courseId,
+            notifications = courseEntity.notifications.map { notificationEntity ->
+                mapNotificationEntityToNotificationDomain(notificationEntity)
+
+            }
+        )
+    }
+
+    private fun mapNotificationEntityToNotificationDomain(notificationEntity: NotificationEntity): NotificationDomain {
+        return NotificationDomain(
+            messageId = notificationEntity.messageId,
+            messageDate = notificationEntity.messageDate,
+            author = notificationEntity.author,
+            title = notificationEntity.title,
+            message = notificationEntity.message,
+            expiration = notificationEntity.expiration
+        )
+    }
+
     private fun mapUserDomainToUserEntity(userDomain: UserDomain): UserEntity {
         return UserEntity(
             id = userDomain.id,
@@ -35,7 +72,7 @@ class AuthMapperDb {
             email = userDomain.email,
             phone = userDomain.phone,
             role = userDomain.role,
-            school = userDomain.school,
+            school = userDomain.schoolId,
             courses = userDomain.courses?.map { mapCourseDomainToCourseEntity(it) } ?: emptyList()
         )
     }

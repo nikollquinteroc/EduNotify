@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("kotlin-android")
     id("kotlin-parcelize")
+    id("kotlin-kapt")
 }
 
 android {
@@ -81,7 +82,8 @@ dependencies {
 
     //Room Database
     implementation(libs.androidx.room.runtime)
-    annotationProcessor(libs.androidx.room.compiler)
+    kapt(libs.androidx.room.compiler)
+    //annotationProcessor(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
     //Debugging

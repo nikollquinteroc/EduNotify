@@ -25,6 +25,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -47,7 +48,8 @@ import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 @Composable
 fun RegisterScreen(
     navigateToNotifications: (AuthDomain) -> Unit,
-    registerViewModel: RegisterViewModel = viewModel(factory = RegisterViewModel.provideFactory())
+    registerViewModel: RegisterViewModel = viewModel(factory = RegisterViewModel.provideFactory(
+        LocalContext.current))
 ) {
     val registerUiState by registerViewModel.uiState.collectAsState()
 

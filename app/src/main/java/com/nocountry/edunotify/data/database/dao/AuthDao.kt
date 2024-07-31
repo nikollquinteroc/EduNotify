@@ -17,10 +17,4 @@ interface AuthDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(authEntity: AuthEntity)
-
-    @Delete
-    fun delete(authEntity: AuthEntity)
-
-    @Update
-    fun update(authEntity: AuthEntity)
 }

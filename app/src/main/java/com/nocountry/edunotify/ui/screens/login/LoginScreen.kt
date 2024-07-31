@@ -35,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -58,7 +59,7 @@ import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 fun LoginScreen(
     navigateToNotifications: (AuthDomain) -> Unit,
     onRegisterClicked: () -> Unit,
-    loginViewModel: LoginViewModel = viewModel(factory = LoginViewModel.provideFactory())
+    loginViewModel: LoginViewModel = viewModel(factory = LoginViewModel.provideFactory(LocalContext.current))
 ) {
     val loginUiState by loginViewModel.uiState.collectAsState()
 
@@ -96,8 +97,8 @@ fun LoginForm(
     errorMessageFromServer: String,
     onRegisterClicked: () -> Unit
 ) {
-    var mail by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
+    var mail by rememberSaveable { mutableStateOf("nikoll@gmail.com") }
+    var password by rememberSaveable { mutableStateOf("1234") }
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
     var errorMessage by rememberSaveable { mutableStateOf(errorMessageFromServer) }
 

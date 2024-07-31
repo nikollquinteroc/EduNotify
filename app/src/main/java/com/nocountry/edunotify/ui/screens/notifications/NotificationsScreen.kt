@@ -22,23 +22,28 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nocountry.edunotify.R
-import com.nocountry.edunotify.domain.model.AuthDomain
 import com.nocountry.edunotify.domain.model.CourseDomain
 import com.nocountry.edunotify.domain.model.NotificationDomain
 import com.nocountry.edunotify.domain.model.UserDomain
@@ -48,14 +53,43 @@ import com.nocountry.edunotify.ui.components.SpacerComponent
 import com.nocountry.edunotify.ui.components.TopAppBarComponent
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
+val fakeUserDomain = UserDomain(
+    id = 0,
+    name = "Fake name",
+    lastName = "Fake last name",
+    email = "kake@gmail.com",
+    phone = "Fake phone",
+    role = "Fake role",
+    schoolId = 0,
+    courses = null
+)
+
 @Composable
 fun NotificationsScreen(
-    onPlusClicked: (Int) -> Unit,
-    onNotificationClicked: (Int) -> Unit,
-    authDomain: AuthDomain,
-    navController: NavHostController
+    onSubscribeToANewCourse: (Int) -> Unit,
+    onGoToNotificationDetail: (NotificationDomain) -> Unit,
+    userId: Int,
+    viewModel: NotificationsViewModel = viewModel(
+        factory = NotificationsViewModel.provideFactory(
+            LocalContext.current
+        )
+    ),
+    navController: NavHostController,
 ) {
-    val courses by rememberSaveable { mutableStateOf(authDomain.user?.courses) }
+    val notificationUiState by viewModel.uiState.collectAsState()
+    val userDomain = notificationUiState.notificationUI.userDomain ?: fakeUserDomain
+
+    val updateNotificationDomainDataFromDb by rememberUpdatedState {
+        viewModel.getUserById(userId)
+    }
+
+    // Usa LaunchedEffect para añadir un listener del ciclo de vida
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(lifecycleOwner) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            updateNotificationDomainDataFromDb()
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -65,9 +99,12 @@ fun NotificationsScreen(
                 actions = { },
             )
         },
-        bottomBar = { BottomNavigationBar(navController, authDomain) },
+        bottomBar = { BottomNavigationBar(navController, userDomain) },
         floatingActionButton = {
-            AddNewCourse(schoolId = authDomain.user?.school ?: 0, onPlusClicked = onPlusClicked)
+            AddNewCourse(
+                schoolId = userDomain.schoolId,
+                onSubscribeToANewCourse = onSubscribeToANewCourse
+            )
         }
     ) {
         Box(
@@ -75,10 +112,10 @@ fun NotificationsScreen(
                 .padding(it)
                 .fillMaxSize(),
         ) {
-            if (courses.isNullOrEmpty().not()) {
+            if (userDomain.courses.isNullOrEmpty().not()) {
                 CoursesSectionList(
-                    courses = courses,
-                    onNotificationClicked = onNotificationClicked
+                    courses = userDomain.courses,
+                    onGoToNotificationDetail = onGoToNotificationDetail
                 )
             } else {
                 CourseEmptyList(
@@ -93,37 +130,43 @@ fun NotificationsScreen(
 @Composable
 fun CoursesSectionList(
     courses: List<CourseDomain>?,
-    onNotificationClicked: (Int) -> Unit
+    onGoToNotificationDetail: (NotificationDomain) -> Unit
 ) {
     LazyColumn {
         items(courses!!) { courseDomain ->
             CourseSection(
                 courseDomain = courseDomain,
-                onNotificationClicked = onNotificationClicked
+                onGoToNotificationDetail = onGoToNotificationDetail
             )
         }
     }
 }
 
 @Composable
-fun CourseSection(courseDomain: CourseDomain, onNotificationClicked: (Int) -> Unit) {
+fun CourseSection(
+    courseDomain: CourseDomain,
+    onGoToNotificationDetail: (NotificationDomain) -> Unit
+) {
     Column {
         Text(
             text = courseDomain.course,
             modifier = Modifier.padding(start = 15.dp, top = 10.dp)
         )
-        CoursesCardList(notifications = courseDomain.notifications, onNotificationClicked)
+        CoursesCardList(notifications = courseDomain.notifications, onGoToNotificationDetail)
     }
 }
 
 @Composable
-fun CoursesCardList(notifications: List<NotificationDomain>, onNotificationClicked: (Int) -> Unit) {
+fun CoursesCardList(
+    notifications: List<NotificationDomain>,
+    onGoToNotificationDetail: (NotificationDomain) -> Unit
+) {
     LazyRow {
         items(notifications) { notification ->
             CourseCard(
                 notification = notification,
                 modifier = Modifier.padding(10.dp),
-                onNotificationClicked = onNotificationClicked
+                onGoToNotificationDetail = onGoToNotificationDetail
             )
         }
     }
@@ -132,14 +175,14 @@ fun CoursesCardList(notifications: List<NotificationDomain>, onNotificationClick
 @Composable
 fun CourseCard(
     notification: NotificationDomain,
-    onNotificationClicked: (Int) -> Unit,
+    onGoToNotificationDetail: (NotificationDomain) -> Unit,
     modifier: Modifier = Modifier
 ) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         modifier = modifier
             .shadow(4.dp, shape = RoundedCornerShape(8.dp))
-            .clickable { onNotificationClicked(notification.messageId) }
+            .clickable { onGoToNotificationDetail(notification) }
             .width(200.dp)
             .height(200.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
@@ -205,11 +248,15 @@ fun CourseEmptyList(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun AddNewCourse(onPlusClicked: (Int) -> Unit, modifier: Modifier = Modifier, schoolId: Int) {
+fun AddNewCourse(
+    onSubscribeToANewCourse: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    schoolId: Int
+) {
     Row(modifier = modifier.padding(bottom = 25.dp)) {
         SpacerComponent(modifier = Modifier.weight(1f))
         CircleButtonComponent(
-            onClick = { onPlusClicked(schoolId) },
+            onClick = { onSubscribeToANewCourse(schoolId) },
             icon = R.drawable.plus,
             size = 60.dp
         )
@@ -222,10 +269,11 @@ fun AddNewCourse(onPlusClicked: (Int) -> Unit, modifier: Modifier = Modifier, sc
 fun HomeScreenPreview() {
     EduNotifyTheme {
         NotificationsScreen(
-            onPlusClicked = {},
-            onNotificationClicked = {},
+            onSubscribeToANewCourse = {},
+            onGoToNotificationDetail = {},
             navController = rememberNavController(),
-            authDomain = AuthDomain(
+            userId = 0
+            /*authDomain = AuthDomain(
                 jwt = "fsdg", user = UserDomain(
                     id = 1,
                     name = "Nikoll",
@@ -233,7 +281,7 @@ fun HomeScreenPreview() {
                     email = "nikoll@gmail.com",
                     phone = "32456433",
                     role = "USUARIO",
-                    school = 1,
+                    schoolId = 1,
                     courses = listOf(
                         CourseDomain(
                             course = "Sala Roja",
@@ -289,7 +337,7 @@ fun HomeScreenPreview() {
                         )
                     )
                 )
-            )
+            )*/
         )
     }
 }

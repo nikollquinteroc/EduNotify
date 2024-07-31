@@ -16,7 +16,7 @@ import com.nocountry.edunotify.data.database.entities.UserEntity
     entities = [AuthEntity::class, UserEntity::class, CourseEntity::class, NotificationEntity::class],
     version = 1
 )
-@TypeConverters(CourseResponseConverter::class, NotificationResponseConverter::class)
+@TypeConverters(UserTypeConverter::class, CourseResponseConverter::class, NotificationResponseConverter::class, ListTypeConverter::class)
 abstract class EduNotifyRoomDatabase : RoomDatabase() {
     abstract fun getUserDao(): UserDao
     abstract fun getAuthDao(): AuthDao

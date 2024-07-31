@@ -1,9 +1,11 @@
 package com.nocountry.edunotify.ui.screens.register
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.nocountry.edunotify.data.api.RetrofitServiceFactory
+import com.nocountry.edunotify.data.database.EduNotifyRoomDatabase
 import com.nocountry.edunotify.data.database.mappers.AuthMapperDb
 import com.nocountry.edunotify.data.repository.auth.AuthRepositoryImpl
 import com.nocountry.edunotify.data.repository.school.SchoolRepositoryImpl
@@ -18,11 +20,13 @@ import com.nocountry.edunotify.domain.mappers.UserMapper
 import com.nocountry.edunotify.domain.mappers.YearMapper
 import com.nocountry.edunotify.domain.repositories.AuthRepository
 import com.nocountry.edunotify.domain.repositories.SchoolRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 data class RegisterUiState(
     val isLoading: Boolean = false,
@@ -79,16 +83,18 @@ class RegisterViewModel(
 
         viewModelScope.launch {
             try {
-                authRepository.register(name, lastName, email, password, phone, school)
-                    .collect { authDomain ->
-                        _uiState.update {
-                            val registerUI = it.registerUI.copy(authDomain = authDomain)
-                            it.copy(
-                                isLoading = false,
-                                registerUI = registerUI
-                            )
+                withContext(Dispatchers.IO) {
+                    authRepository.register(name, lastName, email, password, phone, school)
+                        .collect { authDomain ->
+                            _uiState.update {
+                                val registerUI = it.registerUI.copy(authDomain = authDomain)
+                                it.copy(
+                                    isLoading = false,
+                                    registerUI = registerUI
+                                )
+                            }
                         }
-                    }
+                }
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(
@@ -101,24 +107,32 @@ class RegisterViewModel(
     }
 
     companion object {
-        fun provideFactory(): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                val service = RetrofitServiceFactory.makeRetrofitService()
+        fun provideFactory(context: Context): ViewModelProvider.Factory =
+            object : ViewModelProvider.Factory {
+                @Suppress("UNCHECKED_CAST")
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    val service = RetrofitServiceFactory.makeRetrofitService()
 
-                return RegisterViewModel(
-                    AuthRepositoryImpl(
-                        service = service,
-                        authMapper = AuthMapper(UserMapper(CourseMapper(NotificationMapper()))),
-                        authMapperDb = AuthMapperDb()
-                    ),
-                    SchoolRepositoryImpl(
-                        service = service,
-                        schoolMapper = SchoolMapper(),
-                        schoolInfoMapper = SchoolInfoMapper(LevelMapper(YearMapper(CourseInfoMapper())))
-                    )
-                ) as T
+                    return RegisterViewModel(
+                        AuthRepositoryImpl(
+                            service = service,
+                            authMapper = AuthMapper(UserMapper(CourseMapper(NotificationMapper()))),
+                            authMapperDb = AuthMapperDb(),
+                            userDao = EduNotifyRoomDatabase.getDatabase(context).getUserDao()
+                        ),
+                        SchoolRepositoryImpl(
+                            service = service,
+                            schoolMapper = SchoolMapper(),
+                            schoolInfoMapper = SchoolInfoMapper(
+                                LevelMapper(
+                                    YearMapper(
+                                        CourseInfoMapper()
+                                    )
+                                )
+                            )
+                        )
+                    ) as T
+                }
             }
-        }
     }
 }

@@ -7,6 +7,7 @@ import com.nocountry.edunotify.ui.navigation.EduNotifyApp
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

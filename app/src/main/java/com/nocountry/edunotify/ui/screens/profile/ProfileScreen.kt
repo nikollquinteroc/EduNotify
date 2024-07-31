@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nocountry.edunotify.R
-import com.nocountry.edunotify.domain.model.AuthDomain
+import com.nocountry.edunotify.domain.model.UserDomain
 import com.nocountry.edunotify.ui.components.BottomNavigationBar
 import com.nocountry.edunotify.ui.components.ButtonComponent
 import com.nocountry.edunotify.ui.components.CircleButtonComponent
@@ -29,13 +29,14 @@ import com.nocountry.edunotify.ui.components.TextFieldComponent
 import com.nocountry.edunotify.ui.components.TextFieldEmpty
 import com.nocountry.edunotify.ui.components.TopAppBarComponent
 import com.nocountry.edunotify.ui.navigation.Destinations
+import com.nocountry.edunotify.ui.screens.notifications.fakeUserDomain
 import com.nocountry.edunotify.ui.theme.EduNotifyTheme
 
 @Composable
 fun ProfileScreen(
     navController: NavHostController,
     onBackClicked: () -> Unit,
-    authDomain: AuthDomain
+    userDomain: UserDomain
 ) {
     Scaffold(
         topBar = {
@@ -50,7 +51,7 @@ fun ProfileScreen(
                 actions = null
             )
         },
-        bottomBar = { BottomNavigationBar(navController, authDomain) }
+        bottomBar = { BottomNavigationBar(navController, userDomain) }
     ) {
         LazyColumn(
             modifier = Modifier
@@ -60,17 +61,17 @@ fun ProfileScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
-                ProfileFields(navController = navController, authDomain = authDomain)
+                ProfileFields(navController = navController, userDomain = userDomain)
             }
         }
     }
 }
 
 @Composable
-fun ProfileFields(navController: NavHostController, authDomain: AuthDomain) {
-    var name by rememberSaveable { mutableStateOf(authDomain.user?.name ?: "") }
-    var lastName by rememberSaveable { mutableStateOf(authDomain.user?.lastName ?: "") }
-    var phone by rememberSaveable { mutableStateOf(authDomain.user?.phone ?: "") }
+fun ProfileFields(navController: NavHostController, userDomain: UserDomain) {
+    var name by rememberSaveable { mutableStateOf(userDomain.name) }
+    var lastName by rememberSaveable { mutableStateOf(userDomain.lastName) }
+    var phone by rememberSaveable { mutableStateOf(userDomain.phone) }
 
     var isNameEmpty by rememberSaveable { mutableStateOf(false) }
     var isLastNameEmpty by rememberSaveable { mutableStateOf(false) }
@@ -193,7 +194,7 @@ fun ProfileScreenPreview() {
         ProfileScreen(
             navController = rememberNavController(),
             onBackClicked = {},
-            authDomain = AuthDomain(jwt = "", user = null)
+            userDomain = fakeUserDomain
         )
     }
 }
