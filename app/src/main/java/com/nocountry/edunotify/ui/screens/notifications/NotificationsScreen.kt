@@ -59,7 +59,7 @@ val fakeUserDomain = UserDomain(
     lastName = "Fake last name",
     email = "kake@gmail.com",
     phone = "Fake phone",
-    role = "Fake role",
+    role = "COLABORADOR",
     schoolId = 0,
     courses = null
 )
@@ -207,7 +207,7 @@ fun CourseCard(
                         .fillMaxWidth()
                 )
                 Text(
-                    text = "Expira en ${notification.expiration} semanas",
+                    text = "Expira en ${notification.expiration} días",
                     textAlign = TextAlign.End,
                     style = MaterialTheme.typography.labelLarge,
                     modifier = Modifier

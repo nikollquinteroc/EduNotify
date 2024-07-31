@@ -11,4 +11,12 @@ interface NotificationRepository {
         expiration: Int,
         courseId: Int,
     ): Flow<String>
+
+    suspend fun createNotificationMessageForSchool(
+        author: String,
+        title: String,
+        message: String,
+        expiration: Int,
+        schoolId: Int,
+    ): Flow<String>
 }

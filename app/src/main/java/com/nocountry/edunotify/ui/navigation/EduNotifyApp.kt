@@ -16,6 +16,7 @@ import com.nocountry.edunotify.domain.model.NotificationDomain
 import com.nocountry.edunotify.domain.model.UserDomain
 import com.nocountry.edunotify.ui.components.TabRowComponent
 import com.nocountry.edunotify.ui.navigation.Destinations.LOGIN_ROUTE
+import com.nocountry.edunotify.ui.navigation.Destinations.NEW_NOTIFICATIONS_ROUTE
 import com.nocountry.edunotify.ui.navigation.Destinations.NOTIFICATIONS_ROUTE
 import com.nocountry.edunotify.ui.navigation.Destinations.NOTIFICATION_DETAIL_ROUTE
 import com.nocountry.edunotify.ui.navigation.Destinations.NOTIFICATION_DOMAIN_DETAIL
@@ -28,6 +29,7 @@ import com.nocountry.edunotify.ui.navigation.Destinations.USER_ID
 import com.nocountry.edunotify.ui.screens.courses.CoursesScreen
 import com.nocountry.edunotify.ui.screens.detail.NotificationDetailScreen
 import com.nocountry.edunotify.ui.screens.login.LoginScreen
+import com.nocountry.edunotify.ui.screens.new_notification.CreateNotificationScreen
 import com.nocountry.edunotify.ui.screens.notifications.NotificationsScreen
 import com.nocountry.edunotify.ui.screens.profile.ProfileScreen
 import com.nocountry.edunotify.ui.screens.register.RegisterScreen
@@ -138,6 +140,21 @@ fun EduNotifyApp(navController: NavHostController = rememberNavController()) {
                     schoolId = schoolId,
                     userId = userId,
                     onAddCoursesClicked = { navController.navigate("$NOTIFICATIONS_ROUTE/$userId") })
+            }
+            composable(
+                "${NEW_NOTIFICATIONS_ROUTE}/{${USER_DOMAIN}}",
+                arguments = listOf(navArgument(USER_DOMAIN) {
+                    type = NavType.StringType
+                })
+            ) { backStackEntry ->
+                val userDomainJson =
+                    requireNotNull(backStackEntry.arguments?.getString(USER_DOMAIN))
+                val userDomain = Gson().fromJson(userDomainJson, UserDomain::class.java)
+                CreateNotificationScreen(
+                    navController = navController,
+                    onBackClicked = { navController.navigateUp() },
+                    userDomain = userDomain
+                )
             }
         }
     }

@@ -58,6 +58,14 @@ interface RetrofitService {
         @Query("expiration") expiration: Int,
         @Path("cursoId") cursoId: Int
     )
+    @POST("message/newMessageSchool/{schoolId}")
+    suspend fun createNewMessageSchool(
+        @Query("author") author: String,
+        @Query("title") title: String,
+        @Query("message") message: String,
+        @Query("expiration") expiration: Int,
+        @Path("schoolId") schoolId: Int
+    )
 
     @POST("user/new/course/{idUser}/{idCourse}")
     suspend fun assignCourseToUser(

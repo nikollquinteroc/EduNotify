@@ -20,7 +20,24 @@ class NotificationsRepositoryImpl(private val service: RetrofitService) : Notifi
             expiration = expiration,
             cursoId = courseId
         )
-        return flowOf("Notification message was sent successfully!")
+        return flowOf("Notification message for course was sent successfully!")
+    }
+
+    override suspend fun createNotificationMessageForSchool(
+        author: String,
+        title: String,
+        message: String,
+        expiration: Int,
+        schoolId: Int
+    ): Flow<String> {
+        service.createNewMessageSchool(
+            author = author,
+            title = title,
+            message = message,
+            expiration = expiration,
+            schoolId = schoolId
+        )
+        return flowOf("Notification message for school was sent successfully!")
     }
 
 }

@@ -2,6 +2,7 @@ package com.nocountry.edunotify.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -21,12 +22,15 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.gson.Gson
 import com.nocountry.edunotify.R
+import com.nocountry.edunotify.data.utils.UserRole
 import com.nocountry.edunotify.domain.model.UserDomain
 import com.nocountry.edunotify.ui.navigation.Destinations
 import com.nocountry.edunotify.ui.screens.notifications.fakeUserDomain
@@ -51,10 +55,7 @@ fun BottomNavigationBar(
                 icon = R.drawable.notifications_icon,
                 name = R.string.bottom_notification_bar,
                 onClick = {
-                    navController.navigate("${Destinations.NOTIFICATIONS_ROUTE}/${userDomain.id}") {
-                        // Aquí podrías ajustar cómo manejas el stack para notificaciones
-                        //popUpTo(Destinations.NOTIFICATIONS_ROUTE) { inclusive = true }
-                    }
+                    navController.navigate("${Destinations.NOTIFICATIONS_ROUTE}/${userDomain.id}")
                 }
             )
             VerticalDivider(
@@ -62,6 +63,23 @@ fun BottomNavigationBar(
                 thickness = 2.dp,
                 modifier = Modifier.fillMaxHeight()
             )
+            if (userDomain.role == UserRole.COLABORADOR) {
+                BottomNavigationBarItem(
+                    icon = R.drawable.document_icon,
+                    name = R.string.bottom_new_notification,
+                    onClick = {
+                        val userDomainJson = Gson().toJson(userDomain)
+                        navController.navigate("${Destinations.NEW_NOTIFICATIONS_ROUTE}/$userDomainJson") {
+                            popUpTo(Destinations.PROFILE_ROUTE) { inclusive = true }
+                        }
+                    }
+                )
+                VerticalDivider(
+                    color = MaterialTheme.colorScheme.primary,
+                    thickness = 2.dp,
+                    modifier = Modifier.fillMaxHeight()
+                )
+            }
             BottomNavigationBarItem(
                 icon = R.drawable.profile_icon,
                 name = R.string.bottom_profile_bar,
@@ -86,10 +104,11 @@ fun BottomNavigationBarItem(
     IconButton(
         onClick = onClick,
         modifier = modifier
-            .width(200.dp)
-            .height(200.dp)
+            .width(100.dp)
+            .height(70.dp)
     ) {
         Column(
+            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -98,18 +117,26 @@ fun BottomNavigationBarItem(
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
                 modifier = Modifier
-                    .padding(1.dp)
                     .width(40.dp)
                     .height(40.dp),
                 contentScale = ContentScale.Fit
             )
-            Text(
-                text = stringResource(id = name),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.primary,
+            Box(
                 modifier = Modifier
-                    .height(20.dp)
-            )
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+            ) {
+                Text(
+                    text = stringResource(id = name),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodySmall.copy(fontSize = 13.sp),
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp),
+                    maxLines = 1
+                )
+            }
         }
     }
 }
