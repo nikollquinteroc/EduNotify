@@ -77,10 +77,11 @@ class NotificationsViewModel(
                     modelClass: Class<T>,
                     extras: CreationExtras
                 ): T {
+                    val service = RetrofitServiceFactory.makeRetrofitService()
                     val savedStateHandle = extras.createSavedStateHandle()
                     return NotificationsViewModel(
                         AuthRepositoryImpl(
-                            service = RetrofitServiceFactory.makeRetrofitService(),
+                            service = service,
                             authMapper = AuthMapper(UserMapper(CourseMapper(NotificationMapper()))),
                             authMapperDb = AuthMapperDb(),
                             userDao = EduNotifyRoomDatabase.getDatabase(context).getUserDao()

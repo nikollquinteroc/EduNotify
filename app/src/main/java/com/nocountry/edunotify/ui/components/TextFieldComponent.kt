@@ -34,6 +34,7 @@ fun TextFieldComponent(
     supportingText: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
     readOnly: Boolean = false,
+    modifier: Modifier = Modifier
 ) {
     Column {
         Text(text = stringResource(id = title), style = MaterialTheme.typography.bodySmall)

@@ -9,6 +9,7 @@ import com.nocountry.edunotify.data.api.model.schools.SchoolResponse
 import com.nocountry.edunotify.data.api.model.user.UserResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
@@ -57,7 +58,7 @@ interface RetrofitService {
         @Query("message") message: String,
         @Query("expiration") expiration: Int,
         @Path("cursoId") cursoId: Int
-    )
+    ): Response<Unit>
     @POST("message/newMessageSchool/{schoolId}")
     suspend fun createNewMessageSchool(
         @Query("author") author: String,
@@ -65,7 +66,7 @@ interface RetrofitService {
         @Query("message") message: String,
         @Query("expiration") expiration: Int,
         @Path("schoolId") schoolId: Int
-    )
+    ): Response<Unit>
 
     @POST("user/new/course/{idUser}/{idCourse}")
     suspend fun assignCourseToUser(

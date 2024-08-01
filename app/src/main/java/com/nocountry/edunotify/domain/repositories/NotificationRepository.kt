@@ -1,5 +1,6 @@
 package com.nocountry.edunotify.domain.repositories
 
+import com.nocountry.edunotify.domain.model.CourseDomain
 import kotlinx.coroutines.flow.Flow
 
 interface NotificationRepository {

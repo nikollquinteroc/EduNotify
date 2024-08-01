@@ -51,16 +51,9 @@ class CoursesViewModel(
         if (schoolId != null) {
             getSchoolInfo(schoolId)
         } else {
-            // Manejar el caso en que schoolId es nulo
-            // Podrías lanzar una excepción, mostrar un mensaje de error, o tomar una acción alternativa
             Log.e("CoursesViewModel", "School ID is null")
         }
     }
-    /*
-    init {
-        val schoolId: Int = checkNotNull(savedStateHandle[Destinations.SCHOOL_ID])
-        getSchoolInfo(schoolId)
-    }*/
 
     private fun getSchoolInfo(schoolId: Int) {
         _uiState.update { it.copy(isLoading = true) }

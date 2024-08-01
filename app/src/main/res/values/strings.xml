@@ -33,7 +33,10 @@
     <string name="title_label">Ingresa el título</string>
     <string name="message_label">Ingresa el mensaje</string>
     <string name="expiration_label">Ingresa la expiración en días</string>
-    <string name="select_school_or_course_create_notification_form">Mensaje nivel escuela o curso</string>
+    <string name="select_school_or_course_create_notification_form">Mensaje a nivel de escuela o curso?</string>
+    <string name="school_or_course_tag">Escuela o curso</string>
+    <string name="select_course_create_notification_form">Mensaje a nivel de curso</string>
+    <string name="course_tag">Elige un curso</string>
     <string name="create_notification_button">Crear anuncio</string>
 
     <!-- Profile-->
