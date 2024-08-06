@@ -37,46 +37,39 @@ import com.nocountry.edunotify.ui.screens.register.RegisterScreen
 @Composable
 fun EduNotifyApp(navController: NavHostController = rememberNavController()) {
     Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+        modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
     ) {
         NavHost(
-            navController = navController,
-            startDestination = TAB_LOGIN_REGISTER
+            navController = navController, startDestination = TAB_LOGIN_REGISTER
         ) {
             composable(route = TAB_LOGIN_REGISTER) {
                 TabRowComponent(navController = navController)
             }
             composable(route = LOGIN_ROUTE) {
-                LoginScreen(
-                    navigateToNotifications = { authDomain ->
-                        navController.navigate("${NOTIFICATIONS_ROUTE}/${authDomain.user?.id}") {
-                            popUpTo(LOGIN_ROUTE) { inclusive = true }
-                            launchSingleTop = true
-                        }
-                    },
-                    onRegisterClicked = {
-                        navController.navigate(REGISTER_ROUTE) {
-                            launchSingleTop = true
-                        }
-                    })
+                LoginScreen(navigateToNotifications = { authDomain ->
+                    navController.navigate("${NOTIFICATIONS_ROUTE}/${authDomain.user?.id}") {
+                        popUpTo(LOGIN_ROUTE) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                }, onRegisterClicked = {
+                    navController.navigate(REGISTER_ROUTE) {
+                        launchSingleTop = true
+                    }
+                })
             }
             composable(route = REGISTER_ROUTE) {
-                RegisterScreen(
-                    navigateToNotifications = { authDomain ->
-                        navController.navigate("${NOTIFICATIONS_ROUTE}/${authDomain.user?.id}") {
-                            popUpTo(REGISTER_ROUTE) { inclusive = true }
-                            launchSingleTop = true
-                        }
-                    })
+                RegisterScreen(navigateToNotifications = { authDomain ->
+                    navController.navigate("${NOTIFICATIONS_ROUTE}/${authDomain.user?.id}") {
+                        popUpTo(REGISTER_ROUTE) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                })
             }
             composable(
                 route = "$NOTIFICATIONS_ROUTE/{${USER_ID}}",
-                arguments = listOf(
-                    navArgument(USER_ID) {
-                        type = NavType.IntType
-                    }
-                )
+                arguments = listOf(navArgument(USER_ID) {
+                    type = NavType.IntType
+                })
             ) { backStackEntry ->
                 val userId = requireNotNull(backStackEntry.arguments?.getInt(USER_ID))
 
@@ -94,9 +87,9 @@ fun EduNotifyApp(navController: NavHostController = rememberNavController()) {
             }
             composable(
                 route = "$NOTIFICATION_DETAIL_ROUTE/{$NOTIFICATION_DOMAIN_DETAIL}",
-                arguments = listOf(
-                    navArgument(NOTIFICATION_DOMAIN_DETAIL) { type = NavType.StringType }
-                )
+                arguments = listOf(navArgument(NOTIFICATION_DOMAIN_DETAIL) {
+                    type = NavType.StringType
+                })
             ) { backStackEntry ->
                 val notificationDomainJson =
                     requireNotNull(backStackEntry.arguments?.getString(NOTIFICATION_DOMAIN_DETAIL))
@@ -127,33 +120,32 @@ fun EduNotifyApp(navController: NavHostController = rememberNavController()) {
             }
             composable(
                 route = "${Destinations.COURSES_ROUTE}/{${SCHOOL_ID}}/{${USER_ID}}",
-                arguments = listOf(
-                    navArgument(SCHOOL_ID) { type = NavType.IntType },
-                    navArgument(USER_ID) { type = NavType.IntType }
-                )
+                arguments = listOf(navArgument(SCHOOL_ID) { type = NavType.IntType },
+                    navArgument(USER_ID) { type = NavType.IntType })
             ) { backStackEntry ->
                 val schoolId = requireNotNull(backStackEntry.arguments?.getInt(SCHOOL_ID))
                 val userId = requireNotNull(backStackEntry.arguments?.getInt(USER_ID))
 
-                CoursesScreen(
-                    onBackClicked = { navController.navigateUp() },
+                CoursesScreen(onBackClicked = { navController.navigateUp() },
                     schoolId = schoolId,
                     userId = userId,
                     onAddCoursesClicked = { navController.navigate("$NOTIFICATIONS_ROUTE/$userId") })
             }
             composable(
-                "${NEW_NOTIFICATIONS_ROUTE}/{${USER_DOMAIN}}",
-                arguments = listOf(navArgument(USER_DOMAIN) {
-                    type = NavType.StringType
-                })
+                "${NEW_NOTIFICATIONS_ROUTE}/{${USER_DOMAIN}}/{${USER_ID}}",
+                arguments = listOf(navArgument(USER_DOMAIN) { type = NavType.StringType },
+                    navArgument(USER_ID) { type = NavType.IntType }
+                )
             ) { backStackEntry ->
                 val userDomainJson =
                     requireNotNull(backStackEntry.arguments?.getString(USER_DOMAIN))
                 val userDomain = Gson().fromJson(userDomainJson, UserDomain::class.java)
+                val userId = requireNotNull(backStackEntry.arguments?.getInt(USER_ID))
                 CreateNotificationScreen(
                     navController = navController,
                     onBackClicked = { navController.navigateUp() },
-                    userDomain = userDomain
+                    userDomain = userDomain,
+                    onNavigateToNotifications = { navController.navigate("$NOTIFICATIONS_ROUTE/$userId") }
                 )
             }
         }

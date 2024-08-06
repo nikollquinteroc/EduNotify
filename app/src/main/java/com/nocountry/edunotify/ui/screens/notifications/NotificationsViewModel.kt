@@ -1,6 +1,7 @@
 package com.nocountry.edunotify.ui.screens.notifications
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -47,6 +48,7 @@ class NotificationsViewModel(
     fun getUserById(userId: Int) {
         _uiState.update { it.copy(isLoading = true) }
 
+        Log.d("NotificationsViewModel", "Fetching user data for userId: $userId")
         viewModelScope.launch {
             try {
                 authRepository.getUserById(userId).collect { userDomain ->

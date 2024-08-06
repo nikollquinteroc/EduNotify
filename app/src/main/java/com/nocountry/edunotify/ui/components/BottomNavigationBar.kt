@@ -69,7 +69,7 @@ fun BottomNavigationBar(
                     name = R.string.bottom_new_notification,
                     onClick = {
                         val userDomainJson = Gson().toJson(userDomain)
-                        navController.navigate("${Destinations.NEW_NOTIFICATIONS_ROUTE}/$userDomainJson") {
+                        navController.navigate("${Destinations.NEW_NOTIFICATIONS_ROUTE}/$userDomainJson/${userDomain.id}") {
                             popUpTo(Destinations.PROFILE_ROUTE) { inclusive = true }
                         }
                     }

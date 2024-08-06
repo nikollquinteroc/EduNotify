@@ -1,5 +1,6 @@
 package com.nocountry.edunotify.ui.screens.notifications
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -86,6 +87,7 @@ fun NotificationsScreen(
     // Usa LaunchedEffect para añadir un listener del ciclo de vida
     val lifecycleOwner = LocalLifecycleOwner.current
     LaunchedEffect(lifecycleOwner) {
+        Log.d("NotificationsScreen", "LaunchedEffect: Fetching user data for userId: $userId")
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
             updateNotificationDomainDataFromDb()
         }

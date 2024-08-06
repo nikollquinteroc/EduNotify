@@ -1,9 +1,10 @@
 package com.nocountry.edunotify.data.api
 
 import com.facebook.stetho.okhttp3.StethoInterceptor
-import com.nocountry.edunotify.data.api.model.auth.AuthResponse
+import com.nocountry.edunotify.data.api.body.CreateNewMessageBody
 import com.nocountry.edunotify.data.api.body.LoginBody
 import com.nocountry.edunotify.data.api.body.RegisterBody
+import com.nocountry.edunotify.data.api.model.auth.AuthResponse
 import com.nocountry.edunotify.data.api.model.schools.SchoolInfoResponse
 import com.nocountry.edunotify.data.api.model.schools.SchoolResponse
 import com.nocountry.edunotify.data.api.model.user.UserResponse
@@ -16,7 +17,6 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 const val BASE_URL = "https://back-edunotify-production.up.railway.app/"
 
@@ -39,7 +39,7 @@ interface RetrofitService {
     @GET("school/{schoolId}")
     suspend fun getSchoolInfo(
         @Path("schoolId") schoolId: Int
-    ) : SchoolInfoResponse
+    ): SchoolInfoResponse
 
     @POST("auth/register")
     suspend fun createAuthRegister(
@@ -53,18 +53,13 @@ interface RetrofitService {
 
     @POST("message/newMessageCourse/{cursoId}")
     suspend fun createNewMessageCourse(
-        @Query("author") author: String,
-        @Query("title") title: String,
-        @Query("message") message: String,
-        @Query("expiration") expiration: Int,
+        @Body createNewMessageBody: CreateNewMessageBody,
         @Path("cursoId") cursoId: Int
     ): Response<Unit>
+
     @POST("message/newMessageSchool/{schoolId}")
     suspend fun createNewMessageSchool(
-        @Query("author") author: String,
-        @Query("title") title: String,
-        @Query("message") message: String,
-        @Query("expiration") expiration: Int,
+        @Body createNewMessageBody: CreateNewMessageBody,
         @Path("schoolId") schoolId: Int
     ): Response<Unit>
 

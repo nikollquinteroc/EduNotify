@@ -1,5 +1,6 @@
 package com.nocountry.edunotify.ui.screens.new_notification
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -51,12 +52,14 @@ fun CreateNotificationScreen(
     navController: NavHostController,
     onBackClicked: () -> Unit,
     userDomain: UserDomain,
+    onNavigateToNotifications: () -> Unit,
     createNotificationViewModel: CreateNotificationViewModel = viewModel(
         factory = CreateNotificationViewModel.provideFactory(LocalContext.current)
     )
 ) {
     val createNotificationUiState by createNotificationViewModel.uiState.collectAsState()
     val courses = createNotificationUiState.createNotificationUi.courses
+    val schools = createNotificationUiState.createNotificationUi.schoolList
 
     LaunchedEffect(userDomain.schoolId) {
         createNotificationViewModel.getCoursesBySchool(userDomain.schoolId)
@@ -83,7 +86,9 @@ fun CreateNotificationScreen(
             }
 
             createNotificationUiState.error.isNotEmpty() -> {
-                Text(text = "Error: ${createNotificationUiState.error}")
+                Column {
+                    Text(text = "Error: ${createNotificationUiState.error}")
+                }
             }
 
             else -> {
@@ -98,8 +103,10 @@ fun CreateNotificationScreen(
                         CreateNotificationForm(
                             navController = navController,
                             userDomain = userDomain,
+                            onNavigateToNotifications = onNavigateToNotifications,
                             createNotificationViewModel = createNotificationViewModel,
                             courses = courses,
+                            schools = schools,
                             errorMessageFromServer = createNotificationUiState.error
                         )
                     }
@@ -113,8 +120,10 @@ fun CreateNotificationScreen(
 fun CreateNotificationForm(
     navController: NavHostController,
     userDomain: UserDomain,
+    onNavigateToNotifications: () -> Unit,
     createNotificationViewModel: CreateNotificationViewModel,
     courses: List<CourseDomain>,
+    schools: List<SchoolDomain>,
     errorMessageFromServer: String,
 ) {
     var author by rememberSaveable { mutableStateOf("") }
@@ -122,7 +131,7 @@ fun CreateNotificationForm(
     var message by rememberSaveable { mutableStateOf("") }
     var expirationText by rememberSaveable { mutableStateOf("") }
     var expiration by rememberSaveable { mutableIntStateOf(0) }
-    val selectSchool by rememberSaveable { mutableStateOf<SchoolDomain?>(null) }
+    var selectSchool by rememberSaveable { mutableStateOf<SchoolDomain?>(null) }
     var selectCourse by rememberSaveable { mutableStateOf<CourseDomain?>(null) }
 
     var isAuthorEmpty by rememberSaveable { mutableStateOf(false) }
@@ -133,6 +142,13 @@ fun CreateNotificationForm(
     var isCourseSelected by rememberSaveable { mutableStateOf(false) }
 
     var errorMessage by rememberSaveable { mutableStateOf(errorMessageFromServer) }
+
+    LaunchedEffect(userDomain.schoolId) {
+        if (userDomain.schoolId != 0) {
+            selectSchool = schools.find { it.id == userDomain.schoolId }
+            isSchoolSelected = true
+        }
+    }
 
     TextFieldComponent(
         title = R.string.author_create_notification_form,
@@ -242,6 +258,26 @@ fun CreateNotificationForm(
         )
     }
     SpacerComponent(height = 5.dp)
+    if (isSchoolSelected && selectSchool == null) {
+        Column {
+            Text(
+                text = stringResource(id = R.string.select_school_create_notification_form),
+                style = MaterialTheme.typography.bodySmall
+            )
+            SpacerComponent(height = 10.dp)
+            TextButtonComponent(
+                textLabel = stringResource(id = R.string.school_tag),
+                options = schools,
+                getDescription = { it.name },
+                selectedOption = selectSchool,
+                onOptionSelected = { selectedSchool ->
+                    selectSchool = selectedSchool
+                    Log.d("CreateNotificationForm", "School selected: ${selectSchool?.id}")
+                }
+            )
+        }
+        SpacerComponent(height = 10.dp)
+    }
     if (isCourseSelected) {
         Column {
             Text(
@@ -256,6 +292,7 @@ fun CreateNotificationForm(
                 selectedOption = selectCourse,
                 onOptionSelected = { selectedCourse ->
                     selectCourse = selectedCourse
+                    Log.d("CreateNotificationForm", "Course selected: ${selectCourse?.courseId}")
                 }
             )
         }
@@ -267,7 +304,8 @@ fun CreateNotificationForm(
         onClick = {
             errorMessage = ""
 
-            val isValid = author.isNotEmpty() && title.isNotEmpty() && message.isNotEmpty() && expiration != 0
+            val isValid =
+                author.isNotEmpty() && title.isNotEmpty() && message.isNotEmpty() && expiration != 0
             val isSchoolOrCourseSelected = isSchoolSelected || isCourseSelected
 
             if (isValid && isSchoolOrCourseSelected) {
@@ -279,24 +317,59 @@ fun CreateNotificationForm(
                 val schoolId = selectSchool?.id ?: 0
                 val courseId = selectCourse?.courseId ?: 0
 
+                Log.d(
+                    "CreateNotificationForm",
+                    "Creating notification with schoolId: $schoolId, courseId: $courseId"
+                )
+
                 when {
                     isSchoolSelected && isCourseSelected -> {
-                        createNotificationViewModel.createNotificationMessageForCourse(
-                            author = author,
-                            title = title,
-                            message = message,
-                            expiration = expiration,
-                            courseId = courseId
-                        )
+                        Log.d("CreateNotificationForm", "Creating notification for course")
+                        if (courseId != 0) {
+                            createNotificationViewModel.createNotificationMessageForCourse(
+                                author = author,
+                                title = title,
+                                message = message,
+                                expiration = expiration,
+                                courseId = courseId
+                            )
+                            onNavigateToNotifications()
+                        } else {
+                            errorMessage = "Please select a course."
+                        }
+
                     }
+
                     isSchoolSelected -> {
-                        createNotificationViewModel.createNotificationMessageForSchool(
-                            author = author,
-                            title = title,
-                            message = message,
-                            expiration = expiration,
-                            schoolId = schoolId
-                        )
+                        Log.d("CreateNotificationForm", "Creating notification for school")
+                        if (schoolId != 0) {
+                            createNotificationViewModel.createNotificationMessageForSchool(
+                                author = author,
+                                title = title,
+                                message = message,
+                                expiration = expiration,
+                                schoolId = schoolId
+                            )
+                            onNavigateToNotifications()
+                        } else {
+                            errorMessage = "Please select a school."
+                        }
+                    }
+
+                    else -> {
+                        Log.d("CreateNotificationForm", "Creating notification for course")
+                        if (courseId != 0) { // Ensure courseId is valid
+                            createNotificationViewModel.createNotificationMessageForCourse(
+                                author = author,
+                                title = title,
+                                message = message,
+                                expiration = expiration,
+                                courseId = courseId
+                            )
+                            onNavigateToNotifications()
+                        } else {
+                            errorMessage = "Please select a course."
+                        }
                     }
                 }
             } else {
@@ -308,39 +381,6 @@ fun CreateNotificationForm(
                     errorMessage = "Please select a school or a course."
                 }
             }
-
-           /* if (author.isNotEmpty() && title.isNotEmpty() && message.isNotEmpty() && expiration != 0) {
-                isAuthorEmpty = false
-                isTitleEmpty = false
-                isMessageEmpty = false
-                isExpirationEmpty = false
-
-                val schoolId = selectSchool?.id ?: 0
-                val courseId = selectCourse?.courseId ?: 0
-
-                if (isSchoolSelected && isCourseSelected) {
-                    createNotificationViewModel.createNotificationMessageForCourse(
-                        author = author,
-                        title = title,
-                        message = message,
-                        expiration = expiration,
-                        courseId = courseId
-                    )
-                } else if (isSchoolSelected) {
-                    createNotificationViewModel.createNotificationMessageForSchool(
-                        author = author,
-                        title = title,
-                        message = message,
-                        expiration = expiration,
-                        schoolId = schoolId
-                    )
-                }
-            } else {
-                isAuthorEmpty = author.isEmpty()
-                isTitleEmpty = title.isEmpty()
-                isMessageEmpty = message.isEmpty()
-                isExpirationEmpty = expiration == 0
-            }*/
         },
         isSelected = false
     )
@@ -363,7 +403,8 @@ fun CreateNotificationScreenPreview() {
         CreateNotificationScreen(
             navController = rememberNavController(),
             onBackClicked = { /*TODO*/ },
-            userDomain = fakeUserDomain
+            userDomain = fakeUserDomain,
+            onNavigateToNotifications = {}
         )
     }
 }

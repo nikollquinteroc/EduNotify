@@ -97,8 +97,8 @@ fun LoginForm(
     errorMessageFromServer: String,
     onRegisterClicked: () -> Unit
 ) {
-    var mail by rememberSaveable { mutableStateOf("ramon3@gmail.com") }
-    var password by rememberSaveable { mutableStateOf("123456") }
+    var mail by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
     var errorMessage by rememberSaveable { mutableStateOf(errorMessageFromServer) }
 

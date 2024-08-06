@@ -12,9 +12,15 @@ import com.nocountry.edunotify.data.api.RetrofitServiceFactory
 import com.nocountry.edunotify.data.database.EduNotifyRoomDatabase
 import com.nocountry.edunotify.data.repository.course.CourseRepositoryImpl
 import com.nocountry.edunotify.data.repository.notifications.NotificationsRepositoryImpl
+import com.nocountry.edunotify.data.repository.school.SchoolRepositoryImpl
+import com.nocountry.edunotify.domain.mappers.CourseInfoMapper
 import com.nocountry.edunotify.domain.mappers.CourseMapper
+import com.nocountry.edunotify.domain.mappers.LevelMapper
 import com.nocountry.edunotify.domain.mappers.NotificationMapper
+import com.nocountry.edunotify.domain.mappers.SchoolInfoMapper
+import com.nocountry.edunotify.domain.mappers.SchoolMapper
 import com.nocountry.edunotify.domain.mappers.UserMapper
+import com.nocountry.edunotify.domain.mappers.YearMapper
 import com.nocountry.edunotify.domain.repositories.CourseRepository
 import com.nocountry.edunotify.domain.repositories.NotificationRepository
 import com.nocountry.edunotify.domain.repositories.SchoolRepository
@@ -34,6 +40,7 @@ data class CreateNotificationUiState(
 class CreateNotificationViewModel(
     private val notificationRepository: NotificationRepository,
     private val courseRepository: CourseRepository,
+    private val schoolRepository: SchoolRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val _uiState: MutableStateFlow<CreateNotificationUiState> = MutableStateFlow(
@@ -47,6 +54,33 @@ class CreateNotificationViewModel(
             getCoursesBySchool(schoolId)
         } else {
             Log.e("CoursesViewModel", "School ID is null")
+        }
+        getAllSchools()
+    }
+
+    private fun getAllSchools() {
+        _uiState.update { it.copy(isLoading = true) }
+
+        viewModelScope.launch {
+            try {
+                schoolRepository.getAllSchools().collect { schoolDomainList ->
+                    _uiState.update {
+                        val createNotificationUi =
+                            it.createNotificationUi.copy(schoolList = schoolDomainList)
+                        it.copy(
+                            isLoading = false,
+                            createNotificationUi = createNotificationUi
+                        )
+                    }
+                }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        error = "Error getting the school list, try again. \n${e.message}"
+                    )
+                }
+            }
         }
     }
 
@@ -121,7 +155,7 @@ class CreateNotificationViewModel(
 
         viewModelScope.launch {
             try {
-                notificationRepository.createNotificationMessageForCourse(
+                notificationRepository.createNotificationMessageForSchool(
                     author,
                     title,
                     message,
@@ -158,8 +192,8 @@ class CreateNotificationViewModel(
                     val database = EduNotifyRoomDatabase.getDatabase(context = context)
                     val userDao = database.getUserDao()
                     return CreateNotificationViewModel(
-                        NotificationsRepositoryImpl(service),
-                        CourseRepositoryImpl(
+                        notificationRepository = NotificationsRepositoryImpl(service),
+                        courseRepository = CourseRepositoryImpl(
                             service = service,
                             courseMapper = CourseMapper(
                                 NotificationMapper()
@@ -167,7 +201,18 @@ class CreateNotificationViewModel(
                             userMapper = UserMapper(CourseMapper(NotificationMapper())),
                             userDao = userDao
                         ),
-                        savedStateHandle
+                        schoolRepository = SchoolRepositoryImpl(
+                            service = service,
+                            schoolMapper = SchoolMapper(),
+                            schoolInfoMapper = SchoolInfoMapper(
+                                LevelMapper(
+                                    YearMapper(
+                                        CourseInfoMapper()
+                                    )
+                                )
+                            )
+                        ),
+                        savedStateHandle = savedStateHandle
                     ) as T
                 }
             }
