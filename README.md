@@ -2,28 +2,27 @@
 <br>
 <img align="center" src="https://i.imgur.com/e8A9vnU.png">
   <br>
-<h2>EduNotify: La Aplicación que Revoluciona la Comunicación en Instituciones Educativas</h2>
+<h2>EduNotify: The Application that Revolutionizes Communication in Educational Institutions</h2>
   
-### El objetivo principal de EduNotify es proporcionar una plataforma que fortalezca la comunicación entre directivos escolares y padres de alumnos. Esta herramienta está diseñada para modernizar y optimizar los métodos de comunicación en el ámbito educativo.
+### The main goal of EduNotify is to provide a platform that strengthens communication between school managers and parents. This tool is designed to modernize and optimize methods of communication in the educational field.
   
 </div>
 
 <p>
 Dirigida a:
 
-<li>Instituciones escolares: Que buscan digitalizar y mejorar la comunicación con padres y tutores, asegurando una interacción más eficaz y actualizada.</li>
-<li>Padres y tutores: Que desean una comunicación más directa y efectiva con la institución educativa de sus hijos.</li>
+<li>Educational Institutions: Seeking to digitalized and improve communication with parents and guardians, ensuring more effective and up-to-date interaction.</li>
+<li>Parents and Guardians: Looking for more direct and effective communication with their children's educational institution.</li>
 <br><br>
-Características Principales
+Main Features:
 
-<li>Accesibilidad: Diseñada para ser descargada y utilizada fácilmente por personal de la institución y padres.</li>
-<li>Diseño Moderno y Seguridad Robusta: Garantizando una experiencia visual agradable y la protección de la información.</li>
-<li>Intuitiva: Pensada para usuarios con diferentes niveles de habilidades tecnológicas.</li>
-<li>Gestión de Usuarios: Registro y autenticación con roles de administrador, director, colaborador y usuario.</li>
-<li>Gestión de Mensajes: Permite enviar mensajes personalizados, dirigidos a cursos específicos, o a toda la institución.</li>
+<li>Accessibility: Designed to be easily downloaded and used by both institutional staff and parents.</li>
+<li>Modern Design and Robust Security: Ensuring a pleasant visual experience and protection of information.</li>
+<li>Intuitive: Created for users with varying levels of technological skills.</li>
+<li>User Management: Registration and authentication with roles for administrators, directors, collaborators, and users.</li>
+<li>Message Management: Allows sending personalized messages to specific classes or to the entire institution.</li>
 </p>
 <br>
-</div>
 
 <div align="center">
    <br>
@@ -38,27 +37,61 @@ Características Principales
   
  </div>
 <br><br>
-  
+
+
+## ✔ Android App
+
+#### 👉🏻 Task List ✅
+
+- Design of brand identity and logos.
+- Creation of the application.
+- Development of business logic.
+- Connection with the Backend.
+
+#### 👉🏻 Built with 🛠️
+
+![Android Studio](https://img.shields.io/badge/android%20studio-%4CAF50.svg?style=for-the-badge&logo=android%20studio&logoColor=white)
+![Android](https://img.shields.io/badge/Android-%2300C4CC.svg?style=for-the-badge&logo=Android&logoColor=white)
+![Kotlin](https://img.shields.io/badge/Kotlin-FC8D45?style=for-the-badge&logo=kotlin&logoColor=white)
+![Jetpack Compose](https://img.shields.io/badge/Jetpack_Compose-007ACC?style=for-the-badge&logo=android&logoColor=white)
+![Flows](https://img.shields.io/badge/Flows-FF4081?style=for-the-badge)
+![Coroutines](https://img.shields.io/badge/Coroutines-0095D5?style=for-the-badge&logo=kotlin&logoColor=white)
+![Retrofit](https://img.shields.io/badge/Retrofit-4CAF50?style=for-the-badge&logo=android&logoColor=white)
+![Database](https://img.shields.io/badge/Database-FF4081?style=for-the-badge&logo=android&logoColor=white)
+![Room](https://img.shields.io/badge/Room-4CAF50?style=for-the-badge&logo=android&logoColor=white)
+![MVVM](https://img.shields.io/badge/MVVM-FC8D45?style=for-the-badge)
+
+#### 👉🏻 Android Developer 👨🏻‍💻
+
+| <img src="https://avatars.githubusercontent.com/u/136136120?v=4" width=100>|
+|:-:|
+| **Nikoll Quintero**|
+| <a href="https://www.linkedin.com/in/nikollquinteroc/"><img src="https://img.shields.io/badge/linkedin%20-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white"/></a> |
+|<a href="https://github.com/nikollquinteroc"><img src="https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white"/></a>|
+
+
+<br><br>
+
+
 ## ✔ BackEnd
 
-#### 👉🏻 Lista de Tareas ✅
+#### 👉🏻 Task List ✅
 
-- Desarrollo de una API REST con Java y Spring-Boot.
-- Crear una base de datos MySQL en Railway.
-- Desplegar la API en Railway.
-- Validación de usuarios con JWT construido y firmado en la aplicación.
-- Documentación de la API en Swagger3.
-- Puntos finales (endpoints) y servicios completamente probados.
+- Develop a REST API with Java and Spring Boot.
+- Create a MySQL database on Railway.
+- Deploy the API on Railway.
+- User validation with JWT built and signed within the application.
+- API documentation with Swagger3.
+- Endpoints and services fully tested.
 
+#### 👉🏻 Documentation 📜
 
-#### 👉🏻 Documentación 📜
+- You can read the API documentation: <a href="https://back-edunotify-production.up.railway.app/swagger-ui/index.html" target="_blank">Here</a>.
 
-- Puedes leer la documentación de la API: <a href="https://back-edunotify-production.up.railway.app/swagger-ui/index.html" target="_blank">Aqui</a>.
-
-#### 👉🏻 Construida con 🛠️
+#### 👉🏻 Built with 🛠️
 
 ![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white) 
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white)
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
 ![MySQL](https://img.shields.io/badge/mysql-%23316192.svg?style=for-the-badge&logo=mysqll&logoColor=white)
 ![Hibernate](https://img.shields.io/badge/Hibernate-59666C?style=for-the-badge&logo=Hibernate&logoColor=white)
@@ -75,50 +108,17 @@ Características Principales
 
 
 
-
-<br><br>
-
-
-## ✔ Android App
-
-#### 👉🏻 Lista de Tareas ✅
-
-- Diseño de la identidad de marca y logotipos.
-- Creación de la aplicación.
-- Desarrollo de la lógica del negocio.
-- Conexión con el Backend.
-
-#### 👉🏻 Construido con 🛠️
-
-![Android Studio](https://img.shields.io/badge/android%20studio-%4CAF50.svg?style=for-the-badge&logo=android%20studio&logoColor=white)
-![Android](https://img.shields.io/badge/Android-%2300C4CC.svg?style=for-the-badge&logo=Android&logoColor=white)
-![Kotlin](https://img.shields.io/badge/Kotlin-FC8D45?style=for-the-badge&logo=kotlin&logoColor=white)
-![Jetpack Compose](https://img.shields.io/badge/Jetpack_Compose-007ACC?style=for-the-badge&logo=android&logoColor=white)
-![Coroutines](https://img.shields.io/badge/Coroutines-0095D5?style=for-the-badge&logo=kotlin&logoColor=white)
-![Retrofit](https://img.shields.io/badge/Retrofit-4CAF50?style=for-the-badge&logo=android&logoColor=white)
-![Kotlin](https://img.shields.io/badge/Database-FF4081?style=for-the-badge&logo=android&logoColor=white)
-![Kotlin](https://img.shields.io/badge/Room-4CAF50?style=for-the-badge&logo=android&logoColor=white)
-
-#### 👉🏻 Android Developer 👨🏻‍💻
-
-| <img src="https://avatars.githubusercontent.com/u/136136120?v=4" width=100>|
-|:-:|
-| **Nikoll Quintero**|
-| <a href="https://www.linkedin.com/in/nikollquinteroc/"><img src="https://img.shields.io/badge/linkedin%20-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white"/></a> |
-|<a href="https://github.com/nikollquinteroc"><img src="https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white"/></a>|
-
-
 <br>
 
-#### 👉🏻 Metodología de Desarrollo 🤝
-- La duración de cada sprint es de una semana.
-- Se realizan dos reuniones obligatorias con el líder del equipo por cada sprint.
-- La reunión diaria tiene una duración máxima de 15 minutos.
-- No se permiten tareas sin una épica asociada.
-- Las épicas deben estar respaldadas por historias de usuario.
-- Las tareas se asignan de acuerdo a su estimación.
+#### 👉🏻 Development Methodology 🤝
+- Each sprint lasts one week.
+- Two mandatory meetings with the team leader are held per sprint.
+- The daily meeting has a maximum duration of 15 minutes.
+- Tasks without an associated epic are not allowed.
+- Epics must be supported by user stories.
+- Tasks are assigned according to their estimation.
 
-#### 👉🏻 Herramientas utilizadas 🛠️
+#### 👉🏻 Tools Used 🛠️
 ![Jira](https://img.shields.io/badge/jira-%230A0FFF.svg?style=for-the-badge&logo=jira&logoColor=white)
 ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
