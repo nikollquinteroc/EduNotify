@@ -9,7 +9,7 @@
 </div>
 
 <p>
-Dirigida a:
+Addressed to:
 
 <li>Educational Institutions: Seeking to digitalized and improve communication with parents and guardians, ensuring more effective and up-to-date interaction.</li>
 <li>Parents and Guardians: Looking for more direct and effective communication with their children's educational institution.</li>
